@@ -52,9 +52,9 @@ export default function HeroCTAs() {
           rel="noopener noreferrer"
           title="View on HuggingFace"
           style={{
-            backgroundColor: "#FFFFFF",
+            backgroundColor: "#4A1D96",
             borderRadius: "8px",
-            border: "2px solid #FFD21E",
+            border: "2px solid #4A1D96",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
