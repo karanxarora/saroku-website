@@ -106,15 +106,15 @@ function Callout({
       label: "Note",
     },
     warning: {
-      bg: "#FEF9C3",
-      border: "#FDE68A",
-      color: "#92400E",
+      bg: "var(--warning-t)",
+      border: "var(--warning-b)",
+      color: "var(--warning)",
       label: "Warning",
     },
     tip: {
-      bg: "#DCFCE7",
-      border: "#86EFAC",
-      color: "#14532D",
+      bg: "var(--success-t)",
+      border: "var(--success-b)",
+      color: "var(--success)",
       label: "Tip",
     },
   };
