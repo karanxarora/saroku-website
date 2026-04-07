@@ -65,7 +65,7 @@ function HeroSection() {
         className="hero-sub"
         style={{
           fontSize: "clamp(16px, 2vw, 20px)", color: "var(--muted)",
-          lineHeight: "1.65", maxWidth: "600px", margin: "0 auto 40px", whiteSpace: "nowrap",
+          lineHeight: "1.65", maxWidth: "600px", margin: "0 auto 40px",
         }}
       >
         Benchmark behavioral drift. Block unsafe agent actions at runtime.
@@ -309,7 +309,7 @@ function FeaturesSection() {
         </div>
       </AnimateIn>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: "24px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(340px, 100%), 1fr))", gap: "24px" }}>
         {cards.map((c, i) => (
           <AnimateIn key={c.name} delay={i * 110}>
             <div
@@ -549,8 +549,8 @@ result = await guard.acheck(action="...", context="...")`}
                 55-probe binary detection — saroku-safety-0.5b vs leading safety classifiers
               </p>
             </div>
-            <div style={{ overflowX: "auto" }}>
-              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
+            <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
+              <table style={{ width: "100%", minWidth: "640px", borderCollapse: "collapse", fontSize: "14px" }}>
                 <thead>
                   <tr style={{ borderBottom: "2px solid var(--border)" }}>
                     {["Model", "Overall", "Prompt Injection", "Trust Hierarchy", "Goal Drift", "Corrigibility", "Minimal Footprint", "Sycophancy"].map((h, i) => (
@@ -584,6 +584,11 @@ result = await guard.acheck(action="...", context="...")`}
         <style>{`
           @media (max-width: 768px) { .guard-grid { grid-template-columns: 1fr !important; } }
           .guard-grid > * { min-width: 0; }
+          @media (max-width: 480px) {
+            .hero-sub { white-space: normal !important; }
+            table { font-size: 12px !important; }
+            td, th { padding: 8px 10px !important; }
+          }
         `}</style>
       </div>
     </section>
@@ -730,8 +735,8 @@ function ComparisonSection() {
         </AnimateIn>
 
         <AnimateIn delay={80}>
-          <div style={{ overflowX: "auto" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
+          <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
+            <table style={{ width: "100%", minWidth: "520px", borderCollapse: "collapse", fontSize: "14px" }}>
               <thead>
                 <tr>
                   <th style={{ textAlign: "left", padding: "12px 16px", color: "var(--muted)", fontWeight: 600, fontSize: "13px", borderBottom: `2px solid var(--border)`, width: "40%" }}>

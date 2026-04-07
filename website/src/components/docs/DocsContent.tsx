@@ -154,7 +154,7 @@ function PropTable({
   rows: { prop: string; type: string; default?: string; description: string }[];
 }) {
   return (
-    <div style={{ overflowX: "auto", marginBottom: "24px" }}>
+    <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch", marginBottom: "24px" }}>
       <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
         <thead>
           <tr style={{ backgroundColor: "var(--surface-2)" }}>
@@ -568,7 +568,7 @@ function SycophancySection() {
       </P>
 
       <SubHeading>Probe schemas (6 total)</SubHeading>
-      <div style={{ overflowX: "auto", marginBottom: "24px" }}>
+      <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch", marginBottom: "24px" }}>
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
           <thead>
             <tr style={{ backgroundColor: "var(--surface-2)" }}>
@@ -657,7 +657,7 @@ function HonestySection() {
       </ul>
 
       <SubHeading>Probe schemas (4 total)</SubHeading>
-      <div style={{ overflowX: "auto", marginBottom: "24px" }}>
+      <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch", marginBottom: "24px" }}>
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
           <thead>
             <tr style={{ backgroundColor: "var(--surface-2)" }}>
@@ -723,7 +723,7 @@ function ConsistencySection() {
       </ul>
 
       <SubHeading>Probe schemas (4 total)</SubHeading>
-      <div style={{ overflowX: "auto", marginBottom: "24px" }}>
+      <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch", marginBottom: "24px" }}>
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
           <thead>
             <tr style={{ backgroundColor: "var(--surface-2)" }}>
@@ -1014,7 +1014,7 @@ result = guard.check(action="...", context="...")`}
         language="python"
       />
       <SubHeading>Performance</SubHeading>
-      <div style={{ overflowX: "auto", marginBottom: "24px" }}>
+      <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch", marginBottom: "24px" }}>
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
           <thead>
             <tr style={{ backgroundColor: "var(--surface-2)" }}>
@@ -1210,7 +1210,7 @@ cache_ttl_days: 7`}
 
       <SubHeading>All 52+ built-in schemas</SubHeading>
       <P>Schemas are grouped by behavioral property. Run <InlineCode>saroku schemas</InlineCode> to list all available IDs.</P>
-      <div style={{ overflowX: "auto", marginBottom: "24px" }}>
+      <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch", marginBottom: "24px" }}>
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
           <thead>
             <tr style={{ backgroundColor: "var(--surface-2)" }}>
