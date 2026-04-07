@@ -68,13 +68,7 @@ function HeroSection() {
           lineHeight: "1.65", maxWidth: "600px", margin: "0 auto 40px",
         }}
       >
-        saroku benchmarks your LLM across 8 behavioral properties — sycophancy, honesty,
-        prompt injection resistance, trust hierarchy, and more — and guards your agents at
-        runtime with a 3-layer safety check that completes in under 200ms.
-        <br />
-        <strong style={{ color: "var(--text-2)", fontWeight: 600 }}>
-          Test behavioral drift in CI. Block unsafe actions in production.
-        </strong>
+        Benchmark behavioral drift. Block unsafe agent actions at runtime.
       </p>
 
       {/* Install command */}
@@ -543,6 +537,49 @@ result = await guard.acheck(action="...", context="...")`}
             </div>
           </AnimateIn>
         </div>
+
+        {/* Safety model benchmark */}
+        <AnimateIn delay={120}>
+          <div style={{ marginTop: "56px" }}>
+            <div style={{ textAlign: "center", marginBottom: "24px" }}>
+              <p style={{ fontSize: "13px", fontWeight: 600, color: "var(--primary)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "8px" }}>
+                Safety Model Benchmark
+              </p>
+              <p style={{ color: "var(--muted)", fontSize: "15px", margin: 0 }}>
+                55-probe binary detection — saroku-safety-0.5b vs leading safety classifiers
+              </p>
+            </div>
+            <div style={{ overflowX: "auto" }}>
+              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
+                <thead>
+                  <tr style={{ borderBottom: "2px solid var(--border)" }}>
+                    {["Model", "Overall", "Prompt Injection", "Trust Hierarchy", "Goal Drift", "Corrigibility", "Minimal Footprint", "Sycophancy"].map((h, i) => (
+                      <th key={h} style={{ padding: "10px 14px", textAlign: i === 0 ? "left" : "center", color: "var(--muted)", fontWeight: 600, fontSize: "12px", whiteSpace: "nowrap" }}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    { name: "saroku-safety-0.5b", highlight: true,  values: ["98%", "100%", "100%", "100%", "100%", "100%", "100%"] },
+                    { name: "Granite Guardian 2B", highlight: false, values: ["73%",  "80%",  "70%",  "78%",  "20%",  "40%",  "80%"] },
+                    { name: "Llama Guard 3 1B",    highlight: false, values: ["53%",  "70%",  "53%",  "33%",  "20%",  "20%",  "20%"] },
+                    { name: "ShieldGemma 2B",      highlight: false, values: ["18%",   "0%",   "0%",   "0%",   "0%",   "0%",   "0%"] },
+                  ].map((row, ri) => (
+                    <tr key={row.name} style={{ backgroundColor: row.highlight ? "var(--primary-t)" : ri % 2 === 0 ? "var(--surface-2)" : "var(--surface)" }}>
+                      <td style={{ padding: "12px 14px", fontWeight: row.highlight ? 700 : 400, color: row.highlight ? "var(--primary)" : "var(--text-2)", whiteSpace: "nowrap", borderBottom: "1px solid var(--border-2)" }}>{row.name}</td>
+                      {row.values.map((v, vi) => (
+                        <td key={vi} style={{ padding: "12px 14px", textAlign: "center", fontWeight: row.highlight ? 700 : 400, color: row.highlight ? "var(--primary)" : "var(--text-2)", borderBottom: "1px solid var(--border-2)" }}>{v}</td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p style={{ fontSize: "12px", color: "var(--subtle)", marginTop: "10px", textAlign: "center" }}>
+              Corrigibility, minimal footprint, and sycophancy are saroku-exclusive categories — no other evaluated model has a named concept for them.
+            </p>
+          </div>
+        </AnimateIn>
 
         <style>{`
           @media (max-width: 768px) { .guard-grid { grid-template-columns: 1fr !important; } }
