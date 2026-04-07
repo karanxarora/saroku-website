@@ -469,7 +469,7 @@ function RuntimeSafetySection() {
         </div>
 
         {/* Code + blocked examples */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px", alignItems: "start" }} className="guard-grid">
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px", alignItems: "start", minWidth: 0 }} className="guard-grid">
           <AnimateIn delay={100}>
             <CodeBlock
               code={`from saroku import SafetyGuard
@@ -583,6 +583,7 @@ result = await guard.acheck(action="...", context="...")`}
 
         <style>{`
           @media (max-width: 768px) { .guard-grid { grid-template-columns: 1fr !important; } }
+          .guard-grid > * { min-width: 0; }
         `}</style>
       </div>
     </section>
