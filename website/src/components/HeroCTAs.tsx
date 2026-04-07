@@ -32,17 +32,7 @@ export default function HeroCTAs() {
           target="_blank"
           rel="noopener noreferrer"
           title="View on GitHub"
-          style={{
-            backgroundColor: "#24292f",
-            color: "#ffffff",
-            borderRadius: "8px",
-            border: "1px solid #24292f",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flex: 1,
-            padding: "13px",
-          }}
+          className="hero-icon-btn hero-icon-btn-gh"
         >
           <GitHubIcon />
         </a>
@@ -51,20 +41,47 @@ export default function HeroCTAs() {
           target="_blank"
           rel="noopener noreferrer"
           title="View on HuggingFace"
-          style={{
-            backgroundColor: "#4A1D96",
-            borderRadius: "8px",
-            border: "2px solid #4A1D96",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flex: 1,
-            padding: "12px",
-          }}
+          className="hero-icon-btn hero-icon-btn-hf"
         >
           <HuggingFaceIcon />
         </a>
       </div>
+
+      <style>{`
+        .hero-icon-btn {
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex: 1;
+          padding: 13px;
+          text-decoration: none;
+          transition: opacity 0.18s, transform 0.18s;
+        }
+        .hero-icon-btn:hover { opacity: 0.85; transform: translateY(-2px); }
+
+        /* Light mode: dark backgrounds */
+        .hero-icon-btn-gh {
+          background-color: #24292f;
+          border: 1px solid #24292f;
+          color: #ffffff;
+        }
+        .hero-icon-btn-hf {
+          background-color: #1a1a1a;
+          border: 1px solid #1a1a1a;
+        }
+
+        /* Dark mode: light backgrounds */
+        html[data-theme="dark"] .hero-icon-btn-gh {
+          background-color: #f6f8fa;
+          border-color: #f6f8fa;
+          color: #24292f;
+        }
+        html[data-theme="dark"] .hero-icon-btn-hf {
+          background-color: #ffffff;
+          border-color: #ffffff;
+        }
+      `}</style>
     </div>
   );
 }
