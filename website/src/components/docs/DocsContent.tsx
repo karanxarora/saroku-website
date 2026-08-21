@@ -23,6 +23,7 @@ export default function DocsContent() {
       <GoalDriftSection />
       <SafetyGuardSection />
       <GuardModesSection />
+      <FrameworkIntegrationSection />
       <LocalModelSection />
       <CliReferenceSection />
       <ProbeSchemasSection />
@@ -392,8 +393,10 @@ pip install -e ".[dev]"`}
 
       <SubHeading>Setting up API keys</SubHeading>
       <P>
-        saroku uses LiteLLM under the hood, so it supports any provider LiteLLM
-        supports. Set environment variables for the providers you want to use:
+        saroku talks to providers through its own native model adapters —
+        OpenAI and Anthropic are first-class adapters; Google, Groq, Mistral,
+        Together, Perplexity, and Ollama route through an OpenAI-compatible
+        adapter. Set environment variables for the providers you want to use:
       </P>
       <CodeBlock
         code={`# OpenAI (required for default generator and judge)
@@ -402,18 +405,34 @@ export OPENAI_API_KEY=sk-...
 # Anthropic
 export ANTHROPIC_API_KEY=sk-ant-...
 
-# Google Vertex AI
-export GOOGLE_APPLICATION_CREDENTIALS=/path/to/credentials.json
-export VERTEXAI_PROJECT=my-project
-export VERTEXAI_LOCATION=us-central1
+# Google Gemini
+export GOOGLE_API_KEY=...
 
-# Cohere
-export COHERE_API_KEY=...
+# Groq
+export GROQ_API_KEY=...
 
-# Any OpenAI-compatible endpoint
-export OPENAI_API_BASE=https://my-custom-endpoint.com/v1`}
+# Mistral AI
+export MISTRAL_API_KEY=...
+
+# Together AI
+export TOGETHER_API_KEY=...
+
+# Perplexity
+export PERPLEXITY_API_KEY=...
+
+# Azure OpenAI
+export AZURE_OPENAI_ENDPOINT=https://my-resource.openai.azure.com
+export AZURE_OPENAI_API_KEY=...
+
+# Ollama (local) — no key required`}
         language="bash"
       />
+      <P>
+        Prefix a model string with the provider to select its adapter —{" "}
+        <InlineCode>anthropic:claude-3-5-haiku-20241022</InlineCode>,{" "}
+        <InlineCode>google:gemini-2.0-flash</InlineCode>,{" "}
+        <InlineCode>ollama:llama3.2</InlineCode>. No prefix defaults to OpenAI.
+      </P>
 
       <Callout type="tip">
         You only need the API key for the model you are testing. The generator
@@ -471,7 +490,7 @@ saroku run --model gpt-4o-mini --benchmark bench-v1 --compare-baseline prod-v1`}
 
       <SubHeading>Example output</SubHeading>
       <CodeBlock
-        code={`saroku v0.4.0 — Behavioral Regression Report
+        code={`saroku v0.5.0 — Behavioral Regression Report
 Model: gpt-4o-mini
 Baseline: prod-v1 (saved 2026-03-15)
 Benchmark: bench-v1 (96 probes, 8 properties)
@@ -878,10 +897,16 @@ function SafetyGuardSection() {
       <SectionHeading id="safety-guard">SafetyGuard Overview</SectionHeading>
       <P>
         <InlineCode>SafetyGuard</InlineCode> intercepts agent actions before they execute and
-        checks them against a 3-layer cascade: a deterministic rules engine, a feature-based ML
-        scorer, and an LLM or local model judge. Clear violations are caught in under 1ms —
-        only genuinely ambiguous actions (~15% of traffic) reach the LLM.
+        checks them against a pluggable, policy-driven safety stack: composable classifiers
+        (rules, HuggingFace models, LLM judges, or ensembles) run under a declarative policy,
+        orchestrated by an execution engine. Clear violations are caught in under 1ms —
+        only genuinely ambiguous actions reach a classifier or LLM judge.
       </P>
+      <Callout type="tip">
+        The legacy <InlineCode>SafetyGuard(mode=..., judge_model=...)</InlineCode> constructor
+        still works unchanged — see <InlineCode>Guard Modes</InlineCode> below. The
+        policy-driven API is additive, not a breaking change.
+      </Callout>
       <CodeBlock
         code={`from saroku import SafetyGuard
 
@@ -906,32 +931,70 @@ result = await guard.acheck(action="...", context="...")`}
       />
       <SubHeading>Result object</SubHeading>
       <CodeBlock
-        code={`result.is_safe          # bool
-result.violations       # list[SafetyViolation]
-result.latency_ms       # float — total wall-clock time
-result.layers_used      # ["rules"] | ["rules","ml"] | ["rules","ml","local_model"]
-result.ml_risk_score    # float 0–1 from Layer 2
+        code={`result.is_safe            # bool
+result.violations         # list[SafetyViolation]
+result.checked_properties # list[str] — properties evaluated
+result.latency_ms         # float — total wall-clock time
+result.layers_used        # list[str] — classifier IDs that ran, e.g. ["rule:basic_checks"]
+result.summary()          # human-readable string
 
 # Each SafetyViolation:
 v.property        # e.g. "trust_hierarchy", "minimal_footprint"
 v.severity        # "high" | "medium" | "low"
 v.description     # what the violation is
 v.recommendation  # what to do instead
-v.source          # "rules" | "ml" | "local_model"`}
+v.source          # the classifier ID that raised it`}
         language="python"
       />
-      <SubHeading>3-layer cascade</SubHeading>
+      <SubHeading>Pluggable classifiers</SubHeading>
       <P>
-        Layer 1 (Rules Engine, &lt;1ms) — deterministic regex patterns for clear-cut violations:
-        DROP TABLE, skip_tests=True, disable auth, credential logging, injection signals.
+        saroku ships built-in classifiers and supports custom ones, all composed through a
+        registry:
+      </P>
+      <CodeBlock
+        code={`from saroku.classifiers import ClassifierRegistry, HFModelClassifier
+
+# Use a HuggingFace model
+hf_classifier = HFModelClassifier("Qwen/Qwen2.5-0.5B")
+ClassifierRegistry.register("hf:qwen-0.5b", hf_classifier)
+
+# Combine classifiers in an ensemble
+from saroku.classifiers import EnsembleClassifier
+ensemble = EnsembleClassifier(
+    classifiers=[hf_classifier],
+    strategy="majority",  # or "cascade"
+)
+ClassifierRegistry.register("ensemble:hybrid", ensemble)`}
+        language="python"
+      />
+      <SubHeading>Policy-driven API</SubHeading>
+      <P>
+        Declarative YAML policies define which classifiers run at which execution layer, with
+        confidence thresholds and fallback chains:
+      </P>
+      <CodeBlock
+        code={`from saroku import SafetyGuard, Policy
+
+# Load a pre-built policy
+policy = Policy.from_yaml("policies/default.yml")
+guard = SafetyGuard(policy=policy)
+
+result = await guard.acheck(action="...", context="...", mode="balanced")
+
+# Inspect which classifiers were used
+print(guard.metrics.summary())`}
+        language="python"
+      />
+      <SubHeading>Execution strategies</SubHeading>
+      <P>
+        <InlineCode>ExecutionEngine</InlineCode> orchestrates classifiers across each policy
+        layer with two strategies: <strong>cascade</strong> (try each layer&apos;s classifiers
+        in order, stop at the first confident result) or <strong>speculative</strong> (run
+        concurrent classifiers in a layer, use the first confident winner for lower latency).
       </P>
       <P>
-        Layer 2 (ML Scorer, ~5ms) — 25 structured features feed a linear risk model. Scores
-        0–1, blocks above 0.85, allows below 0.30, escalates everything else.
-      </P>
-      <P>
-        Layer 3 (LLM / Local Model, ~65ms–10s) — only runs for genuinely ambiguous actions.
-        Evaluates 7 behavioral properties and returns structured violations.
+        Every classifier invocation is tracked automatically — latency, confidence, outcome —
+        accessible via <InlineCode>guard.metrics</InlineCode>.
       </P>
     </div>
   );
@@ -962,7 +1025,49 @@ guard = SafetyGuard(mode="thorough", judge_model="gpt-4o-mini")`}
       <Callout type="tip">
         Use <InlineCode>mode=&quot;fast&quot;</InlineCode> for low-latency paths where the action
         set is predictable. Use <InlineCode>mode=&quot;balanced&quot;</InlineCode> with the local
-        model for production — it handles ~85% of traffic without any API calls.
+        model for production — most traffic never needs an API call. For fine-grained control
+        over which classifiers run and when, use the policy-driven API above instead.
+      </Callout>
+    </div>
+  );
+}
+
+/* ─── Framework Integration ───────────────────────────────────────────── */
+
+function FrameworkIntegrationSection() {
+  return (
+    <div>
+      <SectionHeading id="framework-integration">Framework Integration</SectionHeading>
+      <P>
+        Wrap a single tool, or protect an entire agent&apos;s tools at once. saroku
+        auto-detects the framework and intercepts tool calls before they execute.
+      </P>
+      <CodeBlock
+        code={`from saroku import wrap, protect, SafetyBlockedError
+
+# Protect a single tool
+safe_search = wrap(agent.search_tool, guard=guard)
+
+# Protect all tools in an agent (auto-detects framework)
+safe_agent = await protect(agent, guard=guard)
+
+# Handle blocked actions
+try:
+    result = await safe_agent.run(task)
+except SafetyBlockedError as e:
+    print(f"Action blocked: {e.violations}")`}
+        language="python"
+      />
+      <SubHeading>Supported frameworks</SubHeading>
+      <ul style={{ paddingLeft: "20px", margin: "0 0 16px", display: "flex", flexDirection: "column", gap: "8px" }}>
+        <li style={{ fontSize: "15px", color: "var(--text-2)" }}><strong>Google ADK</strong> — wraps every tool registered on the agent</li>
+        <li style={{ fontSize: "15px", color: "var(--text-2)" }}><strong>AutoGen</strong> — wraps registered functions</li>
+        <li style={{ fontSize: "15px", color: "var(--text-2)" }}><strong>LangChain</strong> — wraps each tool via <InlineCode>SarokuToolWrapper</InlineCode></li>
+      </ul>
+      <Callout type="tip">
+        No supported framework installed? <InlineCode>wrap()</InlineCode> works on any
+        callable — sync or async — so you can protect tools one at a time regardless of
+        which agent framework you use.
       </Callout>
     </div>
   );
@@ -1094,7 +1199,7 @@ function CliReferenceSection() {
 
       <PropTable
         rows={[
-          { prop: "-m, --model", type: "TEXT", description: "Model string. Any LiteLLM identifier: gpt-4o-mini, claude-sonnet-4-6, vertex_ai/gemini-1.5-pro, etc." },
+          { prop: "-m, --model", type: "TEXT", description: "Model string. Provider-prefixed: gpt-4o-mini, anthropic:claude-3-5-haiku-20241022, google:gemini-2.0-flash, groq:llama-3.3-70b-versatile, ollama:llama3.2." },
           { prop: "--benchmark", type: "TEXT", description: "Use a static benchmark instead of generating probes. Use bench-v1 for reproducible, citable results." },
           { prop: "-p, --probes", type: "TEXT", default: "all", description: "Filter by property: sycophancy | honesty | consistency | prompt_injection | trust_hierarchy | corrigibility | minimal_footprint | goal_drift | all" },
           { prop: "--intensity", type: "TEXT", default: "standard", description: "Probe depth: smoke (4/schema) | standard (15/schema) | deep (36/schema) | exhaustive (72/schema)" },
@@ -1143,7 +1248,7 @@ saroku schemas --property honesty # Filter by behavioral property`}
       <SubHeading>Full CLI reference</SubHeading>
       <CodeBlock
         code={`saroku run --model <model> [options]
-  -m, --model TEXT              Model string (gpt-4o-mini, claude-sonnet-4-6, ...)
+  -m, --model TEXT              Model string (gpt-4o-mini, anthropic:claude-3-5-haiku-20241022, ...)
   --benchmark TEXT              Static benchmark (bench-v1)
   -p, --probes TEXT             Property filter [default: all]
   --intensity TEXT              smoke|standard|deep|exhaustive [default: standard]
@@ -1500,13 +1605,13 @@ function ArchitectureSection() {
         },
         {
           stage: "ProbeGenerator",
-          file: "saroku/generator/generator.py",
-          description: "Calls the generator LLM (via LiteLLM) to instantiate concrete probe conversations from schema templates. Caches results to avoid redundant generation runs.",
+          file: "saroku/generators/llm_generator.py",
+          description: "Calls the generator LLM (via a native model adapter) to instantiate concrete probe conversations from schema templates. Caches results to avoid redundant generation runs.",
         },
         {
           stage: "ModelRunner",
-          file: "saroku/runner/runner.py",
-          description: "Sends probe conversations to the target model via LiteLLM. Handles rate limiting, retries, and parallel execution.",
+          file: "saroku/core/runner.py",
+          description: "Sends probe conversations to the target model via saroku's native adapters. Handles rate limiting, retries, and parallel execution.",
         },
         {
           stage: "JudgeEvaluator",
@@ -1573,43 +1678,41 @@ function ArchitectureSection() {
       <SubHeading>Package structure</SubHeading>
       <CodeBlock
         code={`saroku/
-├── __init__.py
-├── cli.py                    # Click CLI entrypoint
-├── schemas/
-│   ├── loader.py             # Schema loading & validation
-│   └── built-in/             # 14 built-in YAML schemas
-├── generator/
-│   ├── generator.py          # Probe generation via LLM
-│   └── cache.py              # 7-day SQLite cache
-├── runner/
-│   └── runner.py             # LiteLLM model execution
-├── judge/
-│   ├── evaluator.py          # LLM-as-judge evaluation
-│   └── prompts.py            # Judge prompt templates
-├── scoring/
-│   └── aggregator.py         # Score computation
-├── baseline/
-│   └── manager.py            # Baseline save/load/compare
-└── report/
-    └── renderer.py           # Table & JSON output`}
+├── __init__.py                # Public API: SafetyGuard, wrap, protect, Policy, ...
+├── guard.py                   # SafetyGuard — policy-driven + legacy modes
+├── classifiers/
+│   ├── base.py                # Classifier interface
+│   ├── registry.py            # ClassifierRegistry
+│   ├── rule_classifier.py     # Deterministic rule matching
+│   ├── hf_classifier.py       # HuggingFace model classifier
+│   ├── llm_classifier.py      # LLM-as-judge classifier
+│   └── ensemble_classifier.py # Majority / cascade over multiple classifiers
+├── policy/
+│   ├── dsl.py                 # Policy DSL — properties, layers, thresholds
+│   └── policies/default.yml   # Built-in default policy
+├── execution/
+│   ├── engine.py               # ExecutionEngine — cascade & speculative strategies
+│   └── metrics.py              # Per-invocation latency/confidence tracking
+├── adapters/
+│   ├── factory.py             # resolve_adapter() — model string → adapter
+│   ├── openai.py / anthropic.py / compat.py
+├── integrations/
+│   ├── _wrap.py                # wrap() tool interceptor
+│   ├── _detector.py            # Auto-detects agent framework
+│   ├── _langchain.py / _autogen.py / _adk.py
+├── benchmarks/                 # bench-v1 static probe set
+└── training/                   # Fine-tune your own local safety model`}
         language="bash"
       />
 
-      <SubHeading>LiteLLM integration</SubHeading>
+      <SubHeading>Model adapters</SubHeading>
       <P>
-        saroku uses{" "}
-        <a
-          href="https://docs.litellm.ai"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ color: "var(--primary)" }}
-        >
-          LiteLLM
-        </a>{" "}
-        as its model abstraction layer. This means any model string that LiteLLM
-        supports works as a <InlineCode>--model</InlineCode> argument, including
-        OpenAI, Anthropic, Google, Cohere, Mistral, Groq, and any
-        OpenAI-compatible endpoint.
+        saroku talks to providers through its own native adapters (no LiteLLM
+        dependency) — first-class support for OpenAI, Anthropic, and Azure
+        OpenAI, with Google, Groq, Mistral, Together, Perplexity, and Ollama
+        routed through an OpenAI-compatible adapter. Pass a provider-prefixed
+        model string (e.g. <InlineCode>anthropic:claude-3-5-haiku-20241022</InlineCode>)
+        or supply a custom <InlineCode>ModelAdapter</InlineCode> for anything else.
       </P>
     </div>
   );
@@ -1623,31 +1726,34 @@ function RoadmapSection() {
       <SectionHeading id="roadmap">Roadmap</SectionHeading>
 
       <P>
-        saroku is under active development. Planned features and improvements:
+        saroku is under active development. Here&apos;s what has shipped and what&apos;s next.
       </P>
 
-      <SubHeading>v0.2 — Expanded probe library</SubHeading>
+      <SubHeading>Shipped in v0.5 — Pluggable, policy-driven architecture</SubHeading>
+      <ul style={{ paddingLeft: "20px", margin: "0 0 20px", display: "flex", flexDirection: "column", gap: "8px" }}>
+        <li style={{ fontSize: "15px", color: "var(--text-2)" }}>Composable classifiers (rules, HuggingFace models, LLM judges, ensembles) via a registry</li>
+        <li style={{ fontSize: "15px", color: "var(--text-2)" }}>Declarative policy DSL with confidence thresholds and fallback chains</li>
+        <li style={{ fontSize: "15px", color: "var(--text-2)" }}>ExecutionEngine with cascade and speculative strategies, plus built-in observability</li>
+        <li style={{ fontSize: "15px", color: "var(--text-2)" }}>Native model adapters (OpenAI, Anthropic, Azure, and OpenAI-compatible providers) — no LiteLLM dependency</li>
+        <li style={{ fontSize: "15px", color: "var(--text-2)" }}>Framework integration: <InlineCode>wrap()</InlineCode> / <InlineCode>protect()</InlineCode> for Google ADK, AutoGen, and LangChain</li>
+      </ul>
+
+      <SubHeading>Planned — Expanded probe & reporting</SubHeading>
       <ul style={{ paddingLeft: "20px", margin: "0 0 20px", display: "flex", flexDirection: "column", gap: "8px" }}>
         <li style={{ fontSize: "15px", color: "var(--text-2)" }}>Additional sycophancy schemas (coding, creative writing, opinions)</li>
         <li style={{ fontSize: "15px", color: "var(--text-2)" }}>Multi-turn pressure escalation probes (5+ turns)</li>
-        <li style={{ fontSize: "15px", color: "var(--text-2)" }}>Authority-specific pressure strategies (doctor, lawyer, expert user personas)</li>
-      </ul>
-
-      <SubHeading>v0.3 — Drift visualization</SubHeading>
-      <ul style={{ paddingLeft: "20px", margin: "0 0 20px", display: "flex", flexDirection: "column", gap: "8px" }}>
         <li style={{ fontSize: "15px", color: "var(--text-2)" }}>HTML report output with per-probe breakdown</li>
         <li style={{ fontSize: "15px", color: "var(--text-2)" }}>Time-series chart of behavioral scores across runs</li>
-        <li style={{ fontSize: "15px", color: "var(--text-2)" }}>GitHub Actions step summary integration</li>
       </ul>
 
-      <SubHeading>v0.4 — Team features</SubHeading>
+      <SubHeading>Planned — Team features</SubHeading>
       <ul style={{ paddingLeft: "20px", margin: "0 0 20px", display: "flex", flexDirection: "column", gap: "8px" }}>
         <li style={{ fontSize: "15px", color: "var(--text-2)" }}>Shared baseline storage (S3, GCS, remote HTTP)</li>
         <li style={{ fontSize: "15px", color: "var(--text-2)" }}>Slack/PagerDuty integration for regression alerts</li>
         <li style={{ fontSize: "15px", color: "var(--text-2)" }}>API server mode for integration with custom dashboards</li>
       </ul>
 
-      <SubHeading>v1.0 — Enterprise</SubHeading>
+      <SubHeading>Planned — Enterprise</SubHeading>
       <ul style={{ paddingLeft: "20px", margin: "0 0 20px", display: "flex", flexDirection: "column", gap: "8px" }}>
         <li style={{ fontSize: "15px", color: "var(--text-2)" }}>Custom schema authoring wizard</li>
         <li style={{ fontSize: "15px", color: "var(--text-2)" }}>Fine-grained statistical significance testing</li>

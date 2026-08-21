@@ -17,7 +17,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "saroku — Behavioral Reliability Testing for LLMs",
   description:
-    "saroku measures whether your LLM holds its positions under pressure, answers consistently across phrasings, and stays honest when users push back. Detect behavioral drift before it reaches production.",
+    "saroku tests whether your LLM's behavior holds under pressure — and blocks unsafe agent actions before they execute.",
   keywords: [
     "LLM testing",
     "behavioral regression",

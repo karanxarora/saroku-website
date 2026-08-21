@@ -16,6 +16,7 @@ export default function Home() {
         <ProblemSection />
         <FeaturesSection />
         <RuntimeSafetySection />
+        <FrameworkIntegrationsSection />
         <HowItWorksSection />
         <QuickStartSection />
         <ComparisonSection />
@@ -70,7 +71,8 @@ function HeroSection() {
       >
         saroku benchmarks your LLM across 8 behavioral properties — sycophancy, honesty,
         prompt injection resistance, trust hierarchy, and more — and guards your agents at
-        runtime with a 3-layer safety check that completes in under 200ms.
+        runtime with a pluggable, policy-driven safety stack. Clear violations are caught
+        in under 1ms.
         <br />
         <strong style={{ color: "var(--text-2)", fontWeight: 600 }}>
           Test behavioral drift in CI. Block unsafe actions in production.
@@ -95,7 +97,7 @@ function HeroSection() {
         className="hero-tagline"
         style={{ marginTop: "40px", color: "var(--subtle)", fontSize: "13px" }}
       >
-        Open source · MIT License · v0.4.0 · Grounded in MASK Benchmark (2026) research · Works with any LiteLLM-compatible model
+        Open source · MIT License · v0.5.0 · Grounded in MASK Benchmark (2026) research · Works with OpenAI, Anthropic, Azure &amp; any OpenAI-compatible model
       </p>
     </section>
   );
@@ -397,33 +399,33 @@ function RuntimeSafetySection() {
   const layers = [
     {
       num: "01",
-      name: "Rules Engine",
-      latency: "< 1ms",
+      name: "Classifiers",
+      latency: "< 1ms – ~65ms",
       color: "var(--success)",
       tint: "var(--success-t)",
       border: "var(--success-b)",
-      desc: "Deterministic regex patterns catch clear-cut violations — DROP TABLE, skip_tests=True, disable auth, credential logging. No model needed.",
-      pct: "~60% of traffic stops here",
+      desc: "Pluggable safety judges — rule-based matchers, HuggingFace models, LLM judges, or ensembles — composed via a simple registry. Swap or combine them without touching your call site.",
+      pct: "Registered by classifier ID",
     },
     {
       num: "02",
-      name: "ML Scorer",
-      latency: "~5ms",
+      name: "Policy DSL",
+      latency: "config",
       color: "var(--warning)",
       tint: "var(--warning-t)",
       border: "var(--warning-b)",
-      desc: "25 structured features feed a linear risk model. Scores actions 0–1 and blocks above 0.85. Handles compound risk like 'destructive + production + no ticket'.",
-      pct: "~25% stopped here",
+      desc: "Declarative YAML policies define which classifiers run at which execution layer, with confidence thresholds and fallback chains — no code changes to retune coverage.",
+      pct: "Declared in policies/*.yml",
     },
     {
       num: "03",
-      name: "LLM / Local Model",
+      name: "Execution Engine",
       latency: "~65ms",
       color: "var(--primary)",
       tint: "var(--primary-t)",
       border: "var(--primary-b)",
-      desc: "Only ambiguous actions (~15%) reach here. Uses a fine-tuned 0.5B local model (no API key, no network) or an API judge for full contextual reasoning.",
-      pct: "~15% reach here",
+      desc: "Orchestrates classifiers across two strategies: cascade (stop at the first confident result) or speculative (run concurrently, use the first confident winner for lower latency).",
+      pct: "Every call tracked in guard.metrics",
     },
   ];
 
@@ -442,12 +444,12 @@ function RuntimeSafetySection() {
               Block unsafe actions before they execute
             </h2>
             <p style={{ color: "var(--muted)", fontSize: "17px", maxWidth: "580px", margin: "0 auto", lineHeight: "1.6" }}>
-              One call before your agent runs a tool. A 3-layer cascade catches violations in under 200ms — 85% of traffic never reaches the LLM.
+              One call before your agent runs a tool. Compose a pluggable safety stack — clear violations are caught in under 1ms; only ambiguous actions reach a classifier or LLM judge.
             </p>
           </div>
         </AnimateIn>
 
-        {/* 3-layer cascade */}
+        {/* Pluggable, policy-driven architecture */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "16px", marginBottom: "48px" }}>
           {layers.map((layer, i) => (
             <AnimateIn key={layer.name} delay={i * 100}>
@@ -528,10 +530,10 @@ result = await guard.acheck(action="...", context="...")`}
 
               {/* Modes */}
               <div style={{ marginTop: "8px", padding: "16px", backgroundColor: "var(--surface-2)", border: "1px solid var(--border)", borderRadius: "10px" }}>
-                <div style={{ fontSize: "12px", fontWeight: 600, color: "var(--subtle)", marginBottom: "8px", textTransform: "uppercase", letterSpacing: "0.06em" }}>Guard modes</div>
+                <div style={{ fontSize: "12px", fontWeight: 600, color: "var(--subtle)", marginBottom: "8px", textTransform: "uppercase", letterSpacing: "0.06em" }}>Guard modes (legacy, still supported)</div>
                 {[
-                  { mode: `mode="fast"`,      desc: "Rules + ML only, no model (<5ms)" },
-                  { mode: `mode="balanced"`,  desc: "3-layer cascade (default, <200ms)" },
+                  { mode: `mode="fast"`,      desc: "Pattern matching only, no model (<5ms)" },
+                  { mode: `mode="balanced"`,  desc: "Local model, default (~65ms, no API calls)" },
                   { mode: `mode="thorough"`,  desc: "Always use LLM judge" },
                 ].map((m) => (
                   <div key={m.mode} style={{ display: "flex", gap: "8px", marginBottom: "6px", alignItems: "baseline" }}>
@@ -552,13 +554,86 @@ result = await guard.acheck(action="...", context="...")`}
   );
 }
 
+/* ─── Framework Integrations ────────────────────────────────────────────── */
+
+function FrameworkIntegrationsSection() {
+  const frameworks = [
+    { name: "Google ADK", desc: "Auto-detected — wraps every tool on the agent" },
+    { name: "AutoGen", desc: "Auto-detected — wraps registered functions" },
+    { name: "LangChain", desc: "Auto-detected — SarokuToolWrapper around each tool" },
+  ];
+
+  return (
+    <section style={{ maxWidth: "1200px", margin: "0 auto", padding: "80px 24px" }}>
+      <AnimateIn direction="up">
+        <div style={{ textAlign: "center", marginBottom: "56px" }}>
+          <p style={{ fontSize: "13px", fontWeight: 600, color: "var(--primary)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "12px" }}>
+            Framework Integration
+          </p>
+          <h2 style={{ fontSize: "clamp(26px, 4vw, 38px)", fontWeight: 700, color: "var(--text)", letterSpacing: "-0.75px", margin: "0 0 16px" }}>
+            Drop into the agent framework you already use
+          </h2>
+          <p style={{ color: "var(--muted)", fontSize: "17px", maxWidth: "580px", margin: "0 auto", lineHeight: "1.6" }}>
+            Wrap a single tool or protect an entire agent — saroku auto-detects the framework and blocks unsafe calls before they execute.
+          </p>
+        </div>
+      </AnimateIn>
+
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px", alignItems: "start" }} className="guard-grid">
+        <AnimateIn delay={100}>
+          <CodeBlock
+            code={`from saroku import SafetyGuard, wrap, protect, SafetyBlockedError
+
+guard = SafetyGuard(judge_model="gpt-4o-mini")
+
+# Protect a single tool
+safe_search = wrap(agent.search_tool, guard=guard)
+
+# Protect a whole agent — auto-detects
+# Google ADK / AutoGen / LangChain
+safe_agent = await protect(agent, guard=guard)
+
+try:
+    result = await safe_agent.run(task)
+except SafetyBlockedError as e:
+    print(f"Action blocked: {e.violations}")`}
+            language="python"
+          />
+        </AnimateIn>
+
+        <AnimateIn delay={180}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+            {frameworks.map((f) => (
+              <div key={f.name} style={{
+                display: "flex", alignItems: "center", gap: "12px",
+                padding: "14px 16px",
+                backgroundColor: "var(--surface)",
+                border: "1px solid var(--border)",
+                borderRadius: "10px",
+              }}>
+                <span style={{ backgroundColor: "var(--primary-t)", color: "var(--primary)", fontSize: "12px", fontWeight: 700, padding: "3px 10px", borderRadius: "20px", whiteSpace: "nowrap" }}>
+                  {f.name}
+                </span>
+                <span style={{ fontSize: "13px", color: "var(--text-2)", lineHeight: "1.5" }}>{f.desc}</span>
+              </div>
+            ))}
+            <p style={{ fontSize: "12px", color: "var(--subtle)", marginTop: "4px" }}>
+              No framework installed? <code style={{ fontFamily: "var(--font-jetbrains), monospace", color: "var(--primary)" }}>wrap()</code> works on any callable tool — sync or async.
+            </p>
+          </div>
+        </AnimateIn>
+      </div>
+    </section>
+  );
+}
+
 /* ─── How It Works ──────────────────────────────────────────────────────── */
 
 function HowItWorksSection() {
   const steps = [
     { title: "Load probe schemas",        description: "saroku reads probe schemas that define behavioral test scenarios — topic, domain, pressure strategies, and expected behavioral boundaries." },
     { title: "Generate probe variants",   description: "A generator LLM creates multiple concrete probe conversations: different phrasings, pressure levels, contextual framings. Cached for 7 days." },
-    { title: "Run against target model",  description: "Each probe is sent to the target model via LiteLLM — supports OpenAI, Anthropic, Google Vertex, Cohere, and any OpenAI-compatible endpoint." },
+    { title: "Run against target model",  description: "Each probe is sent to the target model via saroku's native adapters — OpenAI, Anthropic, Azure OpenAI, Google, Groq, Mistral, Together, Perplexity, Ollama, and any OpenAI-compatible endpoint." },
     { title: "Judge responses",           description: "A judge LLM evaluates each response: Did the model capitulate? Maintain its position? Answer consistently across phrasings?" },
     { title: "Compute behavioral scores", description: "Individual judgments aggregate into per-property scores: sycophancy rate, honesty rate, consistency rate — each normalized to [0, 1]." },
     { title: "Compare & report",          description: "Results diff against a saved baseline. Regressions are flagged with delta values. Reports print to stdout or save as JSON for CI artifacts." },
@@ -661,9 +736,10 @@ function ComparisonSection() {
     { feature: "Honesty under pressure",                values: [true,  false, false, false] },
     { feature: "Prompt injection resistance (14 schemas)", values: [true, true, false, true] },
     { feature: "Trust hierarchy & corrigibility",       values: [true,  false, false, false] },
-    { feature: "Runtime safety guard (< 200ms)",        values: [true,  false, false, false] },
+    { feature: "Runtime safety guard (pluggable classifiers)", values: [true, false, false, false] },
     { feature: "Local inference — no API required",     values: [true,  false, false, false] },
     { feature: "Behavioral baselines & regression diff",values: [true,  false, false, false] },
+    { feature: "Agent framework integration (LangChain, AutoGen, ADK)", values: [true, false, false, false] },
     { feature: "CI/CD gate (--fail-on-regression)",     values: [true,  true,  true,  false] },
     { feature: "Multi-model comparison",                values: [true,  false, true,  false] },
     { feature: "52+ pre-built behavioral probes",       values: [true,  false, false, false] },
