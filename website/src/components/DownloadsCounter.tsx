@@ -169,30 +169,29 @@ export default function DownloadsCounter() {
     <div
       style={{
         display: "inline-flex",
-        alignItems: "baseline",
+        flexDirection: "column",
+        alignItems: "center",
         gap: "10px",
-        padding: "10px 18px",
-        borderRadius: "10px",
-        backgroundColor: "var(--primary-t)",
-        border: `1px solid ${pulsing ? "var(--primary-b)" : "var(--border)"}`,
-        boxShadow: pulsing ? "0 0 0 4px var(--primary-t)" : "0 0 0 0 transparent",
-        transition: "border-color 0.5s ease, box-shadow 0.5s ease",
+        borderTop: "1px solid var(--border)",
+        paddingTop: "28px",
       }}
     >
       <span
         style={{
-          fontSize: "clamp(20px, 2.4vw, 26px)",
+          fontSize: "clamp(36px, 5vw, 56px)",
           fontWeight: 800,
           color: "var(--primary)",
-          letterSpacing: "-0.3px",
+          letterSpacing: "-1px",
+          lineHeight: 1,
           minWidth: "1ch",
           opacity: total === null ? 0.35 : 1,
-          transition: "opacity 0.4s ease",
+          textShadow: pulsing ? "0 0 32px var(--primary-b)" : "0 0 0 transparent",
+          transition: "opacity 0.4s ease, text-shadow 0.6s ease",
         }}
       >
         {total === null ? "···" : <Odometer value={total} reducedMotion={reducedMotion} />}
       </span>
-      <span style={{ display: "flex", flexDirection: "column", gap: "2px", lineHeight: "1.2" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
         <span
           style={{
             fontSize: "12px",
@@ -204,6 +203,7 @@ export default function DownloadsCounter() {
         >
           Total Downloads
         </span>
+        <span style={{ color: "var(--border)" }} aria-hidden="true">·</span>
         <a
           href="https://huggingface.co/karanxa/saroku-safety-0.5b"
           target="_blank"
@@ -212,7 +212,7 @@ export default function DownloadsCounter() {
             display: "inline-flex",
             alignItems: "center",
             gap: "4px",
-            fontSize: "11px",
+            fontSize: "12px",
             color: "var(--subtle)",
             textDecoration: "none",
           }}
@@ -220,7 +220,7 @@ export default function DownloadsCounter() {
           <HuggingFaceIcon />
           on Hugging Face
         </a>
-      </span>
+      </div>
     </div>
   );
 }
