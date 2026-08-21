@@ -31,7 +31,7 @@ export default function Home() {
 
 function HeroSection() {
   return (
-    <section style={{ maxWidth: "1200px", margin: "0 auto", padding: "72px 24px 72px", textAlign: "center" }}>
+    <section style={{ maxWidth: "1200px", margin: "0 auto", padding: "44px 24px 72px", textAlign: "center" }}>
 
       {/* Badge */}
       <div
@@ -71,9 +71,6 @@ function HeroSection() {
         }}
       >
         <p style={{ fontSize: "clamp(15px, 1.8vw, 18px)", color: "var(--muted)", margin: 0, lineHeight: "1.5" }}>
-          Benchmark behavioral drift across 9 safety properties.
-        </p>
-        <p style={{ fontSize: "clamp(15px, 1.8vw, 18px)", color: "var(--muted)", margin: 0, lineHeight: "1.5" }}>
           Block unsafe agent actions at runtime.
         </p>
       </div>
@@ -86,23 +83,15 @@ function HeroSection() {
         <CodeBlock code="pip install saroku" language="bash" compact />
       </div>
 
-      {/* CTAs */}
-      <div className="hero-ctas">
-        <HeroCTAs />
-      </div>
-
       {/* Headline stat */}
-      <div style={{ display: "flex", justifyContent: "center", marginTop: "28px" }}>
+      <div style={{ display: "flex", justifyContent: "center" }}>
         <DownloadsCounter />
       </div>
 
-      {/* Social proof */}
-      <p
-        className="hero-tagline"
-        style={{ marginTop: "40px", color: "var(--subtle)", fontSize: "13px" }}
-      >
-        Open source · MIT · v0.5.0 · OpenAI-compatible · Ollama · MASK Benchmark (2026)
-      </p>
+      {/* CTAs */}
+      <div className="hero-ctas" style={{ marginTop: "32px" }}>
+        <HeroCTAs />
+      </div>
     </section>
   );
 }

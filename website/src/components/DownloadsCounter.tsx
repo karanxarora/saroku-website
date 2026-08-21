@@ -84,17 +84,6 @@ function DigitReel({
   );
 }
 
-function HuggingFaceIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 95 88" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M47.2 0C21.1 0 0 19.7 0 44c0 24.3 21.1 44 47.2 44s47.2-19.7 47.2-44C94.4 19.7 73.3 0 47.2 0z" fill="#FFD21E"/>
-      <path d="M27.5 38.2c0-2.8 2.3-5.1 5.1-5.1s5.1 2.3 5.1 5.1-2.3 5.1-5.1 5.1-5.1-2.3-5.1-5.1zm29.7 0c0-2.8 2.3-5.1 5.1-5.1s5.1 2.3 5.1 5.1-2.3 5.1-5.1 5.1-5.1-2.3-5.1-5.1z" fill="#3A3A3A"/>
-      <path d="M28.4 53.7c2.8 6.4 9.2 10.9 16.7 11.1h4.2c7.5-.2 13.9-4.7 16.7-11.1H28.4z" fill="#3A3A3A"/>
-      <path d="M22.1 25.1c.6-1.6 2-2.7 3.7-2.7 1.1 0 2.1.4 2.8 1.1M69.5 25.1c-.6-1.6-2-2.7-3.7-2.7-1.1 0-2.1.4-2.8 1.1" stroke="#3A3A3A" strokeWidth="2.5" strokeLinecap="round"/>
-    </svg>
-  );
-}
-
 function Odometer({ value, reducedMotion }: { value: number; reducedMotion: boolean }) {
   const formatted = value.toLocaleString("en-US");
   const chars = formatted.split("");
@@ -191,7 +180,7 @@ export default function DownloadsCounter() {
       >
         {total === null ? "···" : <Odometer value={total} reducedMotion={reducedMotion} />}
       </span>
-      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
         <span
           style={{
             fontSize: "12px",
@@ -203,21 +192,16 @@ export default function DownloadsCounter() {
         >
           Total Downloads
         </span>
-        <span style={{ color: "var(--border)" }} aria-hidden="true">·</span>
         <a
           href="https://huggingface.co/karanxa/saroku-safety-0.5b"
           target="_blank"
           rel="noopener noreferrer"
           style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "4px",
             fontSize: "12px",
             color: "var(--subtle)",
             textDecoration: "none",
           }}
         >
-          <HuggingFaceIcon />
           on Hugging Face
         </a>
       </div>
