@@ -107,15 +107,15 @@ function Callout({
       label: "Note",
     },
     warning: {
-      bg: "#FEF9C3",
-      border: "#FDE68A",
-      color: "#92400E",
+      bg: "var(--warning-t)",
+      border: "var(--warning-b)",
+      color: "var(--warning)",
       label: "Warning",
     },
     tip: {
-      bg: "#DCFCE7",
-      border: "#86EFAC",
-      color: "#14532D",
+      bg: "var(--success-t)",
+      border: "var(--success-b)",
+      color: "var(--success)",
       label: "Tip",
     },
   };
@@ -155,7 +155,7 @@ function PropTable({
   rows: { prop: string; type: string; default?: string; description: string }[];
 }) {
   return (
-    <div style={{ overflowX: "auto", marginBottom: "24px" }}>
+    <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch", marginBottom: "24px" }}>
       <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
         <thead>
           <tr style={{ backgroundColor: "var(--surface-2)" }}>
@@ -465,10 +465,10 @@ saroku run --model gpt-4o-mini --benchmark bench-v1`}
         language="bash"
       />
       <P>
-        Runs 96 hand-authored probes across all 8 behavioral properties against{" "}
+        Runs test scenarios across all 8 behavioral categories against{" "}
         <InlineCode>gpt-4o-mini</InlineCode> and prints a behavioral report.
         Use <InlineCode>--benchmark bench-v1</InlineCode> for reproducible,
-        citable results. Omit it to generate dynamic probes cached for 7 days.
+        citable results. Omit it to generate dynamic test scenarios cached for 7 days.
       </P>
 
       <SubHeading>Step 2: Save the results as a baseline</SubHeading>
@@ -493,7 +493,7 @@ saroku run --model gpt-4o-mini --benchmark bench-v1 --compare-baseline prod-v1`}
         code={`saroku v0.5.0 — Behavioral Regression Report
 Model: gpt-4o-mini
 Baseline: prod-v1 (saved 2026-03-15)
-Benchmark: bench-v1 (96 probes, 8 properties)
+Benchmark: bench-v1 (8 behavioral categories)
 
 ┌──────────────────────────┬────────┬──────────┬──────────────┐
 │ Property                 │ Score  │ Baseline │ Delta        │
@@ -587,7 +587,7 @@ function SycophancySection() {
       </P>
 
       <SubHeading>Probe schemas (6 total)</SubHeading>
-      <div style={{ overflowX: "auto", marginBottom: "24px" }}>
+      <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch", marginBottom: "24px" }}>
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
           <thead>
             <tr style={{ backgroundColor: "var(--surface-2)" }}>
@@ -676,7 +676,7 @@ function HonestySection() {
       </ul>
 
       <SubHeading>Probe schemas (4 total)</SubHeading>
-      <div style={{ overflowX: "auto", marginBottom: "24px" }}>
+      <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch", marginBottom: "24px" }}>
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
           <thead>
             <tr style={{ backgroundColor: "var(--surface-2)" }}>
@@ -742,7 +742,7 @@ function ConsistencySection() {
       </ul>
 
       <SubHeading>Probe schemas (4 total)</SubHeading>
-      <div style={{ overflowX: "auto", marginBottom: "24px" }}>
+      <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch", marginBottom: "24px" }}>
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
           <thead>
             <tr style={{ backgroundColor: "var(--surface-2)" }}>
@@ -1119,7 +1119,7 @@ result = guard.check(action="...", context="...")`}
         language="python"
       />
       <SubHeading>Performance</SubHeading>
-      <div style={{ overflowX: "auto", marginBottom: "24px" }}>
+      <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch", marginBottom: "24px" }}>
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
           <thead>
             <tr style={{ backgroundColor: "var(--surface-2)" }}>
@@ -1159,8 +1159,8 @@ function BenchV1Section() {
     <div>
       <SectionHeading id="bench-v1">bench-v1 Benchmark</SectionHeading>
       <P>
-        A static, version-locked set of 96 hand-authored probe instances — 3 per schema across
-        all 32 schemas. Unlike dynamically generated probes, bench-v1 results are fully
+        A static, version-locked set of hand-authored test scenarios across all 8 behavioral
+        categories. Unlike dynamically generated scenarios, bench-v1 results are fully
         reproducible across runs and directly comparable across teams and over time.
       </P>
       <Callout type="tip">
@@ -1315,7 +1315,7 @@ cache_ttl_days: 7`}
 
       <SubHeading>All 52+ built-in schemas</SubHeading>
       <P>Schemas are grouped by behavioral property. Run <InlineCode>saroku schemas</InlineCode> to list all available IDs.</P>
-      <div style={{ overflowX: "auto", marginBottom: "24px" }}>
+      <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch", marginBottom: "24px" }}>
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
           <thead>
             <tr style={{ backgroundColor: "var(--surface-2)" }}>

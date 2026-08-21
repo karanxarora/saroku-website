@@ -130,6 +130,10 @@ guard = SafetyGuard(
     local_model_path="./models/saroku-safety-0.5b/model",  # no API key needed
 )
 
+# Balanced via Ollama (pull once, runs locally)
+# ollama pull karanxa/saroku-safety-0.5b
+guard = SafetyGuard(mode="balanced", judge_model="ollama/saroku-safety-0.5b")
+
 # Balanced with API judge (if no local GPU)
 guard = SafetyGuard(mode="balanced", judge_model="gpt-4o-mini")
 

@@ -57,27 +57,25 @@ function HeroSection() {
           maxWidth: "820px", marginLeft: "auto", marginRight: "auto",
         }}
       >
-        Your model&rsquo;s answer is{" "}
-        <span style={{ color: "var(--primary)" }}>your agent&rsquo;s action.</span>
+        Safety check for every{" "}
+        <span style={{ color: "var(--primary)" }}>action your agent takes.</span>
       </h1>
 
       {/* Subheadline */}
-      <p
+      <div
         className="hero-sub"
         style={{
-          fontSize: "clamp(16px, 2vw, 20px)", color: "var(--muted)",
-          lineHeight: "1.65", maxWidth: "600px", margin: "0 auto 40px",
+          display: "flex", flexDirection: "column", alignItems: "center", gap: "8px",
+          margin: "0 auto 40px", maxWidth: "600px",
         }}
       >
-        saroku benchmarks your LLM across 8 behavioral properties — sycophancy, honesty,
-        prompt injection resistance, trust hierarchy, and more — and guards your agents at
-        runtime with a pluggable, policy-driven safety stack. Clear violations are caught
-        in under 1ms.
-        <br />
-        <strong style={{ color: "var(--text-2)", fontWeight: 600 }}>
-          Test behavioral drift in CI. Block unsafe actions in production.
-        </strong>
-      </p>
+        <p style={{ fontSize: "clamp(15px, 1.8vw, 18px)", color: "var(--muted)", margin: 0, lineHeight: "1.5" }}>
+          Benchmark behavioral drift across 9 safety properties.
+        </p>
+        <p style={{ fontSize: "clamp(15px, 1.8vw, 18px)", color: "var(--muted)", margin: 0, lineHeight: "1.5" }}>
+          Block unsafe agent actions at runtime.
+        </p>
+      </div>
 
       {/* Install command */}
       <div
@@ -97,7 +95,7 @@ function HeroSection() {
         className="hero-tagline"
         style={{ marginTop: "40px", color: "var(--subtle)", fontSize: "13px" }}
       >
-        Open source · MIT License · v0.5.0 · Grounded in MASK Benchmark (2026) research · Works with OpenAI, Anthropic, Azure &amp; any OpenAI-compatible model
+        Open source · MIT · v0.5.0 · OpenAI-compatible · Ollama · MASK Benchmark (2026)
       </p>
     </section>
   );
@@ -245,7 +243,7 @@ function FeaturesSection() {
       threshold: "< 20%",
       color: "var(--danger)",
       tint: "var(--danger-t)",
-      probes: "12 schemas · medical, financial, legal, scientific",
+      probes: "medical, financial, legal, scientific",
       result: "CAVED",
       resultEmoji: "✗",
       messages: [
@@ -262,7 +260,7 @@ function FeaturesSection() {
       threshold: "> 80%",
       color: "var(--warning)",
       tint: "var(--warning-t)",
-      probes: "14 schemas · web, email, docs, DB, code, APIs",
+      probes: "web, email, docs, DB, code, APIs",
       result: "INJECTED",
       resultEmoji: "✗",
       messages: [
@@ -278,7 +276,7 @@ function FeaturesSection() {
       threshold: "> 75%",
       color: "var(--primary)",
       tint: "var(--primary-t)",
-      probes: "4 schemas · operator constraints, user overrides",
+      probes: "operator constraints, user overrides",
       result: "VIOLATED",
       resultEmoji: "✗",
       messages: [
@@ -308,16 +306,16 @@ function FeaturesSection() {
             What saroku Measures
           </p>
           <h2 style={{ fontSize: "clamp(26px, 4vw, 38px)", fontWeight: 700, color: "var(--text)", letterSpacing: "-0.75px", margin: "0 0 16px" }}>
-            Eight behavioral properties, 52+ probes
+            Eight behavioral categories
           </h2>
           <p style={{ color: "var(--muted)", fontSize: "17px", maxWidth: "560px", margin: "0 auto", lineHeight: "1.6" }}>
             These properties shift with every fine-tune, system prompt change, or provider swap.
-            Each card shows a real probe — the red message is where the model fails.
+            Each card shows a real scenario — the red message is where the model fails.
           </p>
         </div>
       </AnimateIn>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: "24px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(340px, 100%), 1fr))", gap: "24px" }}>
         {cards.map((c, i) => (
           <AnimateIn key={c.name} delay={i * 110}>
             <div
@@ -363,7 +361,7 @@ function FeaturesSection() {
       <AnimateIn delay={200}>
         <div style={{ marginTop: "48px" }}>
           <p style={{ textAlign: "center", fontSize: "13px", color: "var(--subtle)", marginBottom: "20px", fontWeight: 500 }}>
-            All 8 behavioral properties across 52+ built-in probe schemas:
+            All 8 behavioral categories covered by saroku:
           </p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "12px" }}>
             {allProperties.map((p) => (
@@ -477,7 +475,7 @@ function RuntimeSafetySection() {
         </div>
 
         {/* Code + blocked examples */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px", alignItems: "start" }} className="guard-grid">
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px", alignItems: "start", minWidth: 0 }} className="guard-grid">
           <AnimateIn delay={100}>
             <CodeBlock
               code={`from saroku import SafetyGuard
@@ -530,11 +528,11 @@ result = await guard.acheck(action="...", context="...")`}
 
               {/* Modes */}
               <div style={{ marginTop: "8px", padding: "16px", backgroundColor: "var(--surface-2)", border: "1px solid var(--border)", borderRadius: "10px" }}>
-                <div style={{ fontSize: "12px", fontWeight: 600, color: "var(--subtle)", marginBottom: "8px", textTransform: "uppercase", letterSpacing: "0.06em" }}>Guard modes (legacy, still supported)</div>
+                <div style={{ fontSize: "12px", fontWeight: 600, color: "var(--subtle)", marginBottom: "8px", textTransform: "uppercase", letterSpacing: "0.06em" }}>Guard modes</div>
                 {[
-                  { mode: `mode="fast"`,      desc: "Pattern matching only, no model (<5ms)" },
-                  { mode: `mode="balanced"`,  desc: "Local model, default (~65ms, no API calls)" },
-                  { mode: `mode="thorough"`,  desc: "Always use LLM judge" },
+                  { mode: `mode="local"`,     desc: "saroku-safety-0.5b only, no API calls (~50-150ms)" },
+                  { mode: `mode="balanced"`,  desc: "Local model → escalate to LLM judge if unsafe/uncertain (default)" },
+                  { mode: `mode="thorough"`,  desc: "Always run the full LLM judge" },
                 ].map((m) => (
                   <div key={m.mode} style={{ display: "flex", gap: "8px", marginBottom: "6px", alignItems: "baseline" }}>
                     <code style={{ fontSize: "12px", color: "var(--primary)", fontFamily: "var(--font-jetbrains), monospace", flexShrink: 0 }}>{m.mode}</code>
@@ -546,8 +544,58 @@ result = await guard.acheck(action="...", context="...")`}
           </AnimateIn>
         </div>
 
+        {/* Safety model benchmark */}
+        <AnimateIn delay={120}>
+          <div style={{ marginTop: "56px" }}>
+            <div style={{ textAlign: "center", marginBottom: "24px" }}>
+              <p style={{ fontSize: "13px", fontWeight: 600, color: "var(--primary)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "8px" }}>
+                Safety Model Benchmark
+              </p>
+              <p style={{ color: "var(--muted)", fontSize: "15px", margin: 0 }}>
+                Binary detection across 9 safety categories — saroku-safety-0.5b vs leading safety classifiers
+              </p>
+            </div>
+            <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
+              <table style={{ width: "100%", minWidth: "640px", borderCollapse: "collapse", fontSize: "14px" }}>
+                <thead>
+                  <tr style={{ borderBottom: "2px solid var(--border)" }}>
+                    {["Model", "Overall", "Prompt Injection", "Trust Hierarchy", "Goal Drift", "Corrigibility", "Minimal Footprint", "Sycophancy"].map((h, i) => (
+                      <th key={h} style={{ padding: "10px 14px", textAlign: i === 0 ? "left" : "center", color: "var(--muted)", fontWeight: 600, fontSize: "12px", whiteSpace: "nowrap" }}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    { name: "saroku-safety-0.5b", highlight: true,  values: ["98%", "100%", "100%", "100%", "100%", "100%", "100%"] },
+                    { name: "Granite Guardian 2B", highlight: false, values: ["73%",  "80%",  "70%",  "78%",  "20%",  "40%",  "80%"] },
+                    { name: "Llama Guard 3 1B",    highlight: false, values: ["53%",  "70%",  "53%",  "33%",  "20%",  "20%",  "20%"] },
+                    { name: "ShieldGemma 2B",      highlight: false, values: ["18%",   "0%",   "0%",   "0%",   "0%",   "0%",   "0%"] },
+                  ].map((row, ri) => (
+                    <tr key={row.name} style={{ backgroundColor: row.highlight ? "var(--primary-t)" : ri % 2 === 0 ? "var(--surface-2)" : "var(--surface)" }}>
+                      <td style={{ padding: "12px 14px", fontWeight: row.highlight ? 700 : 400, color: row.highlight ? "var(--primary)" : "var(--text-2)", whiteSpace: "nowrap", borderBottom: "1px solid var(--border-2)" }}>{row.name}</td>
+                      {row.values.map((v, vi) => (
+                        <td key={vi} style={{ padding: "12px 14px", textAlign: "center", fontWeight: row.highlight ? 700 : 400, color: row.highlight ? "var(--primary)" : "var(--text-2)", borderBottom: "1px solid var(--border-2)" }}>{v}</td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p style={{ fontSize: "12px", color: "var(--subtle)", marginTop: "10px", textAlign: "center" }}>
+              Corrigibility, minimal footprint, and sycophancy are saroku-exclusive categories — no other evaluated model has a named concept for them.
+            </p>
+          </div>
+        </AnimateIn>
+
         <style>{`
           @media (max-width: 768px) { .guard-grid { grid-template-columns: 1fr !important; } }
+          .guard-grid > * { min-width: 0; }
+          .hero-sub-break { display: none; }
+          @media (max-width: 560px) { .hero-sub-break { display: block; } }
+          @media (max-width: 480px) {
+            table { font-size: 12px !important; }
+            td, th { padding: 8px 10px !important; }
+          }
         `}</style>
       </div>
     </section>
@@ -631,9 +679,9 @@ except SafetyBlockedError as e:
 
 function HowItWorksSection() {
   const steps = [
-    { title: "Load probe schemas",        description: "saroku reads probe schemas that define behavioral test scenarios — topic, domain, pressure strategies, and expected behavioral boundaries." },
-    { title: "Generate probe variants",   description: "A generator LLM creates multiple concrete probe conversations: different phrasings, pressure levels, contextual framings. Cached for 7 days." },
-    { title: "Run against target model",  description: "Each probe is sent to the target model via saroku's native adapters — OpenAI, Anthropic, Azure OpenAI, Google, Groq, Mistral, Together, Perplexity, Ollama, and any OpenAI-compatible endpoint." },
+    { title: "Load test scenarios",       description: "saroku loads behavioral test scenarios that define the category, domain, pressure strategies, and expected behavioral boundaries." },
+    { title: "Generate test variants",    description: "A generator LLM creates multiple concrete conversations: different phrasings, pressure levels, contextual framings. Cached for 7 days." },
+    { title: "Run against target model",  description: "Each scenario is sent to the target model via saroku's native adapters — OpenAI, Anthropic, and any OpenAI-compatible endpoint, including Google, Groq, Mistral, and Ollama." },
     { title: "Judge responses",           description: "A judge LLM evaluates each response: Did the model capitulate? Maintain its position? Answer consistently across phrasings?" },
     { title: "Compute behavioral scores", description: "Individual judgments aggregate into per-property scores: sycophancy rate, honesty rate, consistency rate — each normalized to [0, 1]." },
     { title: "Compare & report",          description: "Results diff against a saved baseline. Regressions are flagged with delta values. Reports print to stdout or save as JSON for CI artifacts." },
@@ -737,12 +785,12 @@ function ComparisonSection() {
     { feature: "Prompt injection resistance (14 schemas)", values: [true, true, false, true] },
     { feature: "Trust hierarchy & corrigibility",       values: [true,  false, false, false] },
     { feature: "Runtime safety guard (pluggable classifiers)", values: [true, false, false, false] },
+    { feature: "Agent framework integration (LangChain, AutoGen, ADK)", values: [true, false, false, false] },
     { feature: "Local inference — no API required",     values: [true,  false, false, false] },
     { feature: "Behavioral baselines & regression diff",values: [true,  false, false, false] },
-    { feature: "Agent framework integration (LangChain, AutoGen, ADK)", values: [true, false, false, false] },
     { feature: "CI/CD gate (--fail-on-regression)",     values: [true,  true,  true,  false] },
     { feature: "Multi-model comparison",                values: [true,  false, true,  false] },
-    { feature: "52+ pre-built behavioral probes",       values: [true,  false, false, false] },
+    { feature: "9 behavioral safety categories",         values: [true,  false, false, false] },
     { feature: "LLM-as-judge evaluation",               values: [true,  true,  true,  false] },
     { feature: "Capability benchmarking",               values: [false, true,  true,  false] },
   ];
@@ -768,8 +816,8 @@ function ComparisonSection() {
         </AnimateIn>
 
         <AnimateIn delay={80}>
-          <div style={{ overflowX: "auto" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
+          <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
+            <table style={{ width: "100%", minWidth: "520px", borderCollapse: "collapse", fontSize: "14px" }}>
               <thead>
                 <tr>
                   <th style={{ textAlign: "left", padding: "12px 16px", color: "var(--muted)", fontWeight: 600, fontSize: "13px", borderBottom: `2px solid var(--border)`, width: "40%" }}>
