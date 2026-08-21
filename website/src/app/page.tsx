@@ -4,6 +4,7 @@ import CodeBlock from "@/components/CodeBlock";
 import QuickStartTabs from "@/components/QuickStartTabs";
 import HeroCTAs from "@/components/HeroCTAs";
 import AnimateIn from "@/components/AnimateIn";
+import DownloadsCounter from "@/components/DownloadsCounter";
 
 const GH = "https://github.com/Karanxa/saroku";
 
@@ -584,6 +585,9 @@ result = await guard.acheck(action="...", context="...")`}
             <p style={{ fontSize: "12px", color: "var(--subtle)", marginTop: "10px", textAlign: "center" }}>
               Corrigibility, minimal footprint, and sycophancy are saroku-exclusive categories — no other evaluated model has a named concept for them.
             </p>
+            <div style={{ display: "flex", justifyContent: "center", marginTop: "32px" }}>
+              <DownloadsCounter />
+            </div>
           </div>
         </AnimateIn>
 
