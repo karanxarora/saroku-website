@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AnimateIn from "@/components/AnimateIn";
 import QuoteCarousel from "@/components/QuoteCarousel";
+import CopyIconButton from "@/components/CopyIconButton";
 
 export const metadata: Metadata = {
   title: "Break Saroku — Challenge",
@@ -36,13 +37,14 @@ export default function ChallengePage() {
           <div
             style={{
               backgroundColor: "var(--code-bg)", borderRadius: "10px", padding: "16px 20px",
-              maxWidth: "560px", margin: "0 auto 14px", textAlign: "left", overflowX: "auto",
-              WebkitOverflowScrolling: "touch",
+              maxWidth: "560px", margin: "0 auto 14px", textAlign: "left",
+              display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px",
             }}
           >
-            <code style={{ fontFamily: "var(--font-jetbrains), monospace", fontSize: "14px", color: "#C0CCDE", whiteSpace: "pre" }}>
+            <code style={{ fontFamily: "var(--font-jetbrains), monospace", fontSize: "14px", color: "#C0CCDE", whiteSpace: "pre", overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
               curl -fsSL https://saroku.com/install-challenge.sh | sh
             </code>
+            <CopyIconButton text="curl -fsSL https://saroku.com/install-challenge.sh | sh" />
           </div>
           <p style={{ fontSize: "16px", fontWeight: 600, color: "var(--text)", margin: "0 0 32px" }}>
             Can you break it?
