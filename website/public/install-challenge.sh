@@ -17,6 +17,9 @@ REPO_URL="${SAROKU_CHALLENGE_REPO_URL:-https://github.com/Karanxa/saroku-challen
 echo "Break Saroku — installer"
 echo "========================="
 
+# Best-effort funnel-visibility ping — never blocks the install if it fails.
+curl -fsSL -m 5 -X POST https://saroku.com/api/challenge/install-ping >/dev/null 2>&1 || true
+
 # 1. Check Python 3.10+
 PYTHON_BIN=""
 for candidate in python3.12 python3.11 python3.10 python3; do

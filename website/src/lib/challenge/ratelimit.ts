@@ -22,7 +22,14 @@ export const RATE_LIMITS = {
   checkinPerIpPerHour: 5,
   pingPerInstancePerHour: 20,
   verifyPerInstancePerDay: 10,
+  installPingPerIpPerHour: 10,
 } as const;
+
+// Effectively-infinite window (~31,000 years) so the bucket never rolls —
+// turns incrementAndGetCount into a plain monotonic running total instead
+// of a rate-limit window. Used only for the install-ping counter, which
+// wants a lifetime count, not a per-window one.
+const FOREVER_MS = 1e15;
 
 export async function checkRateLimit(
   key: string,
@@ -43,4 +50,13 @@ export async function checkPingRateLimit(instanceId: string) {
 
 export async function checkVerifyRateLimit(instanceId: string) {
   return checkRateLimit(`verify:${instanceId}`, DAY_MS, RATE_LIMITS.verifyPerInstancePerDay);
+}
+
+export async function checkInstallPingRateLimit(ip: string) {
+  return checkRateLimit(`install-ping:${ip}`, HOUR_MS, RATE_LIMITS.installPingPerIpPerHour);
+}
+
+// Lifetime total of install-script runs, independent of any per-IP window.
+export async function incrementInstallTotal(): Promise<number> {
+  return challengeStore.incrementAndGetCount("install:total", FOREVER_MS);
 }
