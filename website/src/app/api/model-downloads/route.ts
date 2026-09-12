@@ -1,6 +1,17 @@
 import { NextResponse } from "next/server";
 
 const BASE_REPO = "karanxa/saroku-guard";
+// karanxa/saroku-safety-0.5b was renamed to karanxa/saroku-guard on the Hub.
+// Individual repo lookups (fetchDownloadsAllTime) redirect fine under either
+// id, but the derivative-discovery *filter search* below does not — it's a
+// literal string match against each derivative's own base_model tag, and
+// third-party derivatives (e.g. community GGUF quantizations) still carry
+// whatever id existed when they were created. Renaming our repo doesn't
+// retroactively update their tags, so derivatives must be searched for under
+// every id this repo has ever had, not just the current one — otherwise
+// their downloads silently vanish from the total (this happened once
+// already: 2157 -> 877 when BASE_REPO changed and this list didn't exist).
+const LEGACY_REPO_IDS = ["karanxa/saroku-safety-0.5b"];
 const CACHE_TTL_MS = 12 * 60 * 1000; // 12 minutes
 const FETCH_TIMEOUT_MS = 5000;
 
@@ -37,16 +48,18 @@ async function fetchDownloadsAllTime(repoId: string): Promise<number> {
   return typeof data.downloadsAllTime === "number" ? data.downloadsAllTime : 0;
 }
 
-async function discoverQuantizedRepoIds(): Promise<string[]> {
+async function discoverQuantizedRepoIds(forRepoId: string): Promise<string[]> {
   const data = (await fetchJson(
-    `https://huggingface.co/api/models?filter=base_model:quantized:${BASE_REPO}`
+    `https://huggingface.co/api/models?filter=base_model:quantized:${forRepoId}`
   )) as Array<{ id?: string }>;
   if (!Array.isArray(data)) return [];
   return data.map((m) => m.id).filter((id): id is string => typeof id === "string");
 }
 
 async function computeTotal(): Promise<CachedPayload> {
-  const derivativeIds = await discoverQuantizedRepoIds();
+  const searchIds = [BASE_REPO, ...LEGACY_REPO_IDS];
+  const derivativeIdLists = await Promise.all(searchIds.map(discoverQuantizedRepoIds));
+  const derivativeIds = [...new Set(derivativeIdLists.flat())];
   const repoIds = [BASE_REPO, ...derivativeIds];
 
   const breakdown: Breakdown[] = await Promise.all(
