@@ -34,7 +34,7 @@ export const navSections: NavSection[] = [
     items: [
       { id: "safety-guard", label: "SafetyGuard Overview" },
       { id: "guard-modes", label: "Guard Modes" },
-      { id: "local-model", label: "Local Safety Model" },
+      { id: "local-model", label: "Local PDP Model" },
     ],
   },
   {
@@ -42,7 +42,6 @@ export const navSections: NavSection[] = [
     items: [
       { id: "cli-reference", label: "CLI Reference" },
       { id: "probe-schemas", label: "Probe Schemas" },
-      { id: "bench-v1", label: "bench-v1 Benchmark" },
       { id: "baseline-management", label: "Baseline Management" },
     ],
   },

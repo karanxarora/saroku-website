@@ -15,11 +15,8 @@ const tabs = [
         language: "bash",
       },
       {
-        description: "Run the reproducible bench-v1 benchmark or generate dynamic probes:",
+        description: "Generate behavioral test probes and run them:",
         code: `export OPENAI_API_KEY=sk-...
-
-# Run the static bench-v1 benchmark (96 hand-authored probes, reproducible)
-saroku run --model gpt-4o-mini --benchmark bench-v1
 
 # Generate dynamic probes — all 8 behavioral properties
 saroku run --model gpt-4o-mini
@@ -51,13 +48,13 @@ saroku run --model vertex_ai/gemini-1.5-pro`,
       {
         description: "Save a baseline for your current production model:",
         code: `# Run tests and save results as a named baseline
-saroku run --model gpt-4o-mini --benchmark bench-v1 --save-baseline prod-v1`,
+saroku run --model gpt-4o-mini --save-baseline prod-v1`,
         language: "bash",
       },
       {
         description: "After a model update, compare against the saved baseline:",
         code: `# Compare new model run against saved baseline
-saroku run --model gpt-4o-mini --benchmark bench-v1 --compare-baseline prod-v1
+saroku run --model gpt-4o-mini --compare-baseline prod-v1
 
 # Example output:
 # ┌──────────────────────────────────────────────────────────┐
@@ -168,7 +165,6 @@ v.source          # "rules", "ml", or "local_model"`,
         description: "Use --fail-on-regression to gate deployments in CI:",
         code: `# Exit code 1 if any property regresses vs. baseline
 saroku run --model gpt-4o-mini \\
-  --benchmark bench-v1 \\
   --compare-baseline production \\
   --fail-on-regression`,
         language: "bash",
@@ -198,7 +194,6 @@ jobs:
           pip install saroku
           saroku run \\
             --model gpt-4o-mini \\
-            --benchmark bench-v1 \\
             --compare-baseline production \\
             --fail-on-regression \\
             --output results.json

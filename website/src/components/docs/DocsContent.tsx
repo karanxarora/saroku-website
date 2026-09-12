@@ -28,7 +28,6 @@ export default function DocsContent() {
       <LocalModelSection />
       <CliReferenceSection />
       <ProbeSchemasSection />
-      <BenchV1Section />
       <BaselineManagementSection />
       <CicdSection />
       <ConfigurationSection />
@@ -460,29 +459,28 @@ function QuickStartSection() {
         API key set in your environment.
       </P>
 
-      <SubHeading>Step 1: Run the static benchmark</SubHeading>
+      <SubHeading>Step 1: Run a behavioral test</SubHeading>
       <CodeBlock
         code={`export OPENAI_API_KEY=sk-...
-saroku run --model gpt-4o-mini --benchmark bench-v1`}
+saroku run --model gpt-4o-mini`}
         language="bash"
       />
       <P>
-        Runs test scenarios across all 8 behavioral categories against{" "}
+        Generates test scenarios across all 8 behavioral categories against{" "}
         <InlineCode>gpt-4o-mini</InlineCode> and prints a behavioral report.
-        Use <InlineCode>--benchmark bench-v1</InlineCode> for reproducible,
-        citable results. Omit it to generate dynamic test scenarios cached for 7 days.
+        Use <InlineCode>--intensity deep</InlineCode> for broader coverage.
       </P>
 
       <SubHeading>Step 2: Save the results as a baseline</SubHeading>
       <CodeBlock
-        code={`saroku run --model gpt-4o-mini --benchmark bench-v1 --save-baseline prod-v1`}
+        code={`saroku run --model gpt-4o-mini --save-baseline prod-v1`}
         language="bash"
       />
 
       <SubHeading>Step 3: Compare after a change</SubHeading>
       <CodeBlock
         code={`# After updating your model, system prompt, or provider
-saroku run --model gpt-4o-mini --benchmark bench-v1 --compare-baseline prod-v1`}
+saroku run --model gpt-4o-mini --compare-baseline prod-v1`}
         language="bash"
       />
       <P>
@@ -495,7 +493,6 @@ saroku run --model gpt-4o-mini --benchmark bench-v1 --compare-baseline prod-v1`}
         code={`saroku v0.5.0 — Behavioral Regression Report
 Model: gpt-4o-mini
 Baseline: prod-v1 (saved 2026-03-15)
-Benchmark: bench-v1 (8 behavioral categories)
 
 ┌──────────────────────────┬────────┬──────────┬──────────────┐
 │ Property                 │ Score  │ Baseline │ Delta        │
@@ -1008,27 +1005,26 @@ function GuardModesSection() {
   return (
     <div>
       <SectionHeading id="guard-modes">Guard Modes</SectionHeading>
-      <P>Three modes trade off latency against coverage:</P>
+      <P>
+        saroku-guard, the local PDP model, protects every call by default — no setup
+        required. Three modes control how it works with the LLM judge:
+      </P>
       <CodeBlock
-        code={`# fast — rules + ML only, no model required (<5ms total)
-guard = SafetyGuard(mode="fast")
+        code={`# balanced — default. saroku-guard clears safe actions in ~10-30ms locally;
+# anything flagged escalates to the LLM judge for full attribution.
+guard = SafetyGuard()
 
-# balanced — 3-layer cascade, default, recommended for production
-guard = SafetyGuard(mode="balanced")                              # API judge
-guard = SafetyGuard(                                              # local model
-    mode="balanced",
-    local_model_path="./models/saroku-safety-0.5b",
-)
+# local — saroku-guard only, zero API calls, works fully offline.
+guard = SafetyGuard(mode="local")
 
-# thorough — always uses LLM judge (bypasses early exits)
+# thorough — always uses the LLM judge for rich property-level analysis.
 guard = SafetyGuard(mode="thorough", judge_model="gpt-4o-mini")`}
         language="python"
       />
       <Callout type="tip">
-        Use <InlineCode>mode=&quot;fast&quot;</InlineCode> for low-latency paths where the action
-        set is predictable. Use <InlineCode>mode=&quot;balanced&quot;</InlineCode> with the local
-        model for production — most traffic never needs an API call. For fine-grained control
-        over which classifiers run and when, use the policy-driven API above instead.
+        <InlineCode>mode=&quot;balanced&quot;</InlineCode> (the default) is right for most
+        production traffic — most actions never need an API call. For fine-grained
+        control over which classifiers run and when, use the policy-driven API above instead.
       </Callout>
     </div>
   );
@@ -1080,44 +1076,32 @@ except SafetyBlockedError as e:
 function LocalModelSection() {
   return (
     <div>
-      <SectionHeading id="local-model">Local Safety Model</SectionHeading>
+      <SectionHeading id="local-model">Local PDP Model — saroku-guard</SectionHeading>
       <P>
-        saroku ships with a fine-tuned 0.5B model for offline inference. No API key, no network
-        requests, no data leaving your environment. Requires a GPU with ~1GB VRAM.
+        saroku-guard protects every <InlineCode>SafetyGuard()</InlineCode> by default —
+        no setup, no API key, no data leaving your environment. It downloads automatically
+        on first use and runs on CPU.
       </P>
       <P>
-        The model is published on HuggingFace at{" "}
+        Published on HuggingFace at{" "}
         <a
-          href="https://huggingface.co/karanxa/saroku-safety-0.5b"
+          href="https://huggingface.co/karanxa/saroku-guard"
           target="_blank"
           rel="noopener noreferrer"
           style={{ color: "var(--primary)", textDecoration: "none" }}
         >
-          karanxa/saroku-safety-0.5b
+          karanxa/saroku-guard
         </a>
         .
       </P>
-      <SubHeading>Download</SubHeading>
-      <P>Download with the HuggingFace CLI:</P>
-      <CodeBlock
-        code={`pip install huggingface_hub
-huggingface-cli download karanxa/saroku-safety-0.5b --local-dir ./models/saroku-safety-0.5b`}
-        language="bash"
-      />
-      <P>Or directly in Python:</P>
-      <CodeBlock
-        code={`from huggingface_hub import snapshot_download
-snapshot_download("karanxa/saroku-safety-0.5b", local_dir="./models/saroku-safety-0.5b")`}
-        language="python"
-      />
       <SubHeading>Usage</SubHeading>
       <CodeBlock
-        code={`guard = SafetyGuard(
-    mode="balanced",
-    local_model_path="./models/saroku-safety-0.5b",
-)
+        code={`guard = SafetyGuard()  # saroku-guard is already active
+result = guard.check(action="...", context="...")
 
-result = guard.check(action="...", context="...")`}
+# Use a different checkpoint, or disable the local PDP entirely:
+guard = SafetyGuard(local_model_path="your-org/your-model")
+guard = SafetyGuard(use_local_pdp=False, judge_model="gpt-4o-mini")`}
         language="python"
       />
       <SubHeading>Performance</SubHeading>
@@ -1133,7 +1117,7 @@ result = guard.check(action="...", context="...")`}
           <tbody>
             {[
               ["Clear violation caught by rules engine", "< 1ms"],
-              ["Ambiguous action evaluated by local model", "~65ms"],
+              ["Action evaluated by saroku-guard", "~10-30ms"],
               ["Average across 1000 queries (mixed traffic)", "< 50ms"],
             ].map(([scenario, latency]) => (
               <tr key={scenario} style={{ borderBottom: "1px solid #F3F4F6" }}>
@@ -1149,36 +1133,6 @@ result = guard.check(action="...", context="...")`}
         code={`pip install saroku[train]
 python -m saroku.training.trainer --output-dir ./my-model --epochs 3`}
         language="bash"
-      />
-    </div>
-  );
-}
-
-/* ─── bench-v1 ────────────────────────────────────────────────────────── */
-
-function BenchV1Section() {
-  return (
-    <div>
-      <SectionHeading id="bench-v1">bench-v1 Benchmark</SectionHeading>
-      <P>
-        A static, version-locked set of hand-authored test scenarios across all 8 behavioral
-        categories. Unlike dynamically generated scenarios, bench-v1 results are fully
-        reproducible across runs and directly comparable across teams and over time.
-      </P>
-      <Callout type="tip">
-        Use bench-v1 whenever you want citable, reproducible results. Use dynamic probe
-        generation (<InlineCode>--intensity deep</InlineCode>) for broader coverage.
-      </Callout>
-      <CodeBlock
-        code={`# Run bench-v1 from the CLI
-saroku run --model gpt-4o-mini --benchmark bench-v1
-
-# Or load it from Python
-from saroku.benchmarks import load_benchmark
-
-bench = load_benchmark("bench-v1")
-# Returns: {"version": "bench-v1", "count": 96, "properties": [...]}`}
-        language="python"
       />
     </div>
   );
@@ -1202,7 +1156,7 @@ function CliReferenceSection() {
       <PropTable
         rows={[
           { prop: "-m, --model", type: "TEXT", description: "Model string. Provider-prefixed: gpt-4o-mini, anthropic:claude-3-5-haiku-20241022, google:gemini-2.0-flash, groq:llama-3.3-70b-versatile, ollama:llama3.2." },
-          { prop: "--benchmark", type: "TEXT", description: "Use a static benchmark instead of generating probes. Use bench-v1 for reproducible, citable results." },
+          { prop: "--benchmark", type: "TEXT", description: "Use a named static benchmark instead of generating probes, if one is registered." },
           { prop: "-p, --probes", type: "TEXT", default: "all", description: "Filter by property: sycophancy | honesty | consistency | prompt_injection | trust_hierarchy | corrigibility | minimal_footprint | goal_drift | all" },
           { prop: "--intensity", type: "TEXT", default: "standard", description: "Probe depth: smoke (4/schema) | standard (15/schema) | deep (36/schema) | exhaustive (72/schema)" },
           { prop: "--judge-model", type: "TEXT", default: "gpt-4o-mini", description: "Model to use as judge for evaluating responses." },
@@ -1219,7 +1173,7 @@ function CliReferenceSection() {
       <SubHeading>saroku compare</SubHeading>
       <P>Run the same benchmark against multiple models and compare results side-by-side.</P>
       <CodeBlock
-        code={`saroku compare --models gpt-4o-mini,claude-sonnet-4-6 --benchmark bench-v1`}
+        code={`saroku compare --models gpt-4o-mini,claude-sonnet-4-6 --benchmark <name>`}
         language="bash"
         compact
       />
@@ -1251,7 +1205,7 @@ saroku schemas --property honesty # Filter by behavioral property`}
       <CodeBlock
         code={`saroku run --model <model> [options]
   -m, --model TEXT              Model string (gpt-4o-mini, anthropic:claude-3-5-haiku-20241022, ...)
-  --benchmark TEXT              Static benchmark (bench-v1)
+  --benchmark TEXT              Named static benchmark, if one is registered
   -p, --probes TEXT             Property filter [default: all]
   --intensity TEXT              smoke|standard|deep|exhaustive [default: standard]
   --judge-model TEXT            Judge model [default: gpt-4o-mini]
@@ -1702,7 +1656,7 @@ function ArchitectureSection() {
 │   ├── _wrap.py                # wrap() tool interceptor
 │   ├── _detector.py            # Auto-detects agent framework
 │   ├── _langchain.py / _autogen.py / _adk.py
-├── benchmarks/                 # bench-v1 static probe set
+├── benchmarks/                 # static probe set registry
 └── training/                   # Fine-tune your own local safety model`}
         language="bash"
       />
@@ -1824,11 +1778,9 @@ function ChallengeSection() {
       <SubHeading>Scope</SubHeading>
       <P>
         The Challenge Set is a separate, unpublished set of 48 scenarios
-        across all 8 behavioral properties — distinct from{" "}
-        <code>bench-v1</code>, which stays public and citable as saroku&apos;s
-        core benchmark. There is no cash prize at launch: a verified break
-        earns leaderboard credit and, with your consent, becomes a candidate
-        contribution to a future benchmark release.
+        across all 8 behavioral properties. There is no cash prize at launch:
+        a verified break earns leaderboard credit and, with your consent,
+        becomes a candidate contribution to a future benchmark release.
       </P>
 
       <SubHeading>Challenge Set</SubHeading>
