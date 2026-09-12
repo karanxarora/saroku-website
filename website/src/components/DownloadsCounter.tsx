@@ -193,7 +193,7 @@ export default function DownloadsCounter() {
           Total Downloads
         </span>
         <a
-          href="https://huggingface.co/karanxa/saroku-safety-0.5b"
+          href="https://huggingface.co/karanxa/saroku-guard"
           target="_blank"
           rel="noopener noreferrer"
           style={{

@@ -118,23 +118,14 @@ result = await guard.acheck(action="...", context="...")`,
       },
       {
         description: "Choose the right mode for your deployment:",
-        code: `# Fast — rules + ML only, no model required (<5ms)
-guard = SafetyGuard(mode="fast")
+        code: `# Balanced (default) — saroku-guard clears safe actions in ~10-30ms
+# locally; anything flagged escalates to the LLM judge. No setup required.
+guard = SafetyGuard()
 
-# Balanced — 3-layer cascade, recommended for production (~65ms with local model)
-guard = SafetyGuard(
-    mode="balanced",
-    local_model_path="./models/saroku-safety-0.5b/model",  # no API key needed
-)
+# Local only — saroku-guard alone, zero API calls, works fully offline.
+guard = SafetyGuard(mode="local")
 
-# Balanced via Ollama (pull once, runs locally)
-# ollama pull karanxa/saroku-safety-0.5b
-guard = SafetyGuard(mode="balanced", judge_model="ollama/saroku-safety-0.5b")
-
-# Balanced with API judge (if no local GPU)
-guard = SafetyGuard(mode="balanced", judge_model="gpt-4o-mini")
-
-# Thorough — always use the LLM judge
+# Thorough — always use the LLM judge for rich property-level analysis.
 guard = SafetyGuard(mode="thorough", judge_model="gpt-4o-mini")`,
         language: "python",
       },

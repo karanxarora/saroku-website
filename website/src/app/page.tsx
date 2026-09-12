@@ -17,7 +17,6 @@ export default function Home() {
         <ProblemSection />
         <FeaturesSection />
         <RuntimeSafetySection />
-        <FrameworkIntegrationsSection />
         <HowItWorksSection />
         <ArchitectureSection />
         <EnforcementDemoSection />
@@ -395,7 +394,7 @@ function RuntimeSafetySection() {
     {
       num: "01",
       name: "Classifiers",
-      latency: "< 1ms – ~65ms",
+      latency: "< 1ms – ~30ms",
       color: "var(--success)",
       tint: "var(--success-t)",
       border: "var(--success-b)",
@@ -415,7 +414,7 @@ function RuntimeSafetySection() {
     {
       num: "03",
       name: "Execution Engine",
-      latency: "~65ms",
+      latency: "~30ms",
       color: "var(--primary)",
       tint: "var(--primary-t)",
       border: "var(--primary-b)",
@@ -527,8 +526,8 @@ result = await guard.acheck(action="...", context="...")`}
               <div style={{ marginTop: "8px", padding: "16px", backgroundColor: "var(--surface-2)", border: "1px solid var(--border)", borderRadius: "10px" }}>
                 <div style={{ fontSize: "12px", fontWeight: 600, color: "var(--subtle)", marginBottom: "8px", textTransform: "uppercase", letterSpacing: "0.06em" }}>Guard modes</div>
                 {[
-                  { mode: `mode="local"`,     desc: "saroku-safety-0.5b only, no API calls (~50-150ms)" },
-                  { mode: `mode="balanced"`,  desc: "Local model → escalate to LLM judge if unsafe/uncertain (default)" },
+                  { mode: `mode="local"`,     desc: "saroku-guard only, no API calls (~10-30ms)" },
+                  { mode: `mode="balanced"`,  desc: "saroku-guard by default → escalate to LLM judge if unsafe (default)" },
                   { mode: `mode="thorough"`,  desc: "Always run the full LLM judge" },
                 ].map((m) => (
                   <div key={m.mode} style={{ display: "flex", gap: "8px", marginBottom: "6px", alignItems: "baseline" }}>
@@ -540,49 +539,6 @@ result = await guard.acheck(action="...", context="...")`}
             </div>
           </AnimateIn>
         </div>
-
-        {/* Safety model benchmark */}
-        <AnimateIn delay={120}>
-          <div style={{ marginTop: "56px" }}>
-            <div style={{ textAlign: "center", marginBottom: "24px" }}>
-              <p style={{ fontSize: "13px", fontWeight: 600, color: "var(--primary)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "8px" }}>
-                Safety Model Benchmark
-              </p>
-              <p style={{ color: "var(--muted)", fontSize: "15px", margin: 0 }}>
-                Binary detection across 9 safety categories — saroku-safety-0.5b vs leading safety classifiers
-              </p>
-            </div>
-            <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
-              <table style={{ width: "100%", minWidth: "640px", borderCollapse: "collapse", fontSize: "14px" }}>
-                <thead>
-                  <tr style={{ borderBottom: "2px solid var(--border)" }}>
-                    {["Model", "Overall", "Prompt Injection", "Trust Hierarchy", "Goal Drift", "Corrigibility", "Minimal Footprint", "Sycophancy"].map((h, i) => (
-                      <th key={h} style={{ padding: "10px 14px", textAlign: i === 0 ? "left" : "center", color: "var(--muted)", fontWeight: 600, fontSize: "12px", whiteSpace: "nowrap" }}>{h}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {[
-                    { name: "saroku-safety-0.5b", highlight: true,  values: ["98%", "100%", "100%", "100%", "100%", "100%", "100%"] },
-                    { name: "Granite Guardian 2B", highlight: false, values: ["73%",  "80%",  "70%",  "78%",  "20%",  "40%",  "80%"] },
-                    { name: "Llama Guard 3 1B",    highlight: false, values: ["53%",  "70%",  "53%",  "33%",  "20%",  "20%",  "20%"] },
-                    { name: "ShieldGemma 2B",      highlight: false, values: ["18%",   "0%",   "0%",   "0%",   "0%",   "0%",   "0%"] },
-                  ].map((row, ri) => (
-                    <tr key={row.name} style={{ backgroundColor: row.highlight ? "var(--primary-t)" : ri % 2 === 0 ? "var(--surface-2)" : "var(--surface)" }}>
-                      <td style={{ padding: "12px 14px", fontWeight: row.highlight ? 700 : 400, color: row.highlight ? "var(--primary)" : "var(--text-2)", whiteSpace: "nowrap", borderBottom: "1px solid var(--border-2)" }}>{row.name}</td>
-                      {row.values.map((v, vi) => (
-                        <td key={vi} style={{ padding: "12px 14px", textAlign: "center", fontWeight: row.highlight ? 700 : 400, color: row.highlight ? "var(--primary)" : "var(--text-2)", borderBottom: "1px solid var(--border-2)" }}>{v}</td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <p style={{ fontSize: "12px", color: "var(--subtle)", marginTop: "10px", textAlign: "center" }}>
-              Corrigibility, minimal footprint, and sycophancy are saroku-exclusive categories — no other evaluated model has a named concept for them.
-            </p>
-          </div>
-        </AnimateIn>
 
         <style>{`
           @media (max-width: 768px) { .guard-grid { grid-template-columns: 1fr !important; } }
@@ -600,77 +556,6 @@ result = await guard.acheck(action="...", context="...")`}
 }
 
 /* ─── Framework Integrations ────────────────────────────────────────────── */
-
-function FrameworkIntegrationsSection() {
-  const frameworks = [
-    { name: "Google ADK", desc: "Auto-detected — wraps every tool on the agent" },
-    { name: "AutoGen", desc: "Auto-detected — wraps registered functions" },
-    { name: "LangChain", desc: "Auto-detected — SarokuToolWrapper around each tool" },
-  ];
-
-  return (
-    <section style={{ maxWidth: "1200px", margin: "0 auto", padding: "80px 24px" }}>
-      <AnimateIn direction="up">
-        <div style={{ textAlign: "center", marginBottom: "56px" }}>
-          <p style={{ fontSize: "13px", fontWeight: 600, color: "var(--primary)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "12px" }}>
-            Framework Integration
-          </p>
-          <h2 style={{ fontSize: "clamp(26px, 4vw, 38px)", fontWeight: 700, color: "var(--text)", letterSpacing: "-0.75px", margin: "0 0 16px" }}>
-            Drop into the agent framework you already use
-          </h2>
-          <p style={{ color: "var(--muted)", fontSize: "17px", maxWidth: "580px", margin: "0 auto", lineHeight: "1.6" }}>
-            Wrap a single tool or protect an entire agent — saroku auto-detects the framework and blocks unsafe calls before they execute.
-          </p>
-        </div>
-      </AnimateIn>
-
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px", alignItems: "start" }} className="guard-grid">
-        <AnimateIn delay={100}>
-          <CodeBlock
-            code={`from saroku import SafetyGuard, wrap, protect, SafetyBlockedError
-
-guard = SafetyGuard(judge_model="gpt-4o-mini")
-
-# Protect a single tool
-safe_search = wrap(agent.search_tool, guard=guard)
-
-# Protect a whole agent — auto-detects
-# Google ADK / AutoGen / LangChain
-safe_agent = await protect(agent, guard=guard)
-
-try:
-    result = await safe_agent.run(task)
-except SafetyBlockedError as e:
-    print(f"Action blocked: {e.violations}")`}
-            language="python"
-          />
-        </AnimateIn>
-
-        <AnimateIn delay={180}>
-          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-            {frameworks.map((f) => (
-              <div key={f.name} style={{
-                display: "flex", alignItems: "center", gap: "12px",
-                padding: "14px 16px",
-                backgroundColor: "var(--surface)",
-                border: "1px solid var(--border)",
-                borderRadius: "10px",
-              }}>
-                <span style={{ backgroundColor: "var(--primary-t)", color: "var(--primary)", fontSize: "12px", fontWeight: 700, padding: "3px 10px", borderRadius: "20px", whiteSpace: "nowrap" }}>
-                  {f.name}
-                </span>
-                <span style={{ fontSize: "13px", color: "var(--text-2)", lineHeight: "1.5" }}>{f.desc}</span>
-              </div>
-            ))}
-            <p style={{ fontSize: "12px", color: "var(--subtle)", marginTop: "4px" }}>
-              No framework installed? <code style={{ fontFamily: "var(--font-jetbrains), monospace", color: "var(--primary)" }}>wrap()</code> works on any callable tool — sync or async.
-            </p>
-          </div>
-        </AnimateIn>
-      </div>
-    </section>
-  );
-}
 
 /* ─── How It Works ──────────────────────────────────────────────────────── */
 
@@ -833,6 +718,53 @@ function ArchitectureSection() {
           <code style={{ fontFamily: "var(--font-jetbrains), monospace", color: "var(--primary)" }}>SafetyGuard</code>) is
           fully pluggable — any LLM provider, or a fully custom judge.
         </p>
+      </AnimateIn>
+
+      <AnimateIn delay={260}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px", alignItems: "start", marginTop: "56px" }} className="guard-grid">
+          <CodeBlock
+            code={`from saroku import SafetyGuard, wrap, protect, SafetyBlockedError
+
+guard = SafetyGuard(judge_model="gpt-4o-mini")
+
+# Protect a single tool
+safe_search = wrap(agent.search_tool, guard=guard)
+
+# Protect a whole agent — auto-detects
+# Google ADK / AutoGen / LangChain
+safe_agent = await protect(agent, guard=guard)
+
+try:
+    result = await safe_agent.run(task)
+except SafetyBlockedError as e:
+    print(f"Action blocked: {e.violations}")`}
+            language="python"
+          />
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+            {[
+              { name: "Google ADK", desc: "Auto-detected — wraps every tool on the agent" },
+              { name: "AutoGen", desc: "Auto-detected — wraps registered functions" },
+              { name: "LangChain", desc: "Auto-detected — SarokuToolWrapper around each tool" },
+            ].map((f) => (
+              <div key={f.name} style={{
+                display: "flex", alignItems: "center", gap: "12px",
+                padding: "14px 16px",
+                backgroundColor: "var(--surface)",
+                border: "1px solid var(--border)",
+                borderRadius: "10px",
+              }}>
+                <span style={{ backgroundColor: "var(--primary-t)", color: "var(--primary)", fontSize: "12px", fontWeight: 700, padding: "3px 10px", borderRadius: "20px", whiteSpace: "nowrap" }}>
+                  {f.name}
+                </span>
+                <span style={{ fontSize: "13px", color: "var(--text-2)", lineHeight: "1.5" }}>{f.desc}</span>
+              </div>
+            ))}
+            <p style={{ fontSize: "12px", color: "var(--subtle)", marginTop: "4px" }}>
+              No framework installed? <code style={{ fontFamily: "var(--font-jetbrains), monospace", color: "var(--primary)" }}>wrap()</code> works on any callable tool — sync or async.
+            </p>
+          </div>
+        </div>
       </AnimateIn>
 
       <style>{`

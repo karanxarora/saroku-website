@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const BASE_REPO = "karanxa/saroku-safety-0.5b";
+const BASE_REPO = "karanxa/saroku-guard";
 const CACHE_TTL_MS = 12 * 60 * 1000; // 12 minutes
 const FETCH_TIMEOUT_MS = 5000;
 
