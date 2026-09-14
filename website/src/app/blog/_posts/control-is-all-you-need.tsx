@@ -747,16 +747,22 @@ export default function ControlIsAllYouNeed() {
       </P>
       <P>
         The released training data is a mix of a hand-authored gold set (368 seed and
-        template-expanded rows, which fixed the task&apos;s taxonomy and ground truth before any
-        generation happened) and a larger LLM-generated corpus that provides training scale,
-        filtered automatically and then checked by hand: I manually reviewed an unbiased random
-        sample of 120 released rows myself and found all 120 binary safe/unsafe labels correct,
-        with 2 violation-category mislabels (roughly 3% of the unsafe rows), consistent with the
-        weaker attribution accuracy already reported in{" "}
-        <SecRef to="results-attribution">§9.2</SecRef>. That review bounds the error rate in the
-        sample; it doesn&apos;t certify the full corpus, and the benchmark numbers in{" "}
-        <SecRef to="results">§9</SecRef> don&apos;t depend on it either way, since they come from
-        the private holdout above, not the published splits.
+        template-expanded rows, which established the task taxonomy and ground truth before any
+        synthetic generation) and a larger LLM-generated corpus that provides the scale required
+        for training. The synthetic corpus was filtered automatically and then checked manually: I
+        reviewed an unbiased random sample of 120 released rows and found all 120 binary
+        safe/unsafe labels correct, with 2 violation-category mislabels, representing roughly 3%
+        of the unsafe rows in the reviewed sample and consistent with the weaker attribution
+        accuracy reported in <SecRef to="results-attribution">§9.2</SecRef>. This review provides
+        an estimate of label quality within the sampled subset; it does not certify the full
+        corpus. The benchmark results reported in <SecRef to="results">§9</SecRef> are independent
+        of this review because they are computed exclusively on the separate private evaluation
+        holdout, not on the published training or development splits.
+      </P>
+      <P>
+        The resulting training dataset is publicly released on Hugging Face to enable inspection,
+        reproduction, and further research, while the evaluation holdout remains private to
+        preserve benchmark integrity.
       </P>
 
       {/* ── 8. Evaluation Methodology ── */}
