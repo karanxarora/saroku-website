@@ -43,22 +43,6 @@ const TOC: TocItem[] = [
 
 /* ── Spec-only local primitives ─────────────────────────────────────────── */
 
-/** The "§n" marker printed under each section heading. */
-function SecId({ children }: { children: ReactNode }) {
-  return (
-    <p
-      style={{
-        fontFamily: "var(--font-jetbrains), monospace",
-        fontSize: "12px",
-        color: "var(--subtle)",
-        margin: "-8px 0 18px",
-      }}
-    >
-      {children}
-    </p>
-  );
-}
-
 /**
  * In-page cross-reference to another section, e.g. §9. Styled in .sec-ref to
  * inherit body color with a faint dotted underline; a spec's prose is dense
@@ -176,7 +160,7 @@ export default function ActionSafetyProtocol() {
           <span style={{ color: "var(--text-2)" }}>Reference implementation</span> saroku
         </span>
         <span>
-          <span style={{ color: "var(--text-2)" }}>Editor</span>{" "}
+          <span style={{ color: "var(--text-2)" }}>Author:</span>{" "}
           <a href="https://x.com/aiwithkaran" target="_blank" rel="noopener noreferrer" style={{ color: "inherit" }}>
             Karan Arora
           </a>
@@ -185,7 +169,6 @@ export default function ActionSafetyProtocol() {
 
       {/* ── 1. Overview ── */}
       <H2 id="overview">1. Overview</H2>
-      <SecId>§1</SecId>
       <P>
         AI agents increasingly operate through tools, but there is no common interface for
         answering a basic security question at the execution boundary: should this specific
@@ -318,7 +301,6 @@ export default function ActionSafetyProtocol() {
 
       {/* ── 2. Terminology ── */}
       <H2 id="terminology">2. Terminology</H2>
-      <SecId>§2</SecId>
       <P>
         The key words <KW>MUST</KW>, <KW>MUST NOT</KW>, <KW>SHOULD</KW>, and <KW>MAY</KW> in this
         document are to be interpreted as described in RFC 2119.
@@ -361,7 +343,6 @@ export default function ActionSafetyProtocol() {
 
       {/* ── 3. Versioning ── */}
       <H2 id="versioning">3. Versioning</H2>
-      <SecId>§3</SecId>
       <P>
         ASP is versioned independently of any implementation&apos;s own release cycle. A Decision
         Request <KW>MUST</KW> declare the protocol version it conforms to via a top-level{" "}
@@ -376,7 +357,6 @@ export default function ActionSafetyProtocol() {
 
       {/* ── 4. Decision Request ── */}
       <H2 id="decision-request">4. Decision Request</H2>
-      <SecId>§4</SecId>
       <P>
         A Decision Request describes one Subject Action and the context available about it at the
         moment it was proposed, before execution.
@@ -522,7 +502,6 @@ export default function ActionSafetyProtocol() {
 
       {/* ── 5. Decision Response ── */}
       <H2 id="decision-response">5. Decision Response</H2>
-      <SecId>§5</SecId>
       <P>
         A Decision Response is the PDP&apos;s judgment on the Subject Action described by the
         corresponding request.
@@ -661,7 +640,6 @@ export default function ActionSafetyProtocol() {
 
       {/* ── 6. Conformance Levels ── */}
       <H2 id="conformance">6. Conformance Levels</H2>
-      <SecId>§6</SecId>
       <P>
         Not every PDP can attribute a violation category; requiring attribution for conformance
         would exclude every binary-only classifier, including some of the strongest ones available.
@@ -691,7 +669,6 @@ export default function ActionSafetyProtocol() {
 
       {/* ── 7. Non-Goals ── */}
       <H2 id="non-goals">7. Non-Goals</H2>
-      <SecId>§7</SecId>
       <P>
         A protocol that tries to standardize everything standardizes nothing well. ASP deliberately
         does not specify:
@@ -721,7 +698,6 @@ export default function ActionSafetyProtocol() {
 
       {/* ── 8. Relationship to MCP ── */}
       <H2 id="relationship-to-mcp">8. Relationship to MCP</H2>
-      <SecId>§8</SecId>
       <P>
         ASP and MCP compose rather than compete. A representative deployment: an MCP client resolves
         a tool call against an MCP server; before that call executes, a PEP constructs an ASP
@@ -740,7 +716,6 @@ export default function ActionSafetyProtocol() {
 
       {/* ── 9. Extensibility ── */}
       <H2 id="extensibility">9. Extensibility</H2>
-      <SecId>§9</SecId>
       <P>
         An implementation <KW>MAY</KW> use a violation vocabulary other than{" "}
         <SecRef to="violation-categories">§5.2</SecRef>&apos;s,
@@ -757,7 +732,6 @@ export default function ActionSafetyProtocol() {
 
       {/* ── 10. Reference Implementation ── */}
       <H2 id="reference-impl">10. Reference Implementation</H2>
-      <SecId>§10</SecId>
       <P>
         ASP deliberately separates four interchangeable components: an agent, a PEP, a PDP, and
         the agent&apos;s tool environment.{" "}
@@ -777,7 +751,6 @@ export default function ActionSafetyProtocol() {
 
       {/* ── 11. References ── */}
       <H2 id="references">11. References</H2>
-      <SecId>§11</SecId>
       <ol style={{ margin: 0, paddingLeft: "24px", display: "flex", flexDirection: "column", gap: "12px" }}>
         <li style={{ fontSize: "15.5px", lineHeight: 1.7, color: "var(--text-2)" }}>
           <span
@@ -812,7 +785,6 @@ export default function ActionSafetyProtocol() {
 
       {/* ── 12. Changelog ── */}
       <H2 id="changelog">12. Changelog</H2>
-      <SecId>§12</SecId>
       <dl style={{ margin: 0, fontFamily: "var(--font-jetbrains), monospace", fontSize: "13.5px" }}>
         <dt style={{ color: "var(--primary-l)", fontWeight: 600 }}>0.1.0</dt>
         <dd style={{ color: "var(--text-2)", margin: "6px 0 0" }}>

@@ -183,7 +183,7 @@ export default function ControlIsAllYouNeed() {
           margin: "0 0 32px",
         }}
       >
-        Author{" "}
+        Author:{" "}
         <a
           href="https://x.com/aiwithkaran"
           target="_blank"
