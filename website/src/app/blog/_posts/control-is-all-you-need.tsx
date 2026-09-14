@@ -457,7 +457,7 @@ export default function ControlIsAllYouNeed() {
         I formalized this decision contract as a standalone, versioned specification, the{" "}
         <strong>
           <a
-            href="https://claude.ai/code/artifact/d18df17b-e0be-4ff4-9eca-1918b171ec6a"
+            href="https://saroku.com/blog/action-safety-protocol"
             style={{ color: "var(--primary-l)" }}
           >
             Action Safety Protocol (ASP)
@@ -661,7 +661,7 @@ export default function ControlIsAllYouNeed() {
         swap judges without rewriting the enforcement path. The full request/response contract and
         the two conformance levels are in the{" "}
         <a
-          href="https://claude.ai/code/artifact/d18df17b-e0be-4ff4-9eca-1918b171ec6a"
+          href="https://saroku.com/blog/action-safety-protocol"
           style={{ color: "var(--primary-l)" }}
         >
           Action Safety Protocol specification
@@ -1051,7 +1051,7 @@ export default function ControlIsAllYouNeed() {
           {
             name: (
               <a
-                href="https://claude.ai/code/artifact/d18df17b-e0be-4ff4-9eca-1918b171ec6a"
+                href="https://saroku.com/blog/action-safety-protocol"
                 style={{ color: "inherit" }}
               >
                 ASP
