@@ -579,17 +579,19 @@ export default function ControlIsAllYouNeed() {
         alternative I could find in <SecRef to="results">§9</SecRef>. This is how it is built.
       </P>
       <P>
-        Every unsafe training instance carries a violation-category label; an earlier version of
-        this model discarded that label entirely, training only the binary head. This version adds
-        a second, additive classification head reading the same final-layer representation,
-        predicting the five-category violation type. The two heads are trained jointly; safe
-        instances are masked out of the property loss (the schema forbids a property label on a
-        safe instance, so there is no such thing as a &quot;safe&quot; class for that head to
-        predict) rather than given an artificial sixth class, which would let the two heads
-        silently disagree about whether an instance is safe at all. Checkpoint selection during
-        training is performed on the binary decision&apos;s recall on the unsafe class, not on
-        property-head performance: a checkpoint that attributes violations well but lets more
-        unsafe actions through is a worse gate, regardless of its attribution quality.
+        A bare allow/block verdict is a hard thing to operate. Someone still has to work out why an
+        action was stopped before deciding whether to fix the agent, adjust a policy, or let it
+        through next time. saroku-guard attaches a reason to every block: one of the five violation
+        categories defined in <SecRef to="asp-output">§5.2</SecRef>, so a{" "}
+        <InlineCode>policy_violation</InlineCode> and a <InlineCode>goal_drift</InlineCode> can be
+        routed differently instead of landing in the same undifferentiated review queue.
+      </P>
+      <P>
+        That attribution is secondary to the binary decision, not a replacement for it. The model is
+        selected on how well the binary decision alone catches unsafe actions, not on how well it
+        explains them: a checkpoint that attributes violations precisely but lets more of them
+        through is a worse gate, whatever its attribution quality. <SecRef to="results-attribution">§9.2</SecRef>{" "}
+        reports how reliable that attribution actually is, including where it falls short.
       </P>
 
       {/* ── 7. Dataset ── */}
