@@ -86,7 +86,7 @@ export default function CodeBlock({
               display: "flex",
               alignItems: "center",
               gap: "5px",
-              fontFamily: "var(--font-inter), sans-serif",
+              fontFamily: "var(--font-work-sans), sans-serif",
             }}
             onMouseEnter={(e) => {
               if (!copied) e.currentTarget.style.color = "#E5E7EB";

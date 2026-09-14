@@ -1802,10 +1802,6 @@ function ChallengeSection() {
           </li>
         ))}
       </ul>
-
-      <Callout type="info">
-        See the live <a href="/challenge/leaderboard" style={{ color: "var(--primary)" }}>leaderboard</a> for verified breaks so far.
-      </Callout>
     </div>
   );
 }

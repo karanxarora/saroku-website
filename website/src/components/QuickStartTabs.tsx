@@ -238,7 +238,7 @@ export default function QuickStartTabs() {
               backgroundColor: activeTab === tab.id ? "var(--surface)" : "transparent",
               color: activeTab === tab.id ? "var(--text)" : "var(--muted)",
               boxShadow: activeTab === tab.id ? "0 1px 3px rgba(0,0,0,0.08)" : "none",
-              fontFamily: "var(--font-inter), sans-serif",
+              fontFamily: "var(--font-work-sans), sans-serif",
               whiteSpace: "nowrap",
               overflow: "hidden",
               textOverflow: "ellipsis",

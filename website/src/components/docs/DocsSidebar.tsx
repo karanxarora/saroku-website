@@ -157,7 +157,7 @@ export default function DocsSidebar({ mobileOpen, onClose }: DocsSidebarProps) {
                       color: isActive ? "var(--primary)" : "var(--text-2)",
                       backgroundColor: isActive ? "var(--primary-t)" : "transparent",
                       transition: "all 0.12s",
-                      fontFamily: "var(--font-inter), sans-serif",
+                      fontFamily: "var(--font-work-sans), sans-serif",
                     }}
                     onMouseEnter={(e) => {
                       if (!isActive) {

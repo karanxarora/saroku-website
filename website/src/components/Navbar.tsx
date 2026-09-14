@@ -51,7 +51,7 @@ export default function Navbar() {
             color: "var(--primary)",
             textDecoration: "none",
             letterSpacing: "-0.5px",
-            fontFamily: "var(--font-inter), sans-serif",
+            fontFamily: "var(--font-work-sans), sans-serif",
           }}
         >
           saroku
@@ -66,7 +66,6 @@ export default function Navbar() {
           <NavLink href="/#how-it-works">How It Works</NavLink>
           <NavLink href="/docs">Docs</NavLink>
           <NavLink href="/blog">Blog</NavLink>
-          <NavLink href="/challenge">Challenge</NavLink>
           <a
             href="https://huggingface.co/karanxa/saroku-guard"
             target="_blank"
@@ -144,7 +143,6 @@ export default function Navbar() {
               { href: "/#how-it-works", label: "How It Works" },
               { href: "/docs",          label: "Docs"          },
               { href: "/blog",          label: "Blog"          },
-              { href: "/challenge",     label: "Challenge"     },
               { href: "https://huggingface.co/karanxa/saroku-guard", label: "HuggingFace" },
             ].map(({ href, label }) => (
               <Link
