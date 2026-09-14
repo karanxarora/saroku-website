@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ViewPing from "@/components/blog/ViewPing";
 import { POSTS_META, getPost } from "../posts";
 
 export function generateStaticParams() {
@@ -46,6 +47,7 @@ export default async function BlogPostPage({
 
   return (
     <>
+      <ViewPing slug={slug} />
       <Navbar />
 
       <article style={{ padding: "48px 24px 96px" }}>

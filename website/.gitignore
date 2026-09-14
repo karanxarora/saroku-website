@@ -11,6 +11,10 @@ out/
 # misc
 .DS_Store
 
+# Runtime-generated local data (e.g. blog view counters) — created on
+# first write, never seeded from git, and must survive across deploys.
+.data/
+
 # Challenge scenario content — deliberately never committed, even here.
 # saroku-website is a PUBLIC repo; this file must be deployed by direct
 # copy to each environment (local + the Pi), never through git, or the
