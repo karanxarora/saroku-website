@@ -17,9 +17,9 @@ const STAGES = [
 export default function ArchitectureFlow() {
   return (
     <div>
-      <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", justifyContent: "center", gap: "0" }} className="arch-flow">
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0" }} className="arch-flow">
         {STAGES.map((s, i) => (
-          <div key={s.label} style={{ display: "flex", alignItems: "center" }}>
+          <div key={s.label} style={{ display: "flex", alignItems: "center" }} className="arch-flow-pair">
             <div
               className="pipeline-stage"
               style={{
@@ -40,7 +40,8 @@ export default function ArchitectureFlow() {
             </div>
             {i < STAGES.length - 1 && (
               <span style={{ color: "var(--subtle)", fontSize: "20px", padding: "0 10px", flexShrink: 0 }} aria-hidden>
-                →
+                <span className="arch-flow-arrow-right">→</span>
+                <span className="arch-flow-arrow-down">↓</span>
               </span>
             )}
           </div>
@@ -50,7 +51,7 @@ export default function ArchitectureFlow() {
       <div style={{ display: "flex", justifyContent: "center", marginTop: "8px", marginBottom: "8px" }}>
         <span style={{ color: "var(--subtle)", fontSize: "20px" }} aria-hidden>↓</span>
       </div>
-      <div style={{ display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap" }}>
+      <div style={{ display: "flex", gap: "16px", justifyContent: "center" }} className="arch-flow-outcomes">
         <div style={{
           backgroundColor: "var(--success-t)", border: "1px solid var(--success-b)", borderRadius: "12px",
           padding: "14px 22px", textAlign: "center", minWidth: "180px",

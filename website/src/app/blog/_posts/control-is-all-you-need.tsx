@@ -365,6 +365,28 @@ export default function ControlIsAllYouNeed() {
         intercepting every proposed call; the PDP is whatever judges whether that call should
         proceed.
       </P>
+      <Callout label="Definition">
+        <P>
+          Given an agent-proposed action <em>a</em> and available execution context <em>c</em>,
+          the PDP computes a safety decision <em>d = f(a, c)</em>. The PEP enforces <em>d</em> at
+          the execution boundary: the PEP is enforcement, the PDP is judgment, and ASP
+          standardizes the interface between them.
+        </P>
+      </Callout>
+      <p
+        style={{
+          textAlign: "center",
+          fontFamily: "var(--font-jetbrains), monospace",
+          fontSize: "14px",
+          color: "var(--text-2)",
+          margin: "-6px 0 18px",
+        }}
+      >
+        Agent <span style={{ color: "var(--subtle)" }}>→</span> PEP{" "}
+        <span style={{ color: "var(--subtle)" }}>→</span> PDP{" "}
+        <span style={{ color: "var(--subtle)" }}>→</span> Allow / Block{" "}
+        <span style={{ color: "var(--subtle)" }}>→</span> Tool
+      </p>
       <P>
         Keeping these separate is what makes the rest of this report possible. The PEP&apos;s job
         stays fixed and simple no matter how the PDP changes: intercept the call, ask the PDP, act

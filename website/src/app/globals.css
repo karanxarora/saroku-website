@@ -220,6 +220,43 @@ html[data-theme="dark"] .pipeline-stage:hover {
   box-shadow: 0 6px 18px rgba(0,0,0,0.45);
 }
 
+.arch-flow {
+  flex-direction: row;
+}
+.arch-flow-pair {
+  flex-direction: row;
+}
+.arch-flow-arrow-down {
+  display: none;
+}
+@media (max-width: 640px) {
+  .arch-flow {
+    flex-direction: column;
+    gap: 6px !important;
+  }
+  .arch-flow-pair {
+    flex-direction: column;
+  }
+  .arch-flow-pair .pipeline-stage {
+    min-width: 0 !important;
+    width: 100%;
+  }
+  .arch-flow-arrow-right {
+    display: none;
+  }
+  .arch-flow-arrow-down {
+    display: block;
+    margin: 2px 0;
+  }
+  .arch-flow-outcomes {
+    flex-direction: column;
+  }
+  .arch-flow-outcomes > div {
+    min-width: 0 !important;
+    width: 100%;
+  }
+}
+
 /* ─── Tab content ────────────────────────────────────────────────────────── */
 .tab-content { animation: tabFadeIn 0.24s cubic-bezier(0.22, 1, 0.36, 1) both; }
 
