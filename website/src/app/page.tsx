@@ -44,7 +44,7 @@ function HeroSection() {
       >
         <span className="badge-dot" style={{ width: "7px", height: "7px", borderRadius: "50%", backgroundColor: "var(--primary)", display: "inline-block" }} />
         <span style={{ fontSize: "13px", fontWeight: 500, color: "var(--primary-l)" }}>
-          Pre-execution agent action safety
+          Secure before it acts
         </span>
       </div>
 
