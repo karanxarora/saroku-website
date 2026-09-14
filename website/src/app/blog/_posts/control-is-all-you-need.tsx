@@ -180,9 +180,10 @@ export default function ControlIsAllYouNeed() {
         style={{
           fontSize: "15px",
           color: "var(--text-2)",
-          margin: "0 0 4px",
+          margin: "0 0 32px",
         }}
       >
+        Author{" "}
         <a
           href="https://x.com/aiwithkaran"
           target="_blank"
@@ -191,16 +192,6 @@ export default function ControlIsAllYouNeed() {
         >
           Karan Arora
         </a>
-      </p>
-      <p
-        style={{
-          fontFamily: "var(--font-jetbrains), monospace",
-          fontSize: "12px",
-          color: "var(--muted)",
-          margin: "0 0 32px",
-        }}
-      >
-        saroku &middot; September 2026
       </p>
 
       <Callout label="Abstract">
