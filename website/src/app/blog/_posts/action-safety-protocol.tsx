@@ -15,7 +15,7 @@ import {
 import PostToc, { type TocItem } from "@/components/blog/PostToc";
 
 /**
- * Action Safety Protocol v0.1.0 — the normative specification, published as a
+ * Action Safety Protocol v0.1.0, the normative specification, published as a
  * post so it has a stable public URL at saroku.com/blog/action-safety-protocol.
  *
  * Section numbering is load-bearing: the document cross-references its own
@@ -61,7 +61,7 @@ function SecId({ children }: { children: ReactNode }) {
 
 /**
  * In-page cross-reference to another section, e.g. §9. Styled in .sec-ref to
- * inherit body color with a faint dotted underline — a spec's prose is dense
+ * inherit body color with a faint dotted underline; a spec's prose is dense
  * with these, and rendering them all in link color makes the page noisy.
  */
 function SecRef({ to, children }: { to: string; children: ReactNode }) {
@@ -175,7 +175,7 @@ export default function ActionSafetyProtocol() {
         OASIS&apos;s XACML standard <Cite n={1} /> and, before that, in IETF&apos;s AAA
         authorization framework <Cite n={2} />: a <strong>Policy Decision Point</strong> evaluates
         whether an action should be permitted, and a <strong>Policy Enforcement Point</strong>{" "}
-        intercepts the action and carries out that decision. ASP does not introduce these roles — it
+        intercepts the action and carries out that decision. ASP does not introduce these roles; it
         applies them to a domain neither standard addressed, and defines a concrete request/response
         contract between a PDP and PEP judging <em>agent tool calls</em> specifically. It specifies
         the shape of the decision, not how the decision is computed, how the two parties transport
@@ -185,7 +185,7 @@ export default function ActionSafetyProtocol() {
         The nearer precedent is Open Policy Agent, which took the same PDP/PEP separation and
         standardized it for infrastructure authorization: any PDP speaking OPA&apos;s interface can
         be swapped for another without the enforcing system changing at all. ASP aims at the same
-        property for agent action safety specifically — a PDP built by one party should be swappable
+        property for agent action safety specifically: a PDP built by one party should be swappable
         for a PDP built by another without the PEP, or the agent framework it&apos;s embedded in,
         needing to change.
       </P>
@@ -218,7 +218,7 @@ export default function ActionSafetyProtocol() {
             <Td>
               Policy Enforcement Point (established terminology, <SecRef to="overview">§1</SecRef>, <Cite n={1} />). In this
               document: the component that intercepts an agent&apos;s proposed action, sends a
-              Decision Request to a PDP, and enforces the resulting Decision Response — allowing,
+              Decision Request to a PDP, and enforces the resulting Decision Response: allowing,
               blocking, or escalating the action.
             </Td>
           </tr>
@@ -289,7 +289,7 @@ export default function ActionSafetyProtocol() {
             </Td>
             <Td>string</Td>
             <Td>
-              The proposed action, verbatim — a tool name and its arguments, or an equivalent
+              The proposed action, verbatim: a tool name and its arguments, or an equivalent
               representation.
             </Td>
           </tr>
@@ -355,7 +355,7 @@ export default function ActionSafetyProtocol() {
       <P>
         A conformant PDP <KW>MUST</KW> accept a request containing only the required fields and{" "}
         <KW>MUST NOT</KW> require any optional field to be present. Optional fields represent
-        progressively richer context, not a fixed contract shape — a PEP embedded where no operator
+        progressively richer context, not a fixed contract shape. A PEP embedded where no operator
         constraints exist, for instance, simply omits <InlineCode>constraints</InlineCode> rather
         than sending an empty array. A PDP <KW>SHOULD</KW> use whatever subset of optional fields is
         present rather than only ever using the required minimum, since accuracy on this task is
@@ -410,7 +410,7 @@ export default function ActionSafetyProtocol() {
             <Td>
               <KW>MUST</KW> be null when <InlineCode>is_safe</InlineCode> is true. <KW>MAY</KW> be
               null when <InlineCode>is_safe</InlineCode> is false, for PDPs without attribution
-              capability — see <SecRef to="conformance">§6</SecRef>.
+              capability; see <SecRef to="conformance">§6</SecRef>.
               See <SecRef to="violation-categories">§5.2</SecRef> for
               the enum.
             </Td>
@@ -458,7 +458,7 @@ export default function ActionSafetyProtocol() {
       <H3 id="violation-categories">5.2 Violation categories</H3>
       <P>
         The reference implementation&apos;s five categories are RECOMMENDED but not the only valid
-        vocabulary — see <SecRef to="extensibility">§9</SecRef> on
+        vocabulary; see <SecRef to="extensibility">§9</SecRef> on
         extensibility.
       </P>
       <Table minWidth={460}>
@@ -494,7 +494,7 @@ export default function ActionSafetyProtocol() {
         would exclude every binary-only classifier, including some of the strongest ones available.
         ASP defines two levels so a binary decision alone is a complete, conformant implementation.
       </P>
-      <Callout label="Level 1 — Core">
+      <Callout label="Level 1: Core">
         <P>
           Implements the Decision Request and Response with <InlineCode>is_safe</InlineCode> as the
           only populated decision field. <InlineCode>violation</InlineCode> and{" "}
@@ -502,7 +502,7 @@ export default function ActionSafetyProtocol() {
           needs to allow or block.
         </P>
       </Callout>
-      <Callout label="Level 2 — Attribution">
+      <Callout label="Level 2: Attribution">
         <P>
           Additionally populates <InlineCode>violation</InlineCode> and{" "}
           <InlineCode>severity</InlineCode> on unsafe decisions, from either the recommended
@@ -523,16 +523,16 @@ export default function ActionSafetyProtocol() {
         does not specify:
       </P>
       <NonGoal>
-        <strong>Transport.</strong> How a Decision Request physically reaches a PDP — in-process
-        function call, HTTP, gRPC, a message queue — is an implementation and deployment concern.
+        <strong>Transport.</strong> How a Decision Request physically reaches a PDP (in-process
+        function call, HTTP, gRPC, a message queue) is an implementation and deployment concern.
       </NonGoal>
       <NonGoal>
         <strong>PDP internals.</strong> Whether the decision comes from a fine-tuned classifier, an
         LLM prompt, a hand-written rule, or a vote across several of those.
       </NonGoal>
       <NonGoal>
-        <strong>Enforcement mechanics.</strong> What a PEP does with an unsafe verdict — raise,
-        log-and-continue, queue for human review — is a policy decision the deploying system makes,
+        <strong>Enforcement mechanics.</strong> What a PEP does with an unsafe verdict (raise,
+        log-and-continue, queue for human review) is a policy decision the deploying system makes,
         not this protocol.
       </NonGoal>
       <NonGoal>
@@ -550,8 +550,8 @@ export default function ActionSafetyProtocol() {
         ASP and MCP compose rather than compete. A representative deployment: an MCP client resolves
         a tool call against an MCP server; before that call executes, a PEP constructs an ASP
         Decision Request from the resolved call and its context, sends it to a PDP, and enforces the
-        response. MCP is silent on this step by design — the specification does not include an
-        authorization or safety layer — which is the gap this protocol is scoped to fill, not a
+        response. MCP is silent on this step by design: the specification does not include an
+        authorization or safety layer, and that is the gap this protocol is scoped to fill, not a
         limitation of MCP being corrected.
       </P>
 
@@ -563,8 +563,8 @@ export default function ActionSafetyProtocol() {
         <SecRef to="violation-categories">§5.2</SecRef>&apos;s,
         provided it is declared in an <InlineCode>violation_vocabulary</InlineCode> field alongside
         the response and documented publicly at a stable URL. A PEP encountering an undeclared or
-        unrecognized vocabulary <KW>MUST</KW> fail closed — treat the decision as unsafe with
-        unknown attribution — rather than guess at a mapping.
+        unrecognized vocabulary <KW>MUST</KW> fail closed: treat the decision as unsafe with
+        unknown attribution, rather than guess at a mapping.
       </P>
       <P>
         Future minor versions may add optional request or response fields. A PDP conforming to a
@@ -627,7 +627,7 @@ export default function ActionSafetyProtocol() {
       <H2 id="changelog">12. Changelog</H2>
       <SecId>§12</SecId>
       <dl style={{ margin: 0, fontFamily: "var(--font-jetbrains), monospace", fontSize: "13.5px" }}>
-        <dt style={{ color: "var(--primary-l)", fontWeight: 600 }}>0.1.0 — Draft</dt>
+        <dt style={{ color: "var(--primary-l)", fontWeight: 600 }}>0.1.0 (Draft)</dt>
         <dd style={{ color: "var(--text-2)", margin: "6px 0 0" }}>
           Initial specification. Reference implementation: saroku.
         </dd>
