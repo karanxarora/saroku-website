@@ -46,8 +46,6 @@ setInterval(() => {
 }, RATE_LIMIT_WINDOW_MS).unref?.();
 
 const KNOWN_PROPERTIES = new Set([
-  "sycophancy",
-  "honesty",
   "prompt_injection",
   "trust_hierarchy",
   "minimal_footprint",

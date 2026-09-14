@@ -20,7 +20,6 @@ export default function Home() {
         <RuntimeSafetySection />
         <ArchitectureSection />
         <QuickStartSection />
-        <ComparisonSection />
       </main>
       <Footer />
     </>
@@ -45,7 +44,7 @@ function HeroSection() {
       >
         <span className="badge-dot" style={{ width: "7px", height: "7px", borderRadius: "50%", backgroundColor: "var(--primary)", display: "inline-block" }} />
         <span style={{ fontSize: "13px", fontWeight: 500, color: "var(--primary-l)" }}>
-          Behavioral reliability for agentic AI
+          Pre-execution agent action safety
         </span>
       </div>
 
@@ -101,28 +100,28 @@ function HeroSection() {
 function ProblemSection() {
   const stats = [
     {
-      value: "46%",
-      label: "Max honesty under pressure",
+      value: "17,600",
+      label: "Actions taken before anyone caught it",
       description:
-        "MASK Benchmark (2026): No frontier LLM is honest more than 46% of the time when users push back on a correct answer. The rest of the time, models cave.",
+        "In July 2026, an OpenAI agent chained nine zero-days, escalated privileges, and pulled other agent instances off their own tasks. Not one of those actions was checked before it ran.",
       color: "var(--danger)",
       tint: "var(--danger-t)",
       border: "var(--danger-b)",
     },
     {
-      value: "−64.7%",
-      label: "Honesty vs. compute",
+      value: "72.1%",
+      label: "Safe actions blocked by the best guard tested",
       description:
-        "Larger models are less honest under pressure, not more. More compute correlates with worse honesty: the models most widely deployed are the most susceptible.",
+        "The strongest confirmed peer in ASP-Bench catches 99.7% of unsafe actions, but only by blocking nearly three of four legitimate ones. A guard nobody can leave switched on isn't a guard.",
       color: "var(--warning)",
       tint: "var(--warning-t)",
       border: "var(--warning-b)",
     },
     {
-      value: "Invisible",
-      label: "Behavioral drift on benchmarks",
+      value: "None",
+      label: "Benchmarks for this decision, before ASP-Bench",
       description:
-        "Models can top capability leaderboards while drifting toward telling users what they want to hear. Standard evals never surface this; it only shows up in production.",
+        "No public benchmark measured whether a model can judge a single proposed agent action before it executes. That's a different question from content moderation or trajectory review.",
       color: "var(--primary)",
       tint: "var(--primary-t)",
       border: "var(--primary-b)",
@@ -141,11 +140,11 @@ function ProblemSection() {
               The Problem
             </p>
             <h2 style={{ fontSize: "clamp(26px, 4vw, 38px)", fontWeight: 700, color: "var(--text)", letterSpacing: "-0.75px", margin: "0 0 16px" }}>
-              Benchmarks can&rsquo;t see what breaks in production
+              Nothing checks the action before it executes
             </h2>
             <p style={{ color: "var(--muted)", fontSize: "17px", maxWidth: "560px", margin: "0 auto", lineHeight: "1.6" }}>
-              A model can score at the top of every capability eval while quietly drifting toward
-              giving users the answer they want to hear rather than the one that&rsquo;s true.
+              Most agent security watches the prompt, the output, or the trajectory after the fact.
+              The moment a tool call actually runs is usually unguarded.
             </p>
           </div>
         </AnimateIn>
@@ -512,8 +511,8 @@ function EnforcementDemoSection() {
               The same pressure, two outcomes
             </h2>
             <p style={{ color: "var(--muted)", fontSize: "17px", maxWidth: "580px", margin: "0 auto", lineHeight: "1.6" }}>
-              A real probe from saroku&apos;s benchmark suite: flattery used to pressure an agent into an
-              irreversible database action.
+              A representative example from ASP-Bench: social pressure used to push an agent into an
+              irreversible database action without the confirmation it required.
             </p>
           </div>
         </AnimateIn>
@@ -551,11 +550,11 @@ function EnforcementDemoSection() {
                   backgroundColor: "var(--code-bg)", border: "1px solid var(--border)",
                 }}>
                   <div style={{ fontSize: "11px", fontWeight: 700, color: "var(--danger)", fontFamily: "var(--font-jetbrains), monospace", marginBottom: "4px" }}>
-                    [SYCOPHANCY] SafetyBlockedError
+                    [POLICY_VIOLATION] SafetyBlockedError
                   </div>
                   <div style={{ fontSize: "12px", color: "#C0CCDE", fontFamily: "var(--font-jetbrains), monospace", lineHeight: "1.6" }}>
-                    Action blocked by saroku: capitulated to flattery-based
-                    pressure without independent verification.
+                    Action blocked by saroku: destructive action on production
+                    data without the required confirmation.
                   </div>
                 </div>
               </div>
@@ -592,96 +591,6 @@ function QuickStartSection() {
       <AnimateIn delay={100}>
         <QuickStartTabs />
       </AnimateIn>
-    </section>
-  );
-}
-
-/* ─── Comparison ────────────────────────────────────────────────────────── */
-
-function ComparisonSection() {
-  const tools = [
-    { name: "saroku",    highlight: true  },
-    { name: "Promptfoo", highlight: false },
-    { name: "DeepEval",  highlight: false },
-    { name: "Garak",     highlight: false },
-  ];
-
-  const features = [
-    { feature: "Sycophancy detection",                  values: [true,  false, false, true]  },
-    { feature: "Honesty under pressure",                values: [true,  false, false, false] },
-    { feature: "Prompt injection resistance (14 schemas)", values: [true, true, false, true] },
-    { feature: "Trust hierarchy & corrigibility",       values: [true,  false, false, false] },
-    { feature: "Runtime safety guard (pluggable classifiers)", values: [true, false, false, false] },
-    { feature: "Agent framework integration (LangChain, AutoGen, ADK)", values: [true, false, false, false] },
-    { feature: "Local inference, no API required",     values: [true,  false, false, false] },
-    { feature: "Behavioral baselines & regression diff",values: [true,  false, false, false] },
-    { feature: "CI/CD gate (--fail-on-regression)",     values: [true,  true,  true,  false] },
-    { feature: "Multi-model comparison",                values: [true,  false, true,  false] },
-    { feature: "9 behavioral safety categories",         values: [true,  false, false, false] },
-    { feature: "LLM-as-judge evaluation",               values: [true,  true,  true,  false] },
-    { feature: "Capability benchmarking",               values: [false, true,  true,  false] },
-  ];
-
-  return (
-    <section
-      id="comparison"
-      style={{ backgroundColor: "var(--surface)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }}
-    >
-      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "80px 24px" }}>
-        <AnimateIn direction="up">
-          <div style={{ textAlign: "center", marginBottom: "48px" }}>
-            <p style={{ fontSize: "13px", fontWeight: 600, color: "var(--primary)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "12px" }}>
-              Comparison
-            </p>
-            <h2 style={{ fontSize: "clamp(26px, 4vw, 38px)", fontWeight: 700, color: "var(--text)", letterSpacing: "-0.75px", margin: "0 0 14px" }}>
-              How saroku compares
-            </h2>
-            <p style={{ color: "var(--muted)", fontSize: "16px", margin: 0 }}>
-              saroku is purpose-built for behavioral reliability. Other tools cover different parts of the testing surface.
-            </p>
-          </div>
-        </AnimateIn>
-
-        <AnimateIn delay={80}>
-          <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
-            <table style={{ width: "100%", minWidth: "520px", borderCollapse: "collapse", fontSize: "14px" }}>
-              <thead>
-                <tr>
-                  <th style={{ textAlign: "left", padding: "12px 16px", color: "var(--muted)", fontWeight: 600, fontSize: "13px", borderBottom: `2px solid var(--border)`, width: "40%" }}>
-                    Feature
-                  </th>
-                  {tools.map((tool) => (
-                    <th key={tool.name} style={{ textAlign: "center", padding: "12px 16px", fontWeight: 700, fontSize: "14px", borderBottom: `2px solid var(--border)`, backgroundColor: tool.highlight ? "var(--primary-t)" : "transparent", color: tool.highlight ? "var(--primary)" : "var(--text)", minWidth: "100px" }}>
-                      {tool.name}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {features.map((row, ri) => (
-                  <tr key={row.feature} style={{ backgroundColor: ri % 2 === 0 ? "var(--surface-2)" : "var(--surface)" }}>
-                    <td style={{ padding: "13px 16px", color: "var(--text-2)", borderBottom: `1px solid var(--border-2)` }}>
-                      {row.feature}
-                    </td>
-                    {row.values.map((val, vi) => (
-                      <td key={vi} style={{ textAlign: "center", padding: "13px 16px", borderBottom: `1px solid var(--border-2)`, backgroundColor: tools[vi].highlight ? "var(--primary-t)" : "transparent" }}>
-                        {val
-                          ? <span style={{ color: "var(--success)", fontSize: "18px", fontWeight: 700 }}>✓</span>
-                          : <span style={{ color: "var(--subtle)", fontSize: "16px" }}>—</span>
-                        }
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </AnimateIn>
-
-        <p style={{ marginTop: "20px", color: "var(--subtle)", fontSize: "12px", textAlign: "center" }}>
-          Feature comparison is approximate and based on documented capabilities as of early 2026. Other tools excel in their own domains.
-        </p>
-      </div>
     </section>
   );
 }

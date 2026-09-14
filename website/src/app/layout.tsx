@@ -15,22 +15,22 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "saroku · Behavioral Reliability Testing for LLMs",
+  title: "saroku · Pre-Execution Agent Action Safety",
   description:
-    "saroku tests whether your LLM's behavior holds under pressure, and blocks unsafe agent actions before they execute.",
+    "saroku intercepts an agent's proposed tool call before it executes and asks saroku-guard, its default judge, whether it should run.",
   keywords: [
-    "LLM testing",
-    "behavioral regression",
-    "sycophancy detection",
-    "model reliability",
-    "model evaluation",
+    "agent safety",
+    "pre-execution action safety",
+    "AI agent security",
+    "tool call safety",
+    "PDP PEP",
     "ML engineering",
     "AI alignment",
   ],
   openGraph: {
-    title: "saroku · Behavioral Reliability Testing for LLMs",
+    title: "saroku · Pre-Execution Agent Action Safety",
     description:
-      "Test what your model values, not just what it knows. Detect sycophancy, honesty drift, and consistency failures before they reach production.",
+      "Every proposed tool call is judged before it runs, not after. Catch policy violations, scope violations, injection, goal drift, and corrigibility failures before they reach production.",
     type: "website",
   },
 };

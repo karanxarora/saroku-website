@@ -5,99 +5,20 @@ import CodeBlock from "./CodeBlock";
 
 const tabs = [
   {
-    id: "benchmark",
-    label: "Benchmark",
-    shortLabel: "Bench",
+    id: "check",
+    label: "Check an Action",
+    shortLabel: "Check",
     content: [
       {
-        description: "Install saroku (Python 3.10+):",
+        description: "Install saroku (Python 3.10+). No API key needed for the default local guard:",
         code: `pip install saroku`,
         language: "bash",
       },
       {
-        description: "Generate behavioral test probes and run them:",
-        code: `export OPENAI_API_KEY=sk-...
-
-# Generate dynamic probes — all 8 behavioral properties
-saroku run --model gpt-4o-mini
-
-# Run specific properties only
-saroku run --model gpt-4o-mini --probes sycophancy,prompt_injection
-
-# Control depth: smoke | standard | deep | exhaustive
-saroku run --model gpt-4o-mini --intensity deep
-
-# Compare two models side-by-side on the same benchmark
-saroku compare --models gpt-4o-mini,claude-sonnet-4-6
-
-# Run against Anthropic Claude
-export ANTHROPIC_API_KEY=sk-ant-...
-saroku run --model claude-sonnet-4-6
-
-# Run against Google Gemini via Vertex AI
-saroku run --model vertex_ai/gemini-1.5-pro`,
-        language: "bash",
-      },
-    ],
-  },
-  {
-    id: "baseline",
-    label: "Save & Compare Baseline",
-    shortLabel: "Baselines",
-    content: [
-      {
-        description: "Save a baseline for your current production model:",
-        code: `# Run tests and save results as a named baseline
-saroku run --model gpt-4o-mini --save-baseline prod-v1`,
-        language: "bash",
-      },
-      {
-        description: "After a model update, compare against the saved baseline:",
-        code: `# Compare new model run against saved baseline
-saroku run --model gpt-4o-mini --compare-baseline prod-v1
-
-# Example output:
-# ┌──────────────────────────────────────────────────────────┐
-# │              saroku Behavioral Report                     │
-# │  Model: gpt-4o-mini        Baseline: prod-v1             │
-# ├──────────────────────────┬────────┬─────────┬────────────┤
-# │ Property                 │ Score  │Baseline │  Delta     │
-# ├──────────────────────────┼────────┼─────────┼────────────┤
-# │ Sycophancy Rate          │ 23.1%  │ 18.4%   │ +4.7% ⚠   │
-# │ Honesty Score            │ 61.2%  │ 68.9%   │ -7.7% ✗   │
-# │ Consistency Score        │ 79.3%  │ 77.1%   │ +2.2% ✓   │
-# │ Injection Resistance     │ 84.1%  │ 87.3%   │ -3.2% ⚠   │
-# │ Trust Hierarchy          │ 91.0%  │ 90.5%   │ +0.5% ✓   │
-# │ Corrigibility            │ 88.2%  │ 88.2%   │  0.0% ✓   │
-# │ Minimal Footprint        │ 76.4%  │ 79.1%   │ -2.7% ⚠   │
-# │ Goal Stability           │ 82.0%  │ 83.5%   │ -1.5% ✓   │
-# └──────────────────────────┴────────┴─────────┴────────────┘`,
-        language: "bash",
-      },
-      {
-        description: "Manage your saved baselines:",
-        code: `# List all saved baselines
-saroku baseline list
-
-# Save current run as baseline
-saroku baseline save prod-v2
-
-# Compare directly against a saved baseline
-saroku baseline compare prod-v1`,
-        language: "bash",
-      },
-    ],
-  },
-  {
-    id: "guard",
-    label: "Runtime Guard",
-    shortLabel: "Guard",
-    content: [
-      {
-        description: "Add one safety check before your agent executes any action:",
+        description: "Check one proposed action before it executes:",
         code: `from saroku import SafetyGuard
 
-guard = SafetyGuard()
+guard = SafetyGuard()  # saroku-guard loads automatically, no setup
 
 result = guard.check(
     action="DELETE FROM users WHERE last_login < '2023-01-01'",
@@ -110,94 +31,96 @@ result = guard.check(
 if not result.is_safe:
     for v in result.violations:
         print(f"[{v.severity.upper()}] {v.description}")
-        print(f"  → {v.recommendation}")
 
 # Async support for async agent pipelines
 result = await guard.acheck(action="...", context="...")`,
         language: "python",
       },
       {
-        description: "Choose the right mode for your deployment:",
-        code: `# Balanced (default) — saroku-guard clears safe actions in ~7ms
-# locally; anything flagged escalates to the LLM judge. No setup required.
-guard = SafetyGuard()
-
-# Local only — saroku-guard alone, zero API calls, works fully offline.
-guard = SafetyGuard(mode="local")
-
-# Thorough — always use the LLM judge for rich property-level analysis.
-guard = SafetyGuard(mode="thorough", judge_model="gpt-4o-mini")`,
-        language: "python",
-      },
-      {
         description: "Inspect the result object:",
         code: `result.is_safe          # bool
 result.violations       # list[SafetyViolation]
-result.latency_ms       # float — total check time
-result.layers_used      # ["rules"] | ["rules", "ml"] | ["rules", "ml", "local_model"]
-result.ml_risk_score    # float 0–1
+result.latency_ms       # float, total check time
 
 # Each violation:
-v.property        # "trust_hierarchy", "minimal_footprint", etc.
-v.severity        # "high", "medium", "low"
-v.description     # what the violation is
-v.recommendation  # what to do instead
-v.source          # "rules", "ml", or "local_model"`,
+v.property        # "policy_violation" | "scope_violation" | "injection"
+                   # | "goal_drift" | "corrigibility"
+v.severity         # "high", "medium", "low"
+v.description       # what the violation is`,
         language: "python",
       },
     ],
   },
   {
-    id: "cicd",
-    label: "CI/CD Integration",
-    shortLabel: "CI/CD",
+    id: "protect",
+    label: "Protect an Agent",
+    shortLabel: "Protect",
     content: [
       {
-        description: "Use --fail-on-regression to gate deployments in CI:",
-        code: `# Exit code 1 if any property regresses vs. baseline
-saroku run --model gpt-4o-mini \\
-  --compare-baseline production \\
-  --fail-on-regression`,
-        language: "bash",
+        description: "Wrap a single tool, or protect every tool an agent has at once:",
+        code: `from saroku import SafetyGuard
+from saroku.integrations import wrap, protect
+
+guard = SafetyGuard()
+
+# Protect a single tool
+safe_search = wrap(agent.search_tool, guard=guard)
+
+# Protect all tools in an agent (auto-detects framework)
+safe_agent = await protect(agent, guard=guard)
+
+# Handle blocked actions
+from saroku import SafetyBlockedError
+try:
+    result = await safe_agent.run(task)
+except SafetyBlockedError as e:
+    print(f"Action blocked: {e.violations}")`,
+        language: "python",
       },
       {
-        description: "GitHub Actions workflow example:",
-        code: `name: Behavioral Regression Tests
+        description: "Supported frameworks: Google ADK, AutoGen, and LangChain, auto-detected. No framework installed? wrap() works on any callable, sync or async.",
+        code: `# Google ADK, AutoGen, LangChain all use the same call:
+safe_agent = await protect(agent, guard=guard)
 
-on:
-  push:
-    branches: [main]
-  pull_request:
+# Or wrap one tool at a time, framework-agnostic:
+safe_tool = wrap(my_tool_function, guard=guard)`,
+        language: "python",
+      },
+    ],
+  },
+  {
+    id: "modes",
+    label: "Guard Modes",
+    shortLabel: "Modes",
+    content: [
+      {
+        description: "saroku-guard, the local PDP, protects every call by default. Three modes control how it works with an LLM judge:",
+        code: `# balanced, default. saroku-guard clears safe actions in ~7ms
+# locally; anything flagged escalates to the LLM judge.
+guard = SafetyGuard()
 
-jobs:
-  saroku:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+# local, saroku-guard only, zero API calls, works fully offline.
+guard = SafetyGuard(mode="local")
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
+# thorough, always uses the LLM judge for deeper analysis.
+guard = SafetyGuard(mode="thorough", judge_model="gpt-4o-mini")`,
+        language: "python",
+      },
+    ],
+  },
+  {
+    id: "asp",
+    label: "The Protocol",
+    shortLabel: "ASP",
+    content: [
+      {
+        description: "saroku is the reference PEP for the Action Safety Protocol; saroku-guard is the reference PDP. Swap either side without changing the agent:",
+        code: `# Use a different PDP, any classifier that speaks ASP
+guard = SafetyGuard(local_model_path="your-org/your-model")
 
-      - name: Run saroku behavioral tests
-        run: |
-          pip install saroku
-          saroku run \\
-            --model gpt-4o-mini \\
-            --compare-baseline production \\
-            --fail-on-regression \\
-            --output results.json
-        env:
-          OPENAI_API_KEY: \${{ secrets.OPENAI_API_KEY }}
-
-      - name: Upload results artifact
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: saroku-results
-          path: results.json`,
-        language: "yaml",
+# Or skip the local model entirely and use only an LLM judge
+guard = SafetyGuard(use_local_pdp=False, judge_model="gpt-4o-mini")`,
+        language: "python",
       },
     ],
   },
