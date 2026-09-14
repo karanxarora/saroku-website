@@ -15,6 +15,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://saroku.com"),
   title: "saroku · Secure Before It Acts",
   description:
     "saroku intercepts an agent's proposed tool call before it executes and asks saroku-guard, its default judge, whether it should run.",
