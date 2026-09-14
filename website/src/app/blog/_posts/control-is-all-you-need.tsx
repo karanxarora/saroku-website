@@ -89,7 +89,17 @@ function Cite({ n }: { n: number }) {
  * "headline" card, visually separate from the report's data tables; that
  * intent is rebuilt here with the site's own tokens rather than a table.
  */
-function Headline({ stats, note }: { stats: { num: string; label: ReactNode }[]; note: ReactNode }) {
+function Headline({
+  eyebrow,
+  title,
+  stats,
+  note,
+}: {
+  eyebrow: string;
+  title: ReactNode;
+  stats: { num: string; label: ReactNode }[];
+  note: ReactNode;
+}) {
   return (
     <div
       style={{
@@ -100,6 +110,30 @@ function Headline({ stats, note }: { stats: { num: string; label: ReactNode }[];
         margin: "8px 0 40px",
       }}
     >
+      <p
+        style={{
+          fontFamily: "var(--font-jetbrains), monospace",
+          fontSize: "11px",
+          letterSpacing: "0.1em",
+          textTransform: "uppercase",
+          color: "var(--primary-l)",
+          margin: "0 0 8px",
+        }}
+      >
+        {eyebrow}
+      </p>
+      <p
+        style={{
+          fontFamily: "var(--font-fraunces), Georgia, serif",
+          fontWeight: 600,
+          fontSize: "18px",
+          lineHeight: 1.35,
+          color: "var(--text)",
+          margin: "0 0 20px",
+        }}
+      >
+        {title}
+      </p>
       <div
         style={{
           display: "flex",
@@ -333,6 +367,8 @@ export default function ControlIsAllYouNeed() {
         switched off. A safety layer nobody leaves running is not a safety layer.
       </P>
       <Headline
+        eyebrow="What the benchmark found"
+        title="Every guard I could find forces the same trade. This is the one number that says whether a given model has actually escaped it."
         stats={[
           { num: "97.9%", label: <>of unsafe actions<br />caught</> },
           {
@@ -370,7 +406,6 @@ export default function ControlIsAllYouNeed() {
 
       <Callout label="Objective">
         <P>
-          The numbers above are the finding; the rest of this report is how they were earned.
           Work out how this decision should actually be made and enforced (
           <SecRef to="approach">§3</SecRef>), fix it as a precise, checkable contract (
           <SecRef to="asp">§5</SecRef>), build the thing that makes and enforces it (
