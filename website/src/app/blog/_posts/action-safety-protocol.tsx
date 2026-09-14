@@ -150,9 +150,6 @@ export default function ActionSafetyProtocol() {
           borderBottom: "1px solid var(--border)",
         }}
       >
-        <span>
-          <span style={{ color: "var(--text-2)" }}>Version</span> 0.1.0
-        </span>
         <span style={{ display: "inline-flex", alignItems: "center", gap: "7px" }}>
           <span style={{ color: "var(--text-2)" }}>Status</span>
           <Badge kind="neutral">Published</Badge>
@@ -625,7 +622,7 @@ export default function ActionSafetyProtocol() {
       <H2 id="changelog">12. Changelog</H2>
       <SecId>§12</SecId>
       <dl style={{ margin: 0, fontFamily: "var(--font-jetbrains), monospace", fontSize: "13.5px" }}>
-        <dt style={{ color: "var(--primary-l)", fontWeight: 600 }}>0.1.0 (Draft)</dt>
+        <dt style={{ color: "var(--primary-l)", fontWeight: 600 }}>0.1.0</dt>
         <dd style={{ color: "var(--text-2)", margin: "6px 0 0" }}>
           Initial specification. Reference implementation: saroku.
         </dd>

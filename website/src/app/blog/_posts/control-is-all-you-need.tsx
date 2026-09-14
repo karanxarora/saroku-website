@@ -174,7 +174,26 @@ export default function ControlIsAllYouNeed() {
           margin: "0 0 8px",
         }}
       >
-        Technical Report
+        Technical Paper
+      </p>
+      <p
+        style={{
+          fontSize: "15px",
+          color: "var(--text-2)",
+          margin: "0 0 4px",
+        }}
+      >
+        Karan Arora
+      </p>
+      <p
+        style={{
+          fontFamily: "var(--font-jetbrains), monospace",
+          fontSize: "12px",
+          color: "var(--muted)",
+          margin: "0 0 32px",
+        }}
+      >
+        saroku &middot; September 2026
       </p>
 
       <Callout label="Abstract">
