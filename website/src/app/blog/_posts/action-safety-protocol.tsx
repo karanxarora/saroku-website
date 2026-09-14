@@ -155,12 +155,10 @@ export default function ActionSafetyProtocol() {
         </span>
         <span style={{ display: "inline-flex", alignItems: "center", gap: "7px" }}>
           <span style={{ color: "var(--text-2)" }}>Status</span>
-          <Badge kind="neutral">
-            <span style={{ color: "var(--warning)" }}>Draft</span>
-          </Badge>
+          <Badge kind="neutral">Published</Badge>
         </span>
         <span>
-          <span style={{ color: "var(--text-2)" }}>Reference implementation</span> saroku-guard
+          <span style={{ color: "var(--text-2)" }}>Reference implementation</span> saroku
         </span>
         <span>
           <span style={{ color: "var(--text-2)" }}>Editor</span> Karan Arora
