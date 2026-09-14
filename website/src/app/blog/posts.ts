@@ -32,7 +32,7 @@ export const POSTS_META: PostMeta[] = [
   },
   {
     slug: "action-safety-protocol",
-    title: "Action Safety Protocol: a contract between agent policy decision and enforcement points",
+    title: "Action Safety Protocol: An Interface for Pre-Execution Agent Action Safety",
     description:
       "Version 0.1.0 of ASP: an open specification for the request/response contract between the component that judges whether an agent's proposed tool call is safe and the component that enforces that judgment.",
     date: "2026-09-14",

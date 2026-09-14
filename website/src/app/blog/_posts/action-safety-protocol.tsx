@@ -130,6 +130,24 @@ const RESPONSE_EXAMPLE = `{
   "reason": "Deletes a production record without the required confirmation constraint."
 }`;
 
+const WIRE_FORMAT_DIAGRAM = `Agent
+  |
+  | proposed tool call
+  v
+PEP
+  |
+  | ASP Decision Request
+  v
+PDP
+  |
+  | ASP Decision Response
+  v
+PEP
+  |
+  +-- allow ------> Tool
+  +-- block
+  +-- escalate ---> policy / human review`;
+
 export default function ActionSafetyProtocol() {
   return (
     <>
@@ -169,16 +187,112 @@ export default function ActionSafetyProtocol() {
       <H2 id="overview">1. Overview</H2>
       <SecId>§1</SecId>
       <P>
-        PDP and PEP are established roles from access-control architecture, formalized in
-        OASIS&apos;s XACML standard <Cite n={1} /> and, before that, in IETF&apos;s AAA
-        authorization framework <Cite n={2} />: a <strong>Policy Decision Point</strong> evaluates
-        whether an action should be permitted, and a <strong>Policy Enforcement Point</strong>{" "}
-        intercepts the action and carries out that decision. ASP does not introduce these roles; it
-        applies them to a domain neither standard addressed, and defines a concrete request/response
-        contract between a PDP and PEP judging <em>agent tool calls</em> specifically. It specifies
-        the shape of the decision, not how the decision is computed, how the two parties transport
-        it, or what happens after a decision is enforced.
+        AI agents increasingly operate through tools, but there is no common interface for
+        answering a basic security question at the execution boundary: should this specific
+        action be allowed to run? Existing authorization systems provide the PDP/PEP architectural
+        separation, but they do not define a concrete contract for semantic safety judgment of
+        agent-proposed actions. The Action Safety Protocol (ASP) defines that contract.
       </P>
+      <p
+        style={{
+          fontFamily: "var(--font-jetbrains), monospace",
+          fontSize: "13.5px",
+          color: "var(--text-2)",
+          borderLeft: "3px solid var(--primary)",
+          padding: "2px 0 2px 14px",
+          margin: "0 0 18px",
+        }}
+      >
+        ASP is the specification. ASP-Bench is the measurement framework. saroku-guard is the
+        reference PDP. saroku is the reference PEP.
+      </p>
+      <P>
+        PDP and PEP are established roles in access-control architecture, formalized in
+        OASIS&apos;s XACML standard <Cite n={1} /> and, before that, in IETF&apos;s AAA
+        authorization framework <Cite n={2} />. A <strong>Policy Decision Point</strong> evaluates
+        whether an action should be permitted, while a <strong>Policy Enforcement Point</strong>{" "}
+        intercepts the action and enforces that decision.
+      </P>
+      <P>
+        <a href="https://saroku.com" style={{ color: "var(--primary-l)" }}>
+          saroku
+        </a>{" "}
+        brings this separation to the agent execution boundary. Its SDK acts as the PEP,
+        intercepting an agent&apos;s proposed tool call immediately before execution and obtaining
+        a security decision from an independent PDP. This creates a clean separation between the
+        agent proposing an action, the system deciding whether it is safe, and the system
+        enforcing that decision.
+      </P>
+      <P>
+        ASP then defines the contract that makes these components interoperable. It applies the
+        established PDP/PEP separation specifically to the semantic safety judgment of
+        agent-proposed tool calls, and defines a concrete request/response interface for making
+        that decision before execution. ASP standardizes the shape and semantics of the decision,
+        not how the decision is computed, transported, or enforced.
+      </P>
+      <P>
+        The reference implementation uses <strong>saroku-guard</strong> as the PDP and the{" "}
+        <strong>saroku SDK</strong> as the PEP, but neither is required by the protocol. Any
+        conformant safety judge can serve as a PDP, and any enforcement layer can implement the
+        PEP role.
+      </P>
+
+      <H3>Why not a general authorization API?</H3>
+      <P>
+        Traditional authorization answers a narrower question: given an identity and a requested
+        operation, is that operation permitted? <InlineCode>Agent A → DELETE /users/123 →
+        permission?</InlineCode> is fully answerable from a policy table keyed on role and
+        resource; it does not need to know why the request was made.
+      </P>
+      <P>
+        ASP asks a strictly harder question: given what the agent is trying to accomplish, its
+        current context, any operator constraints, and what triggered this specific proposal,
+        should this action execute right now? <InlineCode>Agent A → DELETE /users/123 →
+        consistent with goal + context + constraints + trigger?</InlineCode> The identical call can
+        be routine cleanup or a goal-drifted, injected, or corrigibility-violating action depending
+        on those four things, not on identity and resource alone. That is why a Decision Request
+        (<SecRef to="decision-request">§4</SecRef>) carries action, context, trigger, constraints,
+        and goal as first-class fields instead of reducing to a subject/resource/action triple: the
+        decision is semantic action safety, not RBAC or ABAC, even though it reuses that
+        architecture&apos;s PDP/PEP separation.
+      </P>
+      <P>
+        <strong>Formally:</strong> pre-execution action safety is the decision of whether a single
+        agent-proposed action should be permitted to execute, given the action and the context
+        available at the execution boundary:
+      </P>
+      <p
+        style={{
+          textAlign: "center",
+          fontFamily: "var(--font-jetbrains), monospace",
+          fontSize: "15px",
+          margin: "4px 0 16px",
+          color: "var(--text)",
+        }}
+      >
+        D = PDP(A, C)
+      </p>
+      <P>
+        where <em>A</em> is the proposed action, <em>C</em> is the available execution context, and{" "}
+        <em>D</em> is the safety decision. Enforcement then applies <em>D</em> at the boundary:
+      </P>
+      <p
+        style={{
+          textAlign: "center",
+          fontFamily: "var(--font-jetbrains), monospace",
+          fontSize: "15px",
+          margin: "4px 0 16px",
+          color: "var(--text)",
+        }}
+      >
+        PEP(A, D) → {"{"}allow, block, escalate{"}"}
+      </p>
+      <P>
+        <SecRef to="decision-request">§4</SecRef> and <SecRef to="decision-response">§5</SecRef>{" "}
+        make <em>A</em>, <em>C</em>, and <em>D</em> concrete as a Decision Request and Decision
+        Response.
+      </P>
+
       <P>
         The nearer precedent is Open Policy Agent, which took the same PDP/PEP separation and
         standardized it for infrastructure authorization: any PDP speaking OPA&apos;s interface can
@@ -192,6 +306,14 @@ export default function ActionSafetyProtocol() {
         Context Protocol. MCP standardizes how an agent invokes a tool. ASP standardizes how a
         decision gets made about whether that invocation should be allowed. Neither depends on the
         other; a system may use both, either, or neither.
+      </P>
+
+      <H3>Wire format</H3>
+      <P>Where ASP sits, concretely, in an agent&apos;s tool-calling loop:</P>
+      <Code code={WIRE_FORMAT_DIAGRAM} />
+      <P>
+        ASP governs the boundary between PEP and PDP, the two middle arrows above. It does not
+        govern how the agent reasons internally, or how the tool itself executes once allowed.
       </P>
 
       {/* ── 2. Terminology ── */}
@@ -287,8 +409,8 @@ export default function ActionSafetyProtocol() {
             </Td>
             <Td>string</Td>
             <Td>
-              The proposed action, verbatim: a tool name and its arguments, or an equivalent
-              representation.
+              The proposed action: the tool identified and its arguments, in a deterministic
+              representation. See below.
             </Td>
           </tr>
           <tr>
@@ -297,7 +419,10 @@ export default function ActionSafetyProtocol() {
               <Badge kind="required" />
             </Td>
             <Td>string</Td>
-            <Td>The agent&apos;s role and operating environment.</Td>
+            <Td>
+              Implementation-defined free text describing the agent&apos;s role and operating
+              environment. See below.
+            </Td>
           </tr>
           <tr>
             <Td strong>trigger</Td>
@@ -348,6 +473,26 @@ export default function ActionSafetyProtocol() {
           </tr>
         </tbody>
       </Table>
+      <P>
+        <InlineCode>action</InlineCode> <KW>MUST</KW> identify the tool and its arguments in a
+        deterministic representation: the same tool invoked with the same arguments{" "}
+        <KW>MUST</KW> serialize to the same <InlineCode>action</InlineCode> string every time,
+        regardless of which PEP produced it. A canonical JSON encoding of{" "}
+        <InlineCode>{"{tool, arguments}"}</InlineCode> satisfies this; the call-syntax rendering
+        used in this document&apos;s examples (<InlineCode>delete_record(id=&apos;user_001&apos;)</InlineCode>)
+        is one deterministic serialization of that shape, not a second, looser format alongside it.
+        Implementations <KW>MAY</KW> additionally provide a human-readable rendering, but a PDP{" "}
+        <KW>MUST NOT</KW> rely on that rendering for the decision.
+      </P>
+      <P>
+        <InlineCode>context</InlineCode> is deliberately implementation-defined free text rather
+        than a typed sub-schema: the reference implementation and reference dataset (
+        <SecRef to="reference-impl">§10</SecRef>) use a short natural-language string (agent role,
+        environment, and other salient operating detail), and a PDP is expected to make use of
+        whatever structure, or lack of it, that string carries. A future minor version{" "}
+        <KW>MAY</KW> define a structured context object as an alternative representation without
+        breaking conformance for implementations that continue to send a string.
+      </P>
 
       <H3 id="tiering">4.2 Tiering</H3>
       <P>
@@ -358,6 +503,21 @@ export default function ActionSafetyProtocol() {
         than sending an empty array. A PDP <KW>SHOULD</KW> use whatever subset of optional fields is
         present rather than only ever using the required minimum, since accuracy on this task is
         context-dependent.
+      </P>
+      <P>
+        This is already a graded scale rather than a binary required/optional split: an instance
+        with zero of the four optional fields populated is Tier 1, one populated is Tier 2, and so
+        on through Tier 4, all four populated. ASP-Bench evaluates PDPs across all four tiers so
+        that accuracy at the minimum-information tier is visible on its own, not averaged away
+        behind results computed mostly on the richest inputs.
+      </P>
+      <P>
+        Implementations <KW>SHOULD</KW> keep any single field bounded: this decision&apos;s latency
+        budget does not tolerate an unbounded transcript. Regardless of how much history is
+        available to a PEP, a PDP <KW>MUST NOT</KW> require <InlineCode>conversation</InlineCode>{" "}
+        to be populated for conformance (per the required-field rule above), and where a PEP does
+        supply it, a small number of immediately preceding turns is the intended shape, not a full
+        session log.
       </P>
 
       {/* ── 5. Decision Response ── */}
@@ -432,8 +592,10 @@ export default function ActionSafetyProtocol() {
             </Td>
             <Td>float [0,1]</Td>
             <Td>
-              The PDP&apos;s confidence in <InlineCode>is_safe</InlineCode>. A PEP{" "}
-              <KW>SHOULD NOT</KW> treat a missing confidence as 1.0 by default.
+              The PDP&apos;s confidence in <InlineCode>is_safe</InlineCode>, for logging,
+              monitoring, and threshold tuning. Informational: <KW>MUST NOT</KW> override{" "}
+              <InlineCode>is_safe</InlineCode>. A PEP <KW>SHOULD NOT</KW> treat a missing
+              confidence as 1.0 by default.
             </Td>
           </tr>
           <tr>
@@ -452,12 +614,25 @@ export default function ActionSafetyProtocol() {
         <InlineCode>true</InlineCode>. A safe verdict has no violation to attribute; a PDP returning
         one is malformed under this protocol, not merely unhelpful.
       </P>
+      <P>
+        A PEP receiving a malformed Decision Response, one missing a required field, an
+        unparseable body, or a declared <InlineCode>asp_version</InlineCode> whose major version
+        the PEP does not support, <KW>SHOULD</KW> fail closed: treat the action as unsafe rather
+        than default-allow it. This is a security-semantics requirement, not a transport one. How
+        a PEP handles a PDP that is unreachable, slow, or returns a transport-level error remains
+        deployment-specific (<SecRef to="non-goals">§7</SecRef>); a Decision Response that arrives
+        malformed or unusable is a case this protocol does take a position on.
+      </P>
 
       <H3 id="violation-categories">5.2 Violation categories</H3>
       <P>
-        The reference implementation&apos;s five categories are RECOMMENDED but not the only valid
-        vocabulary; see <SecRef to="extensibility">§9</SecRef> on
-        extensibility.
+        These categories describe why an agent action is unsafe, a behavioral classification, not
+        the mechanism by which an underlying system might be exploited. SQL injection is an attack
+        mechanism; goal drift is an agent behavioral failure. The two sit at different
+        classification layers, and this vocabulary is deliberately the behavioral one, closer to
+        why a human reviewer would reject the action than to a CVE category. The reference
+        implementation&apos;s five categories are RECOMMENDED but not the only valid vocabulary;
+        see <SecRef to="extensibility">§9</SecRef> on extensibility.
       </P>
       <Table minWidth={460}>
         <tbody>
@@ -492,12 +667,13 @@ export default function ActionSafetyProtocol() {
         would exclude every binary-only classifier, including some of the strongest ones available.
         ASP defines two levels so a binary decision alone is a complete, conformant implementation.
       </P>
-      <Callout label="Level 1: Core">
+      <Callout label="Level 1: Decision">
         <P>
           Implements the Decision Request and Response with <InlineCode>is_safe</InlineCode> as the
           only populated decision field. <InlineCode>violation</InlineCode> and{" "}
           <InlineCode>severity</InlineCode> are always null. This is sufficient for a PEP that only
-          needs to allow or block.
+          needs to allow or block. <strong>A Level 1 PDP can be as simple as a binary
+          classifier</strong>: ASP does not require an LLM judge, only a decision.
         </P>
       </Callout>
       <Callout label="Level 2: Attribution">
@@ -534,8 +710,10 @@ export default function ActionSafetyProtocol() {
         not this protocol.
       </NonGoal>
       <NonGoal>
-        <strong>Authentication and transport security.</strong> Left to whatever transport is
-        chosen.
+        <strong>Authentication and transport security.</strong> ASP does not prescribe an
+        authentication or transport-security mechanism; deployments <KW>MUST</KW> provide
+        appropriate integrity, authenticity, and confidentiality for Decision Requests and
+        Responses according to their own threat model.
       </NonGoal>
       <NonGoal>
         <strong>Retry, timeout, and fallback behavior</strong> when a PDP is unreachable or slow.
@@ -548,9 +726,16 @@ export default function ActionSafetyProtocol() {
         ASP and MCP compose rather than compete. A representative deployment: an MCP client resolves
         a tool call against an MCP server; before that call executes, a PEP constructs an ASP
         Decision Request from the resolved call and its context, sends it to a PDP, and enforces the
-        response. MCP is silent on this step by design: the specification does not include an
-        authorization or safety layer, and that is the gap this protocol is scoped to fill, not a
-        limitation of MCP being corrected.
+        response.
+      </P>
+      <P>
+        MCP and ASP operate at different layers. MCP defines the protocol for discovering and
+        invoking tools; ASP defines a safety decision about whether a specific proposed tool
+        invocation should be allowed to execute. MCP&apos;s own authorization mechanisms address
+        access to MCP servers and resources: whether a client is permitted to reach a server at
+        all. They do not replace semantic, pre-execution judgment of whether a particular agent
+        action is safe in the context of its goal, constraints, and environment, which is the
+        decision this protocol is scoped to standardize.
       </P>
 
       {/* ── 9. Extensibility ── */}
@@ -574,16 +759,20 @@ export default function ActionSafetyProtocol() {
       <H2 id="reference-impl">10. Reference Implementation</H2>
       <SecId>§10</SecId>
       <P>
+        ASP deliberately separates four interchangeable components: an agent, a PEP, a PDP, and
+        the agent&apos;s tool environment.{" "}
         <a href="https://saroku.com" style={{ color: "var(--primary-l)" }}>
           saroku
         </a>{" "}
-        implements both sides of this protocol: <InlineCode>SafetyGuard</InlineCode> as a PDP (via{" "}
-        <InlineCode>saroku-guard</InlineCode>, Level 2 conformant, and an LLM-judge path), and{" "}
-        <InlineCode>wrap()</InlineCode>/<InlineCode>protect()</InlineCode> as a PEP for Google ADK,
-        AutoGen, and LangChain. It exists to prove the protocol is implementable end to end, and is
+        provides a reference implementation of both the PDP and PEP roles: <InlineCode>SafetyGuard</InlineCode>{" "}
+        as a PDP (via <InlineCode>saroku-guard</InlineCode>, Level 2 conformant, and an LLM-judge
+        path), and <InlineCode>wrap()</InlineCode>/<InlineCode>protect()</InlineCode> as a PEP for
+        Google ADK, AutoGen, and LangChain, while <strong>saroku-guard</strong> is the reference
+        PDP specifically. It exists to prove the protocol is implementable end to end, and is
         deliberately not privileged by it: every requirement in this document is one a second
-        implementation can meet without reference to saroku&apos;s source. Independent PDP and PEP
-        implementations are what this specification is for.
+        implementation can meet without reference to saroku&apos;s source. Independent
+        implementations can replace either side, PDP or PEP, without changing the protocol
+        contract.
       </P>
 
       {/* ── 11. References ── */}

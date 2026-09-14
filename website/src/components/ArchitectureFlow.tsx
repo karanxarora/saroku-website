@@ -17,9 +17,9 @@ const STAGES = [
 export default function ArchitectureFlow() {
   return (
     <div>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0" }} className="arch-flow">
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px 0", flexWrap: "wrap" }} className="arch-flow">
         {STAGES.map((s, i) => (
-          <div key={s.label} style={{ display: "flex", alignItems: "center" }} className="arch-flow-pair">
+          <div key={s.label} style={{ display: "flex", alignItems: "center", flexShrink: 0 }} className="arch-flow-pair">
             <div
               className="pipeline-stage"
               style={{
@@ -28,13 +28,24 @@ export default function ArchitectureFlow() {
                 borderRadius: "12px",
                 padding: "16px 20px",
                 minWidth: "160px",
+                maxWidth: "220px",
                 textAlign: "center",
+                flexShrink: 0,
               }}
             >
               <div style={{ fontSize: "14px", fontWeight: 700, color: s.text, fontFamily: "var(--font-jetbrains), monospace" }}>
                 {s.label}
               </div>
-              <div style={{ fontSize: "11px", color: "var(--subtle)", marginTop: "4px", fontFamily: "var(--font-jetbrains), monospace" }}>
+              <div
+                style={{
+                  fontSize: "11px",
+                  color: "var(--subtle)",
+                  marginTop: "4px",
+                  fontFamily: "var(--font-jetbrains), monospace",
+                  overflowWrap: "break-word",
+                  wordBreak: "break-word",
+                }}
+              >
                 {s.sub}
               </div>
             </div>

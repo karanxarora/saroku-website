@@ -428,6 +428,19 @@ export default function ControlIsAllYouNeed() {
         <SecRef to="results">§9</SecRef>), and checked directly against a real incident&apos;s
         behavioral shape (<SecRef to="incident">§10</SecRef>).
       </P>
+      <p
+        style={{
+          fontFamily: "var(--font-jetbrains), monospace",
+          fontSize: "13.5px",
+          color: "var(--text-2)",
+          borderLeft: "3px solid var(--primary)",
+          padding: "2px 0 2px 14px",
+          margin: "0 0 16px",
+        }}
+      >
+        ASP is the specification. ASP-Bench is the measurement framework. saroku-guard is the
+        reference PDP. saroku is the reference PEP.
+      </p>
 
       {/* ── 4. saroku ── */}
       <H2 id="saroku">4. saroku</H2>
