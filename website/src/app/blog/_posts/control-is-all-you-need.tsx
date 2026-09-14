@@ -246,31 +246,36 @@ export default function ControlIsAllYouNeed() {
 
       <Callout label="Abstract">
         <P>
-          A tool call an agent proposes and a tool call an agent should be allowed to run are not
-          the same thing, and almost nothing deployed in front of agents today is built to tell
-          them apart at the one moment that matters: immediately before the call executes. That
-          judgment is the <strong>Policy Decision Point (PDP)</strong> role from access-control
-          architecture <Cite n={9} />, long established for authorization systems and, to my
-          knowledge, not previously benchmarked for pre-execution agent action judgment
-          specifically.
+          A tool call an agent proposes and a tool call an agent should be allowed to execute are
+          not the same thing, and almost nothing deployed in front of agents today is designed to
+          distinguish between them at the one moment that matters most: immediately before
+          execution. That judgment is the <strong>Policy Decision Point (PDP)</strong> role from
+          access-control architecture <Cite n={9} />, long established in authorization systems
+          and, to my knowledge, never systematically evaluated as a distinct security problem for
+          agent actions specifically.
         </P>
         <P>
-          So I built the benchmark before building anything else: pre-execution agent tool-call
-          decisions across 16 domains, each labeled safe or unsafe with a violation category and
-          severity. I scored five guard and moderation models and a non-learned baseline against
-          it, each in its own documented input format, and classified each by whether it was
-          actually built for this task, a related-but-different one, or neither. The strongest
-          confirmed peer, purpose-built for multi-step agent trajectory safety, catches 99.7% of
-          unsafe actions, and blocks roughly seven in ten legitimate ones to do it. That is the
-          finding, and it is not that these models score badly. It is that every one of them
-          forces the same trade: miss unsafe actions, or block so much ordinary work that the
-          guard gets switched off. Until now there was no standard benchmark that would have
-          shown it.
+          The premise here is simple: every action an agent takes should be checked before it
+          executes. Making that a real security control instead of a slogan requires answering one
+          question first: can existing safety models actually tell the actions that should run
+          apart from the ones that shouldn&apos;t?
         </P>
         <P>
-          Closing that gap took two pieces. I formalized the decision itself as a standalone
-          contract, the <strong>Action Safety Protocol (ASP)</strong>, so that any enforcement
-          layer can call any conformant judge. Then I trained the judge:{" "}
+          To answer that, I built the benchmark before building anything else: pre-execution agent
+          tool-call decisions across 16 domains, each labeled safe or unsafe with a violation
+          category and severity. I scored five guard and moderation models and a non-learned
+          baseline against it, each in its own documented input format, and classified each by
+          whether it was actually built for this task, a related-but-different one, or neither.
+          The results expose a trade, not a bad score. The strongest confirmed peer, purpose-built
+          for multi-step agent trajectory safety, catches 99.7% of unsafe actions and blocks
+          roughly seven in ten legitimate ones to do it. A guard that misses unsafe actions is
+          ineffective; a guard that blocks legitimate work is unusable. Until now there was no
+          standard benchmark that would have made that trade visible.
+        </P>
+        <P>
+          This is the gap saroku is built to close. I formalized the decision itself as a
+          standalone contract, the <strong>Action Safety Protocol (ASP)</strong>, so any
+          enforcement layer can call any conformant judge. Then I trained the judge:{" "}
           <strong>
             <a href="https://huggingface.co/karanxa/saroku-guard" style={{ color: "var(--primary-l)" }}>
               saroku-guard
@@ -278,14 +283,15 @@ export default function ControlIsAllYouNeed() {
           </strong>
           , a 184M-parameter classifier built for this task, catches 97.9% of unsafe actions while
           wrongly blocking 2.9% of safe ones, at single-digit-millisecond latency, and runs as the
-          default inside{" "}
+          default judge inside{" "}
           <a href="https://saroku.com" style={{ color: "var(--primary-l)" }}>
             saroku
           </a>
-          , an open-source runtime safety library. I also reconstruct the behavioral shape of a
-          real agentic security incident (<SecRef to="incident">§10</SecRef>) and run it against
-          saroku-guard directly, rather than resting on aggregate statistics alone. I release the
-          labeled dataset with this report; the evaluation holdout stays private (
+          , an open-source runtime safety library that puts this decision directly in the agent&apos;s
+          execution path. I also reconstruct the behavioral shape of a real agentic security
+          incident (<SecRef to="incident">§10</SecRef>) and run it against saroku-guard directly,
+          rather than resting on aggregate statistics alone. I release the labeled dataset with
+          this report; the evaluation holdout stays private (
           <SecRef to="dataset-release">§7.3</SecRef>).
         </P>
       </Callout>
@@ -326,17 +332,6 @@ export default function ControlIsAllYouNeed() {
         block so many legitimate ones that the agent stops being useful and the guard gets
         switched off. A safety layer nobody leaves running is not a safety layer.
       </P>
-      <Callout label="Objective">
-        <P>
-          Work out how this decision should actually be made and enforced (
-          <SecRef to="approach">§3</SecRef>), fix it as a precise, checkable contract (
-          <SecRef to="asp">§5</SecRef>), build the thing that makes and enforces it (
-          <SecRef to="saroku">§4</SecRef>), and then measure how well the guard models already
-          deployed for &quot;agent safety&quot; make that same decision today (
-          <SecRef to="methodology">§8</SecRef>, <SecRef to="results">§9</SecRef>).
-        </P>
-      </Callout>
-
       <Headline
         stats={[
           { num: "97.9%", label: <>of unsafe actions<br />caught</> },
@@ -364,13 +359,26 @@ export default function ControlIsAllYouNeed() {
         note={
           <>
             The second number is the one that decides whether a guard survives contact with
-            production. Seven models, one frozen evaluation set, each run in its own documented
+            production: this is the only model in the comparison that holds both ends of the
+            trade at once. Seven models, one frozen evaluation set, each run in its own documented
             input format (<SecRef to="methodology">§8</SecRef>). I also rebuilt the incident above
             as a runnable five-step chain and ran it against saroku-guard: every step was blocked
             before it executed (<SecRef to="incident">§10</SecRef>).
           </>
         }
       />
+
+      <Callout label="Objective">
+        <P>
+          The numbers above are the finding; the rest of this report is how they were earned.
+          Work out how this decision should actually be made and enforced (
+          <SecRef to="approach">§3</SecRef>), fix it as a precise, checkable contract (
+          <SecRef to="asp">§5</SecRef>), build the thing that makes and enforces it (
+          <SecRef to="saroku">§4</SecRef>), and then measure how well the guard models already
+          deployed for &quot;agent safety&quot; make that same decision today (
+          <SecRef to="methodology">§8</SecRef>, <SecRef to="results">§9</SecRef>).
+        </P>
+      </Callout>
 
       {/* ── 2. Related Work ── */}
       <H2 id="related-work">2. Related Work</H2>
