@@ -838,7 +838,7 @@ export default function ControlIsAllYouNeed() {
       </P>
 
       <H3 id="results-primary">9.1 Primary comparison</H3>
-      <Table minWidth={820}>
+      <Table minWidth={960}>
         <thead>
           <tr>
             <Th>Model</Th>
