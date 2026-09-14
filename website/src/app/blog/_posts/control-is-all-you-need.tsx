@@ -745,6 +745,19 @@ export default function ControlIsAllYouNeed() {
         evaluation against the holdout on request, the established pattern for benchmarks that
         keep a private test partition.
       </P>
+      <P>
+        The released training data is a mix of a small hand-authored gold set (368 seed and
+        template-expanded rows, which fixed the task&apos;s taxonomy and ground truth before any
+        generation happened) and a much larger LLM-generated corpus that provides training scale,
+        filtered automatically and then checked by hand: I manually reviewed an unbiased random
+        sample of 120 released rows myself and found all 120 binary safe/unsafe labels correct,
+        with a small number of violation-category mislabels (roughly 3% of the unsafe rows),
+        consistent with the weaker attribution accuracy already reported in{" "}
+        <SecRef to="results-attribution">§9.2</SecRef>. That review bounds the error rate in the
+        sample; it doesn&apos;t certify the full corpus, and the benchmark numbers in{" "}
+        <SecRef to="results">§9</SecRef> don&apos;t depend on it either way, since they come from
+        the private holdout above, not the published splits.
+      </P>
 
       {/* ── 8. Evaluation Methodology ── */}
       <H2 id="methodology">8. Evaluation Methodology</H2>
