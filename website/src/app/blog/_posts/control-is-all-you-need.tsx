@@ -373,20 +373,30 @@ export default function ControlIsAllYouNeed() {
           standardizes the interface between them.
         </P>
       </Callout>
-      <p
+      <div
         style={{
-          textAlign: "center",
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "6px 8px",
           fontFamily: "var(--font-jetbrains), monospace",
-          fontSize: "14px",
+          fontSize: "clamp(12px, 3.6vw, 14px)",
           color: "var(--text-2)",
           margin: "-6px 0 18px",
+          textAlign: "center",
         }}
       >
-        Agent <span style={{ color: "var(--subtle)" }}>→</span> PEP{" "}
-        <span style={{ color: "var(--subtle)" }}>→</span> PDP{" "}
-        <span style={{ color: "var(--subtle)" }}>→</span> Allow / Block{" "}
-        <span style={{ color: "var(--subtle)" }}>→</span> Tool
-      </p>
+        <span>Agent</span>
+        <span style={{ color: "var(--subtle)" }}>→</span>
+        <span>PEP</span>
+        <span style={{ color: "var(--subtle)" }}>→</span>
+        <span>PDP</span>
+        <span style={{ color: "var(--subtle)" }}>→</span>
+        <span style={{ whiteSpace: "nowrap" }}>Allow / Block</span>
+        <span style={{ color: "var(--subtle)" }}>→</span>
+        <span>Tool</span>
+      </div>
       <P>
         Keeping these separate is what makes the rest of this report possible. The PEP&apos;s job
         stays fixed and simple no matter how the PDP changes: intercept the call, ask the PDP, act
@@ -813,6 +823,7 @@ export default function ControlIsAllYouNeed() {
         <thead>
           <tr>
             <Th>Model</Th>
+            <Th>Params</Th>
             <Th>Tier</Th>
             <Th>Accuracy</Th>
             <Th>Unsafe recall</Th>
@@ -825,6 +836,7 @@ export default function ControlIsAllYouNeed() {
         <tbody>
           <tr style={{ background: "var(--primary-t)" }}>
             <Td strong>saroku-guard</Td>
+            <Td strong>184M</Td>
             <Td>
               <TierTag tier="peer" />
             </Td>
@@ -839,6 +851,7 @@ export default function ControlIsAllYouNeed() {
             <Td strong>
               AgentDoG <Cite n={4} />
             </Td>
+            <Td>8B</Td>
             <Td>
               <TierTag tier="peer" />
             </Td>
@@ -853,6 +866,7 @@ export default function ControlIsAllYouNeed() {
             <Td strong>
               Llama Guard 4 <Cite n={1} />
             </Td>
+            <Td>12B</Td>
             <Td>
               <TierTag tier="peer" />
             </Td>
@@ -867,6 +881,7 @@ export default function ControlIsAllYouNeed() {
             <Td strong>
               ShieldAgent <Cite n={5} />
             </Td>
+            <Td>7B</Td>
             <Td>
               <TierTag tier="peer" />
             </Td>
@@ -879,6 +894,7 @@ export default function ControlIsAllYouNeed() {
           </tr>
           <tr>
             <Td strong>Majority-unsafe</Td>
+            <Td>N/A</Td>
             <Td>
               <TierTag tier="baseline" />
             </Td>
@@ -893,6 +909,7 @@ export default function ControlIsAllYouNeed() {
             <Td strong>
               Prompt Guard <Cite n={3} />
             </Td>
+            <Td>86M</Td>
             <Td>
               <TierTag tier="adjacent" />
             </Td>
@@ -907,6 +924,7 @@ export default function ControlIsAllYouNeed() {
             <Td strong>
               Qwen3Guard <Cite n={2} />
             </Td>
+            <Td>0.6B</Td>
             <Td>
               <TierTag tier="adjacent" />
             </Td>
