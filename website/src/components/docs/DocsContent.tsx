@@ -1,5 +1,4 @@
 import CodeBlock from "@/components/CodeBlock";
-import { CHALLENGE_PROPERTIES, PROPERTY_LABELS, PROPERTY_BRIEFS, SCENARIOS_PER_PROPERTY } from "@/lib/challenge/scenarioMeta";
 
 export default function DocsContent() {
   return (
@@ -20,7 +19,6 @@ export default function DocsContent() {
       <LocalModelSection />
       <ArchitectureSection />
       <RoadmapSection />
-      <ChallengeSection />
     </article>
   );
 }
@@ -902,91 +900,7 @@ function RoadmapSection() {
         <li style={{ fontSize: "15px", color: "var(--text-2)" }}>ASP, the open specification for the PDP/PEP contract, and ASP-Bench, the benchmark</li>
       </ul>
 
-      <Callout type="info">
-        Contributions welcome! See the{" "}
-        <a
-          href="https://github.com/saroku-ai/saroku/blob/main/CONTRIBUTING.md"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ color: "var(--primary)" }}
-        >
-          contributing guide
-        </a>{" "}
-        for how to add a violation category, improve saroku-guard, or fix
-        bugs.
-      </Callout>
     </div>
   );
 }
 
-/* ─── Break Saroku Challenge ─────────────────────────────────────────── */
-
-function ChallengeSection() {
-  return (
-    <div>
-      <SectionHeading id="challenge">Break Saroku Challenge</SectionHeading>
-
-      <P>
-        Can you get saroku&apos;s <code>SafetyGuard</code> to judge an unsafe
-        agent action as safe? Break Saroku is a public red-team challenge
-        against saroku&apos;s behavioral judgment — install the harness,
-        attempt a scenario from the Challenge Set, and if your local guard
-        misjudges an action, the harness notifies saroku automatically.
-        Nothing counts until we independently reproduce the misjudgment on
-        our own infrastructure, so a client-side claim alone never earns
-        credit.
-      </P>
-
-      <SubHeading>Requirements</SubHeading>
-      <ul style={{ paddingLeft: "20px", margin: "0 0 20px", display: "flex", flexDirection: "column", gap: "6px" }}>
-        <li style={{ fontSize: "15px", color: "var(--text-2)" }}>Python 3.10+</li>
-        <li style={{ fontSize: "15px", color: "var(--text-2)" }}>Your own LLM API key — the challenge runs against whichever provider you configure as your judge</li>
-        <li style={{ fontSize: "15px", color: "var(--text-2)" }}>macOS, Linux, or Windows via WSL</li>
-      </ul>
-
-      <SubHeading>Install</SubHeading>
-      <CodeBlock code="curl -fsSL https://saroku.com/install-challenge.sh | sh" language="bash" />
-
-      <SubHeading>How it works</SubHeading>
-      <ul style={{ paddingLeft: "20px", margin: "0 0 20px", display: "flex", flexDirection: "column", gap: "10px" }}>
-        <li style={{ fontSize: "15px", color: "var(--text-2)" }}>
-          <strong>Install &amp; attempt</strong> — run the challenge harness locally with your own LLM API key. Try to construct a scenario that gets a labeled-unsafe action judged safe.
-        </li>
-        <li style={{ fontSize: "15px", color: "var(--text-2)" }}>
-          <strong>It pings us the moment you break it</strong> — the instant your local guard misjudges an action, the harness automatically notifies saroku, before you do anything else.
-        </li>
-        <li style={{ fontSize: "15px", color: "var(--text-2)" }}>
-          <strong>Come back and verify</strong> — submit your transcript on the challenge page. We independently re-run it through the real guard on our own infrastructure. That&apos;s what actually earns credit.
-        </li>
-      </ul>
-
-      <SubHeading>Scope</SubHeading>
-      <P>
-        The Challenge Set is a separate, unpublished set of 48 scenarios
-        across all 8 behavioral properties. There is no cash prize at launch:
-        a verified break earns leaderboard credit and, with your consent,
-        becomes a candidate contribution to a future benchmark release.
-      </P>
-
-      <SubHeading>Challenge Set</SubHeading>
-      <P>
-        {SCENARIOS_PER_PROPERTY} scenarios per property, {CHALLENGE_PROPERTIES.length} properties,
-        48 total. Each is a genuine, unambiguous instance of its labeled property — cross-checked
-        against the guard&apos;s own disambiguation criteria so a verified break is a clean,
-        creditable win rather than an ambiguous edge case.
-      </P>
-      <ul style={{ paddingLeft: "0", margin: "0 0 20px", listStyle: "none", display: "flex", flexDirection: "column", gap: "14px" }}>
-        {CHALLENGE_PROPERTIES.map((prop) => (
-          <li key={prop} style={{ borderLeft: "2px solid var(--border)", paddingLeft: "14px" }}>
-            <div style={{ fontSize: "15px", fontWeight: 600, color: "var(--text)", marginBottom: "4px" }}>
-              {PROPERTY_LABELS[prop]}
-            </div>
-            <p style={{ fontSize: "14px", color: "var(--text-2)", lineHeight: "1.6", margin: 0 }}>
-              {PROPERTY_BRIEFS[prop]}
-            </p>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}

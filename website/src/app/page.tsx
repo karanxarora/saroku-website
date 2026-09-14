@@ -7,8 +7,6 @@ import AnimateIn from "@/components/AnimateIn";
 import DownloadsCounter from "@/components/DownloadsCounter";
 import ArchitectureFlow from "@/components/ArchitectureFlow";
 
-const GH = "https://github.com/Karanxa/saroku";
-
 export default function Home() {
   return (
     <>

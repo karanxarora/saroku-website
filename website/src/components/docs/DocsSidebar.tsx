@@ -31,12 +31,6 @@ export const navSections: NavSection[] = [
       { id: "roadmap", label: "Roadmap" },
     ],
   },
-  {
-    title: "Challenge",
-    items: [
-      { id: "challenge", label: "Break Saroku Challenge" },
-    ],
-  },
 ];
 
 interface DocsSidebarProps {
