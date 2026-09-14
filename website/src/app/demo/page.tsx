@@ -4,9 +4,9 @@ import Footer from "@/components/Footer";
 import DemoClient from "@/components/demo/DemoClient";
 
 export const metadata: Metadata = {
-  title: "Live Demo — saroku",
+  title: "Live Demo · saroku",
   description:
-    "Watch saroku's SafetyGuard catch an AI agent going rogue mid-task, live — then run your own action through the real SDK.",
+    "Watch saroku's SafetyGuard catch an AI agent going rogue mid-task, live, then run your own action through the real SDK.",
 };
 
 export default function DemoPage() {

@@ -13,6 +13,7 @@ import {
   Callout,
 } from "@/components/blog/PostProse";
 import PostToc, { type TocItem } from "@/components/blog/PostToc";
+import ArchitectureFlow from "@/components/ArchitectureFlow";
 
 /**
  * "Control Is All You Need: Secure Before It Acts" — the flagship technical
@@ -158,134 +159,6 @@ from saroku.integrations import protect
 guard = SafetyGuard()                      # saroku-guard loads by default
 agent = await protect(agent, guard=guard)  # every tool call now judged`;
 
-/**
- * saroku's default execution path, as a real inline diagram (SVG, themed off
- * the site's own tokens) instead of an exported raster image, so it stays
- * crisp at any size and follows light/dark mode automatically.
- */
-function FlowDiagram() {
-  const box = (
-    x: number,
-    y: number,
-    w: number,
-    h: number,
-    label: string,
-    sub: string | null,
-    stroke: string,
-    fill: string
-  ) => (
-    <g key={label}>
-      <rect x={x} y={y} width={w} height={h} rx={10} fill={fill} stroke={stroke} strokeWidth={1.5} />
-      <text
-        x={x + w / 2}
-        y={sub ? y + h / 2 - 6 : y + h / 2 + 5}
-        textAnchor="middle"
-        fontFamily="var(--font-jetbrains), monospace"
-        fontSize="13"
-        fontWeight={600}
-        fill="var(--text)"
-      >
-        {label}
-      </text>
-      {sub && (
-        <text
-          x={x + w / 2}
-          y={y + h / 2 + 12}
-          textAnchor="middle"
-          fontFamily="var(--font-work-sans), sans-serif"
-          fontSize="10.5"
-          fill="var(--muted)"
-        >
-          {sub}
-        </text>
-      )}
-    </g>
-  );
-
-  const arrow = (
-    x1: number,
-    y1: number,
-    x2: number,
-    y2: number,
-    color: string,
-    label?: string,
-    labelSide: "left" | "right" | "mid" = "mid"
-  ) => {
-    const midX = (x1 + x2) / 2;
-    const midY = (y1 + y2) / 2;
-    const lx = labelSide === "left" ? Math.min(x1, x2) - 6 : labelSide === "right" ? Math.max(x1, x2) + 6 : midX;
-    const anchor = labelSide === "left" ? "end" : labelSide === "right" ? "start" : "middle";
-    return (
-      <g key={`${x1}-${y1}-${x2}-${y2}`}>
-        <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={color} strokeWidth={1.5} markerEnd="url(#arrowhead)" />
-        {label && (
-          <text
-            x={labelSide === "mid" ? lx : lx}
-            y={labelSide === "mid" ? midY - 8 : midY + 4}
-            textAnchor={anchor}
-            fontFamily="var(--font-jetbrains), monospace"
-            fontSize="10.5"
-            fontWeight={600}
-            fill={color}
-          >
-            {label}
-          </text>
-        )}
-      </g>
-    );
-  };
-
-  return (
-    <figure style={{ margin: "28px 0" }}>
-      <div
-        style={{
-          border: "1px solid var(--border)",
-          borderRadius: "12px",
-          background: "var(--surface-2)",
-          padding: "16px 8px 8px",
-        }}
-      >
-        <svg viewBox="0 0 860 300" width="100%" role="img" aria-label="saroku's default balanced-mode execution path">
-          <defs>
-            <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
-              <path d="M0,0 L8,4 L0,8 Z" fill="var(--muted)" />
-            </marker>
-          </defs>
-
-          {box(340, 12, 180, 40, "Agent proposes action", null, "var(--border)", "var(--surface)")}
-          {arrow(430, 52, 430, 82, "var(--muted)")}
-
-          {box(330, 84, 200, 46, "saroku-guard", "184M params · ~7ms", "var(--primary-b)", "var(--primary-t)")}
-
-          {arrow(390, 130, 140, 178, "var(--success)")}
-          <text x="290" y="158" textAnchor="middle" fontFamily="var(--font-jetbrains), monospace" fontSize="10.5" fontWeight={600} fill="var(--success)">safe</text>
-          {box(60, 180, 160, 42, "Allow", null, "var(--success-b)", "var(--success-t)")}
-
-          {arrow(430, 130, 430, 158, "var(--danger)")}
-          <text x="430" y="153" textAnchor="middle" fontFamily="var(--font-jetbrains), monospace" fontSize="10.5" fontWeight={600} fill="var(--danger)">flagged unsafe</text>
-
-          {arrow(430, 160, 500, 178, "var(--danger)")}
-          <text x="540" y="172" textAnchor="middle" fontFamily="var(--font-jetbrains), monospace" fontSize="9.5" fill="var(--muted)">judge configured</text>
-          {box(470, 180, 180, 46, "LLM judge", "the second opinion", "var(--danger-b)", "var(--danger-t)")}
-          {arrow(520, 226, 460, 256, "var(--success)")}
-          <text x="472" y="248" textAnchor="middle" fontFamily="var(--font-jetbrains), monospace" fontSize="10" fontWeight={600} fill="var(--success)">allow</text>
-          {box(370, 258, 130, 34, "Allow", "with full analysis", "var(--success-b)", "var(--success-t)")}
-          {arrow(600, 226, 660, 256, "var(--danger)")}
-          <text x="648" y="248" textAnchor="middle" fontFamily="var(--font-jetbrains), monospace" fontSize="10" fontWeight={600} fill="var(--danger)">block</text>
-          {box(560, 258, 150, 34, "Block", "with full analysis", "var(--danger-b)", "var(--danger-t)")}
-
-          {arrow(430, 160, 790, 246, "var(--muted)")}
-          <text x="700" y="185" textAnchor="middle" fontFamily="var(--font-jetbrains), monospace" fontSize="9.5" fill="var(--muted)">no judge configured</text>
-          {box(695, 258, 160, 34, "Block", "violation category", "var(--danger-b)", "var(--danger-t)")}
-        </svg>
-      </div>
-      <figcaption style={{ marginTop: "10px", fontSize: "13px", color: "var(--subtle)", textAlign: "center" }}>
-        saroku&apos;s default (balanced) execution path.
-      </figcaption>
-    </figure>
-  );
-}
-
 export default function ControlIsAllYouNeed() {
   return (
     <>
@@ -327,8 +200,9 @@ export default function ControlIsAllYouNeed() {
           baseline against it, each in its own documented input format, and classified each by
           whether it was actually built for this task, a related-but-different one, or neither.
           The results expose a trade, not a bad score. The strongest confirmed peer, purpose-built
-          for multi-step agent trajectory safety, catches 99.7% of unsafe actions and blocks
-          roughly seven in ten legitimate ones to do it. A guard that misses unsafe actions is
+          for multi-step agent trajectory safety, catches <strong>99.7%</strong> of unsafe actions
+          and blocks <strong>72.1%</strong> of legitimate ones to do it. A guard that misses unsafe
+          actions is
           ineffective; a guard that blocks legitimate work is unusable. Until now there was no
           standard benchmark that would have made that trade visible.
         </P>
@@ -341,8 +215,9 @@ export default function ControlIsAllYouNeed() {
               saroku-guard
             </a>
           </strong>
-          , a 184M-parameter classifier built for this task, catches 97.9% of unsafe actions while
-          wrongly blocking 2.9% of safe ones, at single-digit-millisecond latency, and runs as the
+          , a 184M-parameter classifier built for this task, catches <strong>97.9%</strong> of
+          unsafe actions while wrongly blocking <strong>2.9%</strong> of safe ones, at
+          single-digit-millisecond latency, and runs as the
           default judge inside{" "}
           <a href="https://saroku.com" style={{ color: "var(--primary-l)" }}>
             saroku
@@ -562,7 +437,12 @@ export default function ControlIsAllYouNeed() {
           saroku-guard says.
         </LI>
       </UL>
-      <FlowDiagram />
+      <figure style={{ margin: "28px 0" }}>
+        <ArchitectureFlow />
+        <figcaption style={{ marginTop: "16px", fontSize: "13px", color: "var(--subtle)", textAlign: "center" }}>
+          saroku&apos;s default (balanced) execution path.
+        </figcaption>
+      </figure>
       <P>
         None of this changes across modes except which PDP, or how many, get consulted.
         That&apos;s the point of keeping the PEP and PDP separate (<SecRef to="approach">§3</SecRef>

@@ -5,7 +5,7 @@ import DocsSidebar from "@/components/docs/DocsSidebar";
 import DocsContent from "@/components/docs/DocsContent";
 
 export const metadata: Metadata = {
-  title: "Documentation — saroku",
+  title: "Documentation · saroku",
   description:
     "Complete documentation for saroku: behavioral regression testing for LLMs. CLI reference, probe schemas, CI/CD integration, and architecture.",
 };

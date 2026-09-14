@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import { POSTS_META } from "./posts";
 
 export const metadata: Metadata = {
-  title: "Blog — saroku",
+  title: "Blog · saroku",
   description: "Technical write-ups on saroku's architecture, benchmarks, and agent safety research.",
 };
 
@@ -51,7 +51,7 @@ export default function BlogIndexPage() {
         </h1>
 
         {posts.length === 0 && (
-          <p style={{ color: "var(--muted)", fontSize: "15px" }}>No posts yet — check back soon.</p>
+          <p style={{ color: "var(--muted)", fontSize: "15px" }}>No posts yet. Check back soon.</p>
         )}
 
         <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>

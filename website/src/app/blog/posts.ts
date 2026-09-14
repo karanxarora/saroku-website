@@ -26,7 +26,7 @@ export const POSTS_META: PostMeta[] = [
     slug: "control-is-all-you-need",
     title: "Control Is All You Need: Secure Before It Acts",
     description:
-      "Pre-execution agent-action safety judgment is a distinct task nothing existing is built for — the benchmark, protocol, dataset, judge model, and enforcement library that close that gap, checked against a real agentic security incident.",
+      "Pre-execution agent-action safety judgment is a distinct task nothing existing is built for: the benchmark, protocol, dataset, judge model, and enforcement library that close that gap, checked against a real agentic security incident.",
     date: "2026-09-14",
     readMinutes: 22,
   },
@@ -34,7 +34,7 @@ export const POSTS_META: PostMeta[] = [
     slug: "action-safety-protocol",
     title: "Action Safety Protocol: a contract between agent policy decision and enforcement points",
     description:
-      "Version 0.1.0 of ASP — an open specification for the request/response contract between the component that judges whether an agent's proposed tool call is safe and the component that enforces that judgment.",
+      "Version 0.1.0 of ASP: an open specification for the request/response contract between the component that judges whether an agent's proposed tool call is safe and the component that enforces that judgment.",
     date: "2026-09-14",
     readMinutes: 10,
   },

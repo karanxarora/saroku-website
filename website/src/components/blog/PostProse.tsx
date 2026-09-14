@@ -14,7 +14,7 @@ export function H2({ children, id }: { children: ReactNode; id?: string }) {
     <h2
       id={id}
       style={{
-        fontFamily: "var(--font-fraunces), Georgia, serif",
+        fontFamily: "var(--font-work-sans), sans-serif",
         fontWeight: 600,
         fontSize: "clamp(22px, 3vw, 28px)",
         lineHeight: 1.25,
@@ -33,7 +33,7 @@ export function H3({ children, id }: { children: ReactNode; id?: string }) {
     <h3
       id={id}
       style={{
-        fontFamily: "var(--font-fraunces), Georgia, serif",
+        fontFamily: "var(--font-work-sans), sans-serif",
         fontWeight: 600,
         fontSize: "19px",
         lineHeight: 1.35,

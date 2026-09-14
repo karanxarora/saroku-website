@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Work_Sans, JetBrains_Mono, Fraunces } from "next/font/google";
+import { Work_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 const workSans = Work_Sans({
@@ -14,18 +14,10 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-const fraunces = Fraunces({
-  subsets: ["latin"],
-  variable: "--font-fraunces",
-  display: "swap",
-  weight: ["500", "600"],
-  style: ["normal", "italic"],
-});
-
 export const metadata: Metadata = {
-  title: "saroku — Behavioral Reliability Testing for LLMs",
+  title: "saroku · Behavioral Reliability Testing for LLMs",
   description:
-    "saroku tests whether your LLM's behavior holds under pressure — and blocks unsafe agent actions before they execute.",
+    "saroku tests whether your LLM's behavior holds under pressure, and blocks unsafe agent actions before they execute.",
   keywords: [
     "LLM testing",
     "behavioral regression",
@@ -36,7 +28,7 @@ export const metadata: Metadata = {
     "AI alignment",
   ],
   openGraph: {
-    title: "saroku — Behavioral Reliability Testing for LLMs",
+    title: "saroku · Behavioral Reliability Testing for LLMs",
     description:
       "Test what your model values, not just what it knows. Detect sycophancy, honesty drift, and consistency failures before they reach production.",
     type: "website",
@@ -49,7 +41,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${workSans.variable} ${jetbrainsMono.variable} ${fraunces.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${workSans.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
       <head>
         {/* Prevent flash of wrong theme */}
         <script

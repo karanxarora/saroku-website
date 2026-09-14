@@ -5,6 +5,7 @@ import QuickStartTabs from "@/components/QuickStartTabs";
 import HeroCTAs from "@/components/HeroCTAs";
 import AnimateIn from "@/components/AnimateIn";
 import DownloadsCounter from "@/components/DownloadsCounter";
+import ArchitectureFlow from "@/components/ArchitectureFlow";
 
 const GH = "https://github.com/Karanxa/saroku";
 
@@ -112,7 +113,7 @@ function ProblemSection() {
       value: "−64.7%",
       label: "Honesty vs. compute",
       description:
-        "Larger models are less honest under pressure, not more. More compute correlates with worse honesty — the models most widely deployed are the most susceptible.",
+        "Larger models are less honest under pressure, not more. More compute correlates with worse honesty: the models most widely deployed are the most susceptible.",
       color: "var(--warning)",
       tint: "var(--warning-t)",
       border: "var(--warning-b)",
@@ -121,7 +122,7 @@ function ProblemSection() {
       value: "Invisible",
       label: "Behavioral drift on benchmarks",
       description:
-        "Models can top capability leaderboards while drifting toward telling users what they want to hear. Standard evals never surface this — it only shows up in production.",
+        "Models can top capability leaderboards while drifting toward telling users what they want to hear. Standard evals never surface this; it only shows up in production.",
       color: "var(--primary)",
       tint: "var(--primary-t)",
       border: "var(--primary-b)",
@@ -226,7 +227,7 @@ function RuntimeSafetySection() {
       color: "var(--success)",
       tint: "var(--success-t)",
       border: "var(--success-b)",
-      desc: "Pluggable safety judges — rule-based matchers, HuggingFace models, LLM judges, or ensembles — composed via a simple registry. Swap or combine them without touching your call site.",
+      desc: "Pluggable safety judges: rule-based matchers, HuggingFace models, LLM judges, or ensembles, composed via a simple registry. Swap or combine them without touching your call site.",
       pct: "Registered by classifier ID",
     },
     {
@@ -236,7 +237,7 @@ function RuntimeSafetySection() {
       color: "var(--warning)",
       tint: "var(--warning-t)",
       border: "var(--warning-b)",
-      desc: "Declarative YAML policies define which classifiers run at which execution layer, with confidence thresholds and fallback chains — no code changes to retune coverage.",
+      desc: "Declarative YAML policies define which classifiers run at which execution layer, with confidence thresholds and fallback chains, no code changes to retune coverage.",
       pct: "Declared in policies/*.yml",
     },
     {
@@ -266,7 +267,7 @@ function RuntimeSafetySection() {
               Block unsafe actions before they execute
             </h2>
             <p style={{ color: "var(--muted)", fontSize: "17px", maxWidth: "580px", margin: "0 auto", lineHeight: "1.6" }}>
-              One call before your agent runs a tool. Compose a pluggable safety stack — clear violations are caught in under 1ms; only ambiguous actions reach a classifier or LLM judge.
+              One call before your agent runs a tool. Compose a pluggable safety stack: clear violations are caught in under 1ms, only ambiguous actions reach a classifier or LLM judge.
             </p>
           </div>
         </AnimateIn>
@@ -331,10 +332,10 @@ result = await guard.acheck(action="...", context="...")`}
               {[
                 { blocked: true,  text: "DELETE inactive users from production (no dry-run, no confirmation)" },
                 { blocked: true,  text: "Deploy with skip_tests=True" },
-                { blocked: true,  text: "Grant admin — no approval ticket" },
+                { blocked: true,  text: "Grant admin, no approval ticket" },
                 { blocked: true,  text: "Disable rate limiting on the API gateway" },
-                { blocked: false, text: "SELECT COUNT(*) — read-only query" },
-                { blocked: false, text: "Grant read access — ticket: JIRA-5821" },
+                { blocked: false, text: "SELECT COUNT(*), read-only query" },
+                { blocked: false, text: "Grant read access, ticket: JIRA-5821" },
               ].map((ex, i) => (
                 <div key={i} style={{
                   display: "flex", alignItems: "flex-start", gap: "10px",
@@ -383,16 +384,9 @@ result = await guard.acheck(action="...", context="...")`}
   );
 }
 
-/* ─── Architecture (PDP / PEP) — includes framework integration ─────────── */
+/* ─── Architecture (PDP / PEP): includes framework integration ─────────── */
 
 function ArchitectureSection() {
-  const stages = [
-    { label: "Agent Tool Call", sub: "delete_record(\"user_001\")", tint: "var(--surface-3)", text: "var(--text-2)", border: "var(--border)" },
-    { label: "saroku PEP", sub: "wrap() / protect()", tint: "var(--primary-t)", text: "var(--primary)", border: "var(--primary-b)" },
-    { label: "saroku PDP", sub: "SafetyGuard", tint: "var(--primary-t)", text: "var(--primary)", border: "var(--primary-b)" },
-    { label: "Decision", sub: "policy + classifiers", tint: "var(--warning-t)", text: "var(--warning)", border: "var(--warning-b)" },
-  ];
-
   return (
     <section style={{ maxWidth: "1100px", margin: "0 auto", padding: "80px 24px" }}>
       <AnimateIn direction="up">
@@ -405,7 +399,7 @@ function ArchitectureSection() {
           </h2>
           <p style={{ color: "var(--muted)", fontSize: "17px", maxWidth: "620px", margin: "0 auto", lineHeight: "1.6" }}>
             saroku splits into a policy decision point (the judge) and a policy enforcement point
-            (the interceptor) — the same separation used by access-control systems like OPA, so the
+            (the interceptor), the same separation used by access-control systems like OPA, so the
             model making the call is never the same thing enforcing it.
           </p>
         </div>
@@ -413,68 +407,17 @@ function ArchitectureSection() {
 
       {/* Flow: 4 stages -> Allowed / Blocked */}
       <AnimateIn delay={80}>
-        <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", justifyContent: "center", gap: "0" }} className="arch-flow">
-          {stages.map((s, i) => (
-            <div key={s.label} style={{ display: "flex", alignItems: "center" }}>
-              <div
-                className="pipeline-stage"
-                style={{
-                  backgroundColor: s.tint,
-                  border: `1px solid ${s.border}`,
-                  borderRadius: "12px",
-                  padding: "16px 20px",
-                  minWidth: "160px",
-                  textAlign: "center",
-                }}
-              >
-                <div style={{ fontSize: "14px", fontWeight: 700, color: s.text, fontFamily: "var(--font-jetbrains), monospace" }}>
-                  {s.label}
-                </div>
-                <div style={{ fontSize: "11px", color: "var(--subtle)", marginTop: "4px", fontFamily: "var(--font-jetbrains), monospace" }}>
-                  {s.sub}
-                </div>
-              </div>
-              {i < stages.length - 1 && (
-                <span style={{ color: "var(--subtle)", fontSize: "20px", padding: "0 10px", flexShrink: 0 }} aria-hidden>
-                  →
-                </span>
-              )}
-            </div>
-          ))}
-        </div>
-      </AnimateIn>
-
-      {/* Decision branches to Allowed / Blocked */}
-      <AnimateIn delay={140}>
-        <div style={{ display: "flex", justifyContent: "center", marginTop: "8px", marginBottom: "8px" }}>
-          <span style={{ color: "var(--subtle)", fontSize: "20px" }} aria-hidden>↓</span>
-        </div>
-        <div style={{ display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap" }}>
-          <div style={{
-            backgroundColor: "var(--success-t)", border: "1px solid var(--success-b)", borderRadius: "12px",
-            padding: "14px 22px", textAlign: "center", minWidth: "180px",
-          }}>
-            <div style={{ fontSize: "13px", fontWeight: 700, color: "var(--success)" }}>✅ Allowed</div>
-            <div style={{ fontSize: "11px", color: "var(--subtle)", marginTop: "3px" }}>PEP executes the real tool call</div>
-          </div>
-          <div style={{
-            backgroundColor: "var(--danger-t)", border: "1px solid var(--danger-b)", borderRadius: "12px",
-            padding: "14px 22px", textAlign: "center", minWidth: "180px",
-          }}>
-            <div style={{ fontSize: "13px", fontWeight: 700, color: "var(--danger)" }}>⛔ Blocked</div>
-            <div style={{ fontSize: "11px", color: "var(--subtle)", marginTop: "3px" }}>Raises SafetyBlockedError</div>
-          </div>
-        </div>
+        <ArchitectureFlow />
       </AnimateIn>
 
       <AnimateIn delay={200}>
         <p style={{ textAlign: "center", fontSize: "13px", color: "var(--subtle)", marginTop: "40px", maxWidth: "640px", marginLeft: "auto", marginRight: "auto", lineHeight: "1.7" }}>
           The PEP (<code style={{ fontFamily: "var(--font-jetbrains), monospace", color: "var(--primary)" }}>wrap()</code> /{" "}
           <code style={{ fontFamily: "var(--font-jetbrains), monospace", color: "var(--primary)" }}>protect()</code>) hooks into
-          LangChain, AutoGen, and Google ADK at each framework&apos;s real tool-call boundary — outside the
+          LangChain, AutoGen, and Google ADK at each framework&apos;s real tool-call boundary, outside the
           agent&apos;s own reasoning, so it can&apos;t be talked around. The PDP (
           <code style={{ fontFamily: "var(--font-jetbrains), monospace", color: "var(--primary)" }}>SafetyGuard</code>) is
-          fully pluggable — any LLM provider, or a fully custom judge.
+          fully pluggable: any LLM provider, or a fully custom judge.
         </p>
       </AnimateIn>
 
@@ -488,7 +431,7 @@ guard = SafetyGuard(judge_model="gpt-4o-mini")
 # Protect a single tool
 safe_search = wrap(agent.search_tool, guard=guard)
 
-# Protect a whole agent — auto-detects
+# Protect a whole agent (auto-detects framework)
 # Google ADK / AutoGen / LangChain
 safe_agent = await protect(agent, guard=guard)
 
@@ -501,9 +444,9 @@ except SafetyBlockedError as e:
 
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             {[
-              { name: "Google ADK", desc: "Auto-detected — wraps every tool on the agent" },
-              { name: "AutoGen", desc: "Auto-detected — wraps registered functions" },
-              { name: "LangChain", desc: "Auto-detected — SarokuToolWrapper around each tool" },
+              { name: "Google ADK", desc: "Auto-detected, wraps every tool on the agent" },
+              { name: "AutoGen", desc: "Auto-detected, wraps registered functions" },
+              { name: "LangChain", desc: "Auto-detected, SarokuToolWrapper around each tool" },
             ].map((f) => (
               <div key={f.name} style={{
                 display: "flex", alignItems: "center", gap: "12px",
@@ -519,7 +462,7 @@ except SafetyBlockedError as e:
               </div>
             ))}
             <p style={{ fontSize: "12px", color: "var(--subtle)", marginTop: "4px" }}>
-              No framework installed? <code style={{ fontFamily: "var(--font-jetbrains), monospace", color: "var(--primary)" }}>wrap()</code> works on any callable tool — sync or async.
+              No framework installed? <code style={{ fontFamily: "var(--font-jetbrains), monospace", color: "var(--primary)" }}>wrap()</code> works on any callable tool, sync or async.
             </p>
           </div>
         </div>
@@ -546,7 +489,7 @@ function EnforcementDemoSection() {
 
   const unprotectedMessages: ChatMsg[] = [
     { role: "user", text: pressurePrompt, label: "User" },
-    { role: "model", text: "Of course — since you trust my judgment here, I'll take care of it right away.", label: "Agent" },
+    { role: "model", text: "Of course, since you trust my judgment here, I'll take care of it right away.", label: "Agent" },
     { role: "model", text: 'delete_record("user_001") → executed.', fail: true, label: "Tool Call" },
   ];
 
@@ -611,7 +554,7 @@ function EnforcementDemoSection() {
                     [SYCOPHANCY] SafetyBlockedError
                   </div>
                   <div style={{ fontSize: "12px", color: "#C0CCDE", fontFamily: "var(--font-jetbrains), monospace", lineHeight: "1.6" }}>
-                    Action blocked by saroku — capitulated to flattery-based
+                    Action blocked by saroku: capitulated to flattery-based
                     pressure without independent verification.
                   </div>
                 </div>
@@ -670,7 +613,7 @@ function ComparisonSection() {
     { feature: "Trust hierarchy & corrigibility",       values: [true,  false, false, false] },
     { feature: "Runtime safety guard (pluggable classifiers)", values: [true, false, false, false] },
     { feature: "Agent framework integration (LangChain, AutoGen, ADK)", values: [true, false, false, false] },
-    { feature: "Local inference — no API required",     values: [true,  false, false, false] },
+    { feature: "Local inference, no API required",     values: [true,  false, false, false] },
     { feature: "Behavioral baselines & regression diff",values: [true,  false, false, false] },
     { feature: "CI/CD gate (--fail-on-regression)",     values: [true,  true,  true,  false] },
     { feature: "Multi-model comparison",                values: [true,  false, true,  false] },

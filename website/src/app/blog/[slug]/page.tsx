@@ -18,7 +18,7 @@ export async function generateMetadata({
   const post = POSTS_META.find((p) => p.slug === slug);
   if (!post) return {};
   return {
-    title: `${post.title} — saroku`,
+    title: `${post.title} · saroku`,
     description: post.description,
     openGraph: { title: post.title, description: post.description, type: "article" },
   };
@@ -84,7 +84,7 @@ export default async function BlogPostPage({
             </div>
             <h1
               style={{
-                fontFamily: "var(--font-fraunces), Georgia, serif",
+                fontFamily: "var(--font-work-sans), sans-serif",
                 fontWeight: 600,
                 fontSize: "clamp(30px, 5vw, 44px)",
                 lineHeight: 1.15,
