@@ -51,6 +51,7 @@ export default function Footer() {
               { href: "/#features",    label: "Features"     },
               { href: "/#how-it-works", label: "How It Works" },
               { href: "/#comparison",  label: "Comparison"   },
+              { href: "/blog",         label: "Blog"          },
               { href: `${GH}/releases`, label: "Changelog", external: true },
             ]} />
           </div>

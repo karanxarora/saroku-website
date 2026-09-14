@@ -1010,7 +1010,7 @@ function GuardModesSection() {
         required. Three modes control how it works with the LLM judge:
       </P>
       <CodeBlock
-        code={`# balanced — default. saroku-guard clears safe actions in ~10-30ms locally;
+        code={`# balanced — default. saroku-guard clears safe actions in ~7ms locally;
 # anything flagged escalates to the LLM judge for full attribution.
 guard = SafetyGuard()
 
@@ -1080,7 +1080,7 @@ function LocalModelSection() {
       <P>
         saroku-guard protects every <InlineCode>SafetyGuard()</InlineCode> by default —
         no setup, no API key, no data leaving your environment. It downloads automatically
-        on first use and runs on CPU.
+        on first use.
       </P>
       <P>
         Published on HuggingFace at{" "}
@@ -1117,7 +1117,7 @@ guard = SafetyGuard(use_local_pdp=False, judge_model="gpt-4o-mini")`}
           <tbody>
             {[
               ["Clear violation caught by rules engine", "< 1ms"],
-              ["Action evaluated by saroku-guard", "~10-30ms"],
+              ["Action evaluated by saroku-guard", "~7ms"],
               ["Average across 1000 queries (mixed traffic)", "< 50ms"],
             ].map(([scenario, latency]) => (
               <tr key={scenario} style={{ borderBottom: "1px solid #F3F4F6" }}>

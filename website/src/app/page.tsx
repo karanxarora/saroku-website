@@ -222,7 +222,7 @@ function RuntimeSafetySection() {
     {
       num: "01",
       name: "Classifiers",
-      latency: "< 1ms – ~30ms",
+      latency: "< 1ms – ~7ms",
       color: "var(--success)",
       tint: "var(--success-t)",
       border: "var(--success-b)",
@@ -242,7 +242,7 @@ function RuntimeSafetySection() {
     {
       num: "03",
       name: "Execution Engine",
-      latency: "~30ms",
+      latency: "~7ms",
       color: "var(--primary)",
       tint: "var(--primary-t)",
       border: "var(--primary-b)",
@@ -354,7 +354,7 @@ result = await guard.acheck(action="...", context="...")`}
               <div style={{ marginTop: "8px", padding: "16px", backgroundColor: "var(--surface-2)", border: "1px solid var(--border)", borderRadius: "10px" }}>
                 <div style={{ fontSize: "12px", fontWeight: 600, color: "var(--subtle)", marginBottom: "8px", textTransform: "uppercase", letterSpacing: "0.06em" }}>Guard modes</div>
                 {[
-                  { mode: `mode="local"`,     desc: "saroku-guard only, no API calls (~10-30ms)" },
+                  { mode: `mode="local"`,     desc: "saroku-guard only, no API calls (~7ms)" },
                   { mode: `mode="balanced"`,  desc: "saroku-guard by default → escalate to LLM judge if unsafe (default)" },
                   { mode: `mode="thorough"`,  desc: "Always run the full LLM judge" },
                 ].map((m) => (

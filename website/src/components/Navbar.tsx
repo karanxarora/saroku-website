@@ -65,6 +65,7 @@ export default function Navbar() {
           <NavLink href="/#features">Features</NavLink>
           <NavLink href="/#how-it-works">How It Works</NavLink>
           <NavLink href="/docs">Docs</NavLink>
+          <NavLink href="/blog">Blog</NavLink>
           <NavLink href="/challenge">Challenge</NavLink>
           <a
             href="https://huggingface.co/karanxa/saroku-guard"
@@ -142,6 +143,7 @@ export default function Navbar() {
               { href: "/#features",    label: "Features"      },
               { href: "/#how-it-works", label: "How It Works" },
               { href: "/docs",          label: "Docs"          },
+              { href: "/blog",          label: "Blog"          },
               { href: "/challenge",     label: "Challenge"     },
               { href: "https://huggingface.co/karanxa/saroku-guard", label: "HuggingFace" },
             ].map(({ href, label }) => (

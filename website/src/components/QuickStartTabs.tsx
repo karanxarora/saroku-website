@@ -118,7 +118,7 @@ result = await guard.acheck(action="...", context="...")`,
       },
       {
         description: "Choose the right mode for your deployment:",
-        code: `# Balanced (default) — saroku-guard clears safe actions in ~10-30ms
+        code: `# Balanced (default) — saroku-guard clears safe actions in ~7ms
 # locally; anything flagged escalates to the LLM judge. No setup required.
 guard = SafetyGuard()
 
