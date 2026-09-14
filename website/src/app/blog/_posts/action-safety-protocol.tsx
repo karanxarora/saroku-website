@@ -158,7 +158,10 @@ export default function ActionSafetyProtocol() {
           <span style={{ color: "var(--text-2)" }}>Reference implementation</span> saroku
         </span>
         <span>
-          <span style={{ color: "var(--text-2)" }}>Editor</span> Karan Arora
+          <span style={{ color: "var(--text-2)" }}>Editor</span>{" "}
+          <a href="https://x.com/aiwithkaran" target="_blank" rel="noopener noreferrer" style={{ color: "inherit" }}>
+            Karan Arora
+          </a>
         </span>
       </div>
 

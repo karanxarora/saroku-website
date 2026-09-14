@@ -183,7 +183,14 @@ export default function ControlIsAllYouNeed() {
           margin: "0 0 4px",
         }}
       >
-        Karan Arora
+        <a
+          href="https://x.com/aiwithkaran"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: "inherit" }}
+        >
+          Karan Arora
+        </a>
       </p>
       <p
         style={{
