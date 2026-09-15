@@ -21,7 +21,7 @@ import ArchitectureFlow from "@/components/ArchitectureFlow";
  * saroku.com/blog/control-is-all-you-need.
  *
  * Section numbering is load-bearing: the report cross-references its own
- * sections (§5.2, §8.1, §9.1, ...) throughout. Do not renumber sections when
+ * sections (§4.2, §6.1, §7.1, ...) throughout. Do not renumber sections when
  * editing — SEC ids below are what those cross-references resolve to.
  */
 
@@ -29,22 +29,22 @@ const TOC: TocItem[] = [
   { id: "introduction", label: "1. Introduction" },
   { id: "related-work", label: "2. Related Work" },
   { id: "approach", label: "3. Approach" },
-  { id: "saroku", label: "4. saroku" },
-  { id: "asp", label: "5. Action Safety Protocol" },
-  { id: "asp-input", label: "5.1 Input", sub: true },
-  { id: "asp-output", label: "5.2 Output", sub: true },
-  { id: "saroku-guard", label: "6. saroku-guard" },
-  { id: "dataset", label: "7. Dataset" },
-  { id: "dataset-construction", label: "7.1 Construction", sub: true },
-  { id: "dataset-composition", label: "7.2 Composition", sub: true },
-  { id: "dataset-release", label: "7.3 Release plan", sub: true },
-  { id: "methodology", label: "8. Evaluation Methodology" },
-  { id: "methodology-tiers", label: "8.1 Classifying the models", sub: true },
-  { id: "methodology-format", label: "8.2 Native input format", sub: true },
-  { id: "methodology-scope", label: "8.3 Scope and scoring", sub: true },
-  { id: "results", label: "9. Results" },
-  { id: "results-primary", label: "9.1 Primary comparison", sub: true },
-  { id: "results-attribution", label: "9.2 Violation-type attribution", sub: true },
+  { id: "asp", label: "4. Action Safety Protocol" },
+  { id: "asp-input", label: "4.1 Input", sub: true },
+  { id: "asp-output", label: "4.2 Output", sub: true },
+  { id: "dataset", label: "5. Dataset" },
+  { id: "dataset-construction", label: "5.1 Construction", sub: true },
+  { id: "dataset-composition", label: "5.2 Composition", sub: true },
+  { id: "dataset-release", label: "5.3 Release plan", sub: true },
+  { id: "methodology", label: "6. Evaluation Methodology" },
+  { id: "methodology-tiers", label: "6.1 Classifying the models", sub: true },
+  { id: "methodology-format", label: "6.2 Native input format", sub: true },
+  { id: "methodology-scope", label: "6.3 Scope and scoring", sub: true },
+  { id: "results", label: "7. Results" },
+  { id: "results-primary", label: "7.1 Primary comparison", sub: true },
+  { id: "results-attribution", label: "7.2 Violation-type attribution", sub: true },
+  { id: "saroku", label: "8. saroku" },
+  { id: "saroku-guard", label: "9. saroku-guard" },
   { id: "incident", label: "10. Reconstructing the Incident" },
   { id: "conclusion", label: "11. Conclusion" },
   { id: "references", label: "References" },
@@ -53,7 +53,7 @@ const TOC: TocItem[] = [
 /* ── Report-only local primitives ─────────────────────────────────────── */
 
 /**
- * In-page cross-reference to another section, e.g. §5.2. Reuses the same
+ * In-page cross-reference to another section, e.g. §4.2. Reuses the same
  * .sec-ref treatment the ASP post introduced: inherits body color with a
  * faint dotted underline rather than full link-blue, since this report's
  * prose is dense with these.
@@ -244,7 +244,7 @@ export default function ControlIsAllYouNeed() {
           incident (<SecRef to="incident">§10</SecRef>) and run it against saroku-guard directly,
           rather than resting on aggregate statistics alone. I release the labeled dataset with
           this report; the evaluation holdout stays private (
-          <SecRef to="dataset-release">§7.3</SecRef>).
+          <SecRef to="dataset-release">§5.3</SecRef>).
         </P>
       </Callout>
 
@@ -266,14 +266,14 @@ export default function ControlIsAllYouNeed() {
         individual escalation went unchecked. And the way it spread, one agent&apos;s message
         derailing another agent&apos;s goal, is prompt injection at peer-agent scale. I had written
         the <InlineCode>injection</InlineCode> category in the taxonomy below (
-        <SecRef to="asp-output">§5.2</SecRef>) before this incident, and it already covers it.
+        <SecRef to="asp-output">§4.2</SecRef>) before this incident, and it already covers it.
       </P>
       <P>
         This is also, concretely, why trajectory review isn&apos;t enough. The incident ran for
         weeks precisely because nothing was positioned to catch a single step of it in the moment:
         everything watching it was reviewing a sequence after the fact, not judging one action
         before it executed. My two closest confirmed benchmark peers, AgentDoG and ShieldAgent (
-        <SecRef to="methodology-tiers">§8.1</SecRef>, <SecRef to="results-primary">§9.1</SecRef>),
+        <SecRef to="methodology-tiers">§6.1</SecRef>, <SecRef to="results-primary">§7.1</SecRef>),
         are trajectory-review models. That&apos;s the same gap.
       </P>
       <P>
@@ -284,14 +284,20 @@ export default function ControlIsAllYouNeed() {
         block so many legitimate ones that the agent stops being useful and the guard gets
         switched off. A safety layer nobody leaves running is not a safety layer.
       </P>
+      <P>
+        This report introduces a new security control point for AI agents: pre-execution action
+        judgment. It formalizes that control through the Action Safety Protocol, benchmarks it
+        through ASP-Bench, and provides a reference implementation through saroku and
+        saroku-guard.
+      </P>
       <Callout label="Objective">
         <P>
-          Work out how this decision should actually be made and enforced (
-          <SecRef to="approach">§3</SecRef>), fix it as a precise, checkable contract (
-          <SecRef to="asp">§5</SecRef>), build the thing that makes and enforces it (
-          <SecRef to="saroku">§4</SecRef>), and then measure how well the guard models already
-          deployed for &quot;agent safety&quot; make that same decision today (
-          <SecRef to="methodology">§8</SecRef>, <SecRef to="results">§9</SecRef>).
+          This report has four objectives: define pre-execution action judgment as a distinct
+          security decision; separate its decision and enforcement roles through the PDP/PEP
+          architecture; formalize the decision as the Action Safety Protocol (ASP) and benchmark
+          it through ASP-Bench; and evaluate whether existing and purpose-built safety models can
+          perform that decision with a false-blocking rate low enough for continuous production
+          use.
         </P>
       </Callout>
 
@@ -331,7 +337,7 @@ export default function ControlIsAllYouNeed() {
         single proposed action before it executes: pre-execution rather than post-hoc, and
         single-action rather than trajectory-level. I treat this as a framing difference rather
         than a task mismatch and include both as valid head-to-head peers (
-        <SecRef to="methodology-tiers">§8.1</SecRef>).
+        <SecRef to="methodology-tiers">§6.1</SecRef>).
       </P>
 
       <H3>Agent-safety benchmarks</H3>
@@ -346,7 +352,7 @@ export default function ControlIsAllYouNeed() {
         None of the four categories above were built to answer, directly, the question this
         report benchmarks: given this proposed action, should it run?{" "}
         <SecRef to="approach">§3</SecRef> works out how that question should actually be answered
-        and enforced; <SecRef to="asp">§5</SecRef> then fixes it as a precise input/output shape
+        and enforced; <SecRef to="asp">§4</SecRef> then fixes it as a precise input/output shape
         every instance in this benchmark, and every model evaluated against it, is held to.
       </P>
 
@@ -404,8 +410,8 @@ export default function ControlIsAllYouNeed() {
         others, without touching the code sitting in the agent&apos;s tool-calling loop, or the
         agent itself. It also makes the PDP benchmarkable in isolation, since its entire job is
         one well-defined decision rather than something entangled with enforcement mechanics,
-        retries, or transport. <SecRef to="dataset">§7</SecRef> through{" "}
-        <SecRef to="results">§9</SecRef> do exactly that: benchmark PDPs as a category, independent
+        retries, or transport. <SecRef to="dataset">§5</SecRef> through{" "}
+        <SecRef to="results">§7</SecRef> do exactly that: benchmark PDPs as a category, independent
         of how any of them get enforced.
       </P>
       <P>
@@ -420,7 +426,7 @@ export default function ControlIsAllYouNeed() {
         </strong>
         , precisely so that a PDP built by anyone else could be evaluated against this benchmark,
         and so any PEP could call any conformant PDP, without either side depending on my code (
-        <SecRef to="asp">§5</SecRef> defines that contract exactly). Models get replaced. The
+        <SecRef to="asp">§4</SecRef> defines that contract exactly). Models get replaced. The
         contract for what a safety decision even is should outlast them. I then built a reference
         implementation of both halves:{" "}
         <a href="https://saroku.com" style={{ color: "var(--primary-l)" }}>
@@ -432,10 +438,10 @@ export default function ControlIsAllYouNeed() {
           saroku-guard
         </a>{" "}
         is the PDP I ship as its default, fast enough to run on every call inline.{" "}
-        <SecRef to="saroku">§4</SecRef> and <SecRef to="saroku-guard">§6</SecRef> detail them. The
+        <SecRef to="saroku">§8</SecRef> and <SecRef to="saroku-guard">§9</SecRef> detail them. The
         remainder of this report is the case for why that specific PDP is the right default:
-        benchmarked against the alternatives (<SecRef to="methodology">§8</SecRef>,{" "}
-        <SecRef to="results">§9</SecRef>), and checked directly against a real incident&apos;s
+        benchmarked against the alternatives (<SecRef to="methodology">§6</SecRef>,{" "}
+        <SecRef to="results">§7</SecRef>), and checked directly against a real incident&apos;s
         behavioral shape (<SecRef to="incident">§10</SecRef>).
       </P>
       <p
@@ -452,69 +458,8 @@ export default function ControlIsAllYouNeed() {
         reference PDP. saroku is the reference PEP.
       </p>
 
-      {/* ── 4. saroku ── */}
-      <H2 id="saroku">4. saroku</H2>
-      <P>
-        <SecRef to="approach">§3</SecRef> argued the decision should be split into a PEP that
-        enforces and a PDP that decides. saroku is that argument built: an open-source library
-        that implements the enforcement half, ships a judge for the deciding half (
-        <SecRef to="saroku-guard">§6</SecRef>), and speaks a protocol that lets either side be
-        swapped (<SecRef to="asp">§5</SecRef>).
-      </P>
-      <P>
-        A model that holds both ends of the trade is necessary for a guard you can leave on. It is
-        not sufficient. The rest of that claim is an integration problem: a check nobody can adopt
-        without rewriting their agent, or that adds a hosted dependency to every tool call, gets
-        switched off for reasons that have nothing to do with its accuracy. saroku is the
-        enforcement half, and it is built around removing those reasons.
-      </P>
-      <P>
-        It requires no configuration to start. Installing it and instantiating the guard is enough
-        to get a working policy enforcement point, because it loads saroku-guard as its default
-        PDP automatically, with no API key, no hosted service, and no network call on the fast
-        path. The decision stays on the machine the agent runs on.
-      </P>
-      <Code code={SAROKU_SNIPPET} language="python" />
-      <P>
-        <InlineCode>protect()</InlineCode> detects the framework from the agent object and applies
-        interception to every tool it exposes, for Google ADK, AutoGen, and LangChain. A blocked
-        call raises before the tool body runs. Where an agent is hand-rolled rather than built on
-        one of those frameworks, <InlineCode>wrap()</InlineCode> applies the same interception to
-        a single tool, and <InlineCode>guard.check()</InlineCode> exposes the raw decision for
-        callers who want to route on it themselves. Adoption cost is one line against an existing
-        agent, and nothing about the agent&apos;s own code changes.
-      </P>
-      <P>Three modes trade off latency against depth of review:</P>
-      <UL>
-        <LI>
-          <strong>local</strong>: saroku-guard only, no LLM call, single-digit-millisecond
-          decisions.
-        </LI>
-        <LI>
-          <strong>balanced</strong> (default): saroku-guard runs on every action; only actions it
-          flags unsafe escalate to an LLM judge for a second, deeper opinion.
-        </LI>
-        <LI>
-          <strong>thorough</strong>: every action goes through the LLM judge, regardless of what
-          saroku-guard says.
-        </LI>
-      </UL>
-      <figure style={{ margin: "28px 0" }}>
-        <ArchitectureFlow />
-        <figcaption style={{ marginTop: "16px", fontSize: "13px", color: "var(--subtle)", textAlign: "center" }}>
-          saroku&apos;s default (balanced) execution path.
-        </figcaption>
-      </figure>
-      <P>
-        None of this changes across modes except which PDP, or how many, get consulted.
-        That&apos;s the point of keeping the PEP and PDP separate (<SecRef to="approach">§3</SecRef>
-        ): the code sitting in the agent&apos;s tool-calling loop stays the same whether it&apos;s
-        backed by saroku-guard alone, saroku-guard plus an LLM judge, or, since saroku speaks ASP,
-        a different conformant PDP entirely.
-      </P>
-
       {/* ── 5. Action Safety Protocol ── */}
-      <H2 id="asp">5. Action Safety Protocol</H2>
+      <H2 id="asp">4. Action Safety Protocol</H2>
       <P>
         saroku could have kept the shape of this decision as an internal detail. Fixing it as a
         public contract instead is what lets a PDP built by anyone else be scored on the same
@@ -528,7 +473,7 @@ export default function ControlIsAllYouNeed() {
         .
       </P>
 
-      <H3 id="asp-input">5.1 Input</H3>
+      <H3 id="asp-input">4.1 Input</H3>
       <P>
         An instance provides, at minimum, the proposed action and its immediate context; up to
         four additional fields depending on how much surrounding information is available in a
@@ -589,7 +534,7 @@ export default function ControlIsAllYouNeed() {
         dialogue history attached.
       </P>
 
-      <H3 id="asp-output">5.2 Output</H3>
+      <H3 id="asp-output">4.2 Output</H3>
       <P>
         A binary decision, <InlineCode>is_safe: true/false</InlineCode>, is the primary label.
         Unsafe instances additionally carry a five-category violation type and a severity
@@ -615,7 +560,7 @@ export default function ControlIsAllYouNeed() {
       </UL>
       <P>
         The primary classifier&apos;s decision head is binary; the violation category is produced
-        by a separate, additive head (<SecRef to="saroku-guard">§6</SecRef>) and is reported here
+        by a separate, additive head (<SecRef to="saroku-guard">§9</SecRef>) and is reported here
         as a secondary result, not the benchmark&apos;s main metric.
       </P>
       <P>
@@ -629,35 +574,12 @@ export default function ControlIsAllYouNeed() {
         >
           Action Safety Protocol specification
         </a>
-        ; saroku (<SecRef to="saroku">§4</SecRef>) is its first implementation, and the
+        ; saroku (<SecRef to="saroku">§8</SecRef>) is its first implementation, and the
         specification is written so it does not have to be the only one.
       </P>
 
-      {/* ── 6. saroku-guard ── */}
-      <H2 id="saroku-guard">6. saroku-guard</H2>
-      <P>
-        saroku-guard is the PDP saroku loads by default: a 184M-parameter classifier trained for
-        this one decision, small enough to run inline on every call. It is scored against every
-        alternative I could find in <SecRef to="results">§9</SecRef>. This is how it is built.
-      </P>
-      <P>
-        A bare allow/block verdict is a hard thing to operate. Someone still has to work out why an
-        action was stopped before deciding whether to fix the agent, adjust a policy, or let it
-        through next time. saroku-guard attaches a reason to every block: one of the five violation
-        categories defined in <SecRef to="asp-output">§5.2</SecRef>, so a{" "}
-        <InlineCode>policy_violation</InlineCode> and a <InlineCode>goal_drift</InlineCode> can be
-        routed differently instead of landing in the same undifferentiated review queue.
-      </P>
-      <P>
-        That attribution is secondary to the binary decision, not a replacement for it. The model is
-        selected on how well the binary decision alone catches unsafe actions, not on how well it
-        explains them: a checkpoint that attributes violations precisely but lets more of them
-        through is a worse gate, whatever its attribution quality. <SecRef to="results-attribution">§9.2</SecRef>{" "}
-        reports how reliable that attribution actually is, including where it falls short.
-      </P>
-
       {/* ── 7. Dataset ── */}
-      <H2 id="dataset">7. Dataset</H2>
+      <H2 id="dataset">5. Dataset</H2>
       <P>
         Measuring the decision required a corpus of the decision. None existed, so the first thing
         I built was not a model but a dataset, and the benchmark that sits on top of it. I call
@@ -665,7 +587,7 @@ export default function ControlIsAllYouNeed() {
         so that it can be adopted and cited independently of whichever model currently tops it.
       </P>
 
-      <H3 id="dataset-construction">7.1 Construction</H3>
+      <H3 id="dataset-construction">5.1 Construction</H3>
       <P>
         Instances were generated across a grid of 16 domains × 15 scenario templates (destructive
         actions with and without approval, prompt-injection-bearing tool results, goal drift,
@@ -682,7 +604,7 @@ export default function ControlIsAllYouNeed() {
         28,651 instances in the released splits.
       </P>
 
-      <H3 id="dataset-composition">7.2 Composition</H3>
+      <H3 id="dataset-composition">5.2 Composition</H3>
       <Table minWidth={480}>
         <thead>
           <tr>
@@ -730,7 +652,7 @@ export default function ControlIsAllYouNeed() {
         but too thin to support domain-specific claims.
       </P>
 
-      <H3 id="dataset-release">7.3 Release plan</H3>
+      <H3 id="dataset-release">5.3 Release plan</H3>
       <P>
         I publish the train and validation splits at{" "}
         <a
@@ -753,9 +675,9 @@ export default function ControlIsAllYouNeed() {
         reviewed an unbiased random sample of 120 released rows and found all 120 binary
         safe/unsafe labels correct, with 2 violation-category mislabels, representing roughly 3%
         of the unsafe rows in the reviewed sample and consistent with the weaker attribution
-        accuracy reported in <SecRef to="results-attribution">§9.2</SecRef>. This review provides
+        accuracy reported in <SecRef to="results-attribution">§7.2</SecRef>. This review provides
         an estimate of label quality within the sampled subset; it does not certify the full
-        corpus. The benchmark results reported in <SecRef to="results">§9</SecRef> are independent
+        corpus. The benchmark results reported in <SecRef to="results">§7</SecRef> are independent
         of this review because they are computed exclusively on the separate private evaluation
         holdout, not on the published training or development splits.
       </P>
@@ -766,13 +688,13 @@ export default function ControlIsAllYouNeed() {
       </P>
 
       {/* ── 8. Evaluation Methodology ── */}
-      <H2 id="methodology">8. Evaluation Methodology</H2>
+      <H2 id="methodology">6. Evaluation Methodology</H2>
       <P>
         A benchmark is worth exactly as much as the rules it is scored under. Three of those rules
         matter enough to state before any number appears.
       </P>
 
-      <H3 id="methodology-tiers">8.1 Classifying the models</H3>
+      <H3 id="methodology-tiers">6.1 Classifying the models</H3>
       <P>
         A benchmark inviting &quot;beats X&quot; claims against models that were never built for
         its task is not measuring what it appears to measure. I therefore classify every evaluated
@@ -798,7 +720,7 @@ export default function ControlIsAllYouNeed() {
         </LI>
       </UL>
 
-      <H3 id="methodology-format">8.2 Native input format</H3>
+      <H3 id="methodology-format">6.2 Native input format</H3>
       <P>
         Every model is evaluated in its own documented input format: its own chat template,
         system prompt, and dialogue framing where one is specified, not a single generic prompt
@@ -816,7 +738,7 @@ export default function ControlIsAllYouNeed() {
         </P>
       </Callout>
 
-      <H3 id="methodology-scope">8.3 Scope and scoring</H3>
+      <H3 id="methodology-scope">6.3 Scope and scoring</H3>
       <P>
         All seven models are scored on an identical, frozen set of agent tool-call decisions
         spanning 16 domains (APIs, browser automation, cloud infrastructure, consumer apps,
@@ -829,7 +751,7 @@ export default function ControlIsAllYouNeed() {
       </P>
 
       {/* ── 9. Results ── */}
-      <H2 id="results">9. Results</H2>
+      <H2 id="results">7. Results</H2>
       <P>
         Seven models, one frozen evaluation set, scored under the rules above. This is ASP-Bench,
         and what follows is not an accuracy leaderboard: it is a check on whether each model
@@ -837,7 +759,7 @@ export default function ControlIsAllYouNeed() {
         unsafe actions without blocking the agent into uselessness.
       </P>
 
-      <H3 id="results-primary">9.1 Primary comparison</H3>
+      <H3 id="results-primary">7.1 Primary comparison</H3>
       <Table minWidth={960}>
         <thead>
           <tr>
@@ -975,7 +897,7 @@ export default function ControlIsAllYouNeed() {
         defaulting to &quot;unsafe&quot; on inputs shaped unlike anything it was trained on.
       </P>
 
-      <H3 id="results-attribution">9.2 Violation-type attribution</H3>
+      <H3 id="results-attribution">7.2 Violation-type attribution</H3>
       <P>
         The secondary property head reaches 74.0% accuracy and 76.9% macro-F1 across the five
         violation categories on the same holdout, with substantial variance by class:
@@ -985,6 +907,90 @@ export default function ControlIsAllYouNeed() {
         queue, not reliable enough on its own to drive automated policy branching.
       </P>
 
+      {/* ── 4. saroku ── */}
+      <H2 id="saroku">8. saroku</H2>
+      <P>
+        <SecRef to="approach">§3</SecRef> argued the decision should be split into a PEP that
+        enforces and a PDP that decides. saroku is that argument built: an open-source library
+        that implements the enforcement half, ships a judge for the deciding half (
+        <SecRef to="saroku-guard">§9</SecRef>), and speaks a protocol that lets either side be
+        swapped (<SecRef to="asp">§4</SecRef>).
+      </P>
+      <P>
+        A model that holds both ends of the trade is necessary for a guard you can leave on. It is
+        not sufficient. The rest of that claim is an integration problem: a check nobody can adopt
+        without rewriting their agent, or that adds a hosted dependency to every tool call, gets
+        switched off for reasons that have nothing to do with its accuracy. saroku is the
+        enforcement half, and it is built around removing those reasons.
+      </P>
+      <P>
+        It requires no configuration to start. Installing it and instantiating the guard is enough
+        to get a working policy enforcement point, because it loads saroku-guard as its default
+        PDP automatically, with no API key, no hosted service, and no network call on the fast
+        path. The decision stays on the machine the agent runs on.
+      </P>
+      <Code code={SAROKU_SNIPPET} language="python" />
+      <P>
+        <InlineCode>protect()</InlineCode> detects the framework from the agent object and applies
+        interception to every tool it exposes, for Google ADK, AutoGen, and LangChain. A blocked
+        call raises before the tool body runs. Where an agent is hand-rolled rather than built on
+        one of those frameworks, <InlineCode>wrap()</InlineCode> applies the same interception to
+        a single tool, and <InlineCode>guard.check()</InlineCode> exposes the raw decision for
+        callers who want to route on it themselves. Adoption cost is one line against an existing
+        agent, and nothing about the agent&apos;s own code changes.
+      </P>
+      <P>Three modes trade off latency against depth of review:</P>
+      <UL>
+        <LI>
+          <strong>local</strong>: saroku-guard only, no LLM call, single-digit-millisecond
+          decisions.
+        </LI>
+        <LI>
+          <strong>balanced</strong> (default): saroku-guard runs on every action; only actions it
+          flags unsafe escalate to an LLM judge for a second, deeper opinion.
+        </LI>
+        <LI>
+          <strong>thorough</strong>: every action goes through the LLM judge, regardless of what
+          saroku-guard says.
+        </LI>
+      </UL>
+      <figure style={{ margin: "28px 0" }}>
+        <ArchitectureFlow />
+        <figcaption style={{ marginTop: "16px", fontSize: "13px", color: "var(--subtle)", textAlign: "center" }}>
+          saroku&apos;s default (balanced) execution path.
+        </figcaption>
+      </figure>
+      <P>
+        None of this changes across modes except which PDP, or how many, get consulted.
+        That&apos;s the point of keeping the PEP and PDP separate (<SecRef to="approach">§3</SecRef>
+        ): the code sitting in the agent&apos;s tool-calling loop stays the same whether it&apos;s
+        backed by saroku-guard alone, saroku-guard plus an LLM judge, or, since saroku speaks ASP,
+        a different conformant PDP entirely.
+      </P>
+
+      {/* ── 6. saroku-guard ── */}
+      <H2 id="saroku-guard">9. saroku-guard</H2>
+      <P>
+        saroku-guard is the PDP saroku loads by default: a 184M-parameter classifier trained for
+        this one decision, small enough to run inline on every call. It is scored against every
+        alternative I could find in <SecRef to="results">§7</SecRef>. This is how it is built.
+      </P>
+      <P>
+        A bare allow/block verdict is a hard thing to operate. Someone still has to work out why an
+        action was stopped before deciding whether to fix the agent, adjust a policy, or let it
+        through next time. saroku-guard attaches a reason to every block: one of the five violation
+        categories defined in <SecRef to="asp-output">§4.2</SecRef>, so a{" "}
+        <InlineCode>policy_violation</InlineCode> and a <InlineCode>goal_drift</InlineCode> can be
+        routed differently instead of landing in the same undifferentiated review queue.
+      </P>
+      <P>
+        That attribution is secondary to the binary decision, not a replacement for it. The model is
+        selected on how well the binary decision alone catches unsafe actions, not on how well it
+        explains them: a checkpoint that attributes violations precisely but lets more of them
+        through is a worse gate, whatever its attribution quality. <SecRef to="results-attribution">§7.2</SecRef>{" "}
+        reports how reliable that attribution actually is, including where it falls short.
+      </P>
+
       {/* ── 10. Reconstructing the Incident ── */}
       <H2 id="incident">10. Reconstructing the Incident</H2>
       <P>
@@ -992,7 +998,7 @@ export default function ControlIsAllYouNeed() {
         argument in <SecRef to="introduction">§1</SecRef> directly rather than by analogy, I built
         a runnable reconstruction of the incident&apos;s behavioral shape and ran it against a
         live <InlineCode>SafetyGuard()</InlineCode>. Not a tuned configuration, and not the model
-        in isolation: the default install described in <SecRef to="saroku">§4</SecRef>, which is
+        in isolation: the default install described in <SecRef to="saroku">§8</SecRef>, which is
         what anyone gets from <InlineCode>pip install saroku</InlineCode> with no API key and no
         further setup. What follows is therefore a test of the whole stack, protocol, enforcement
         layer, and judge, rather than of a checkpoint.
@@ -1020,7 +1026,7 @@ export default function ControlIsAllYouNeed() {
         One result worth stating plainly: all five steps were attributed to the same category,{" "}
         <InlineCode>scope_violation</InlineCode>, rather than discriminating across the three
         categories the scenario was designed to exercise. This is consistent with{" "}
-        <SecRef to="results-attribution">§9.2</SecRef>&apos;s own finding that attribution is
+        <SecRef to="results-attribution">§7.2</SecRef>&apos;s own finding that attribution is
         markedly weaker than the binary decision, on fictional tool and service names further from
         the training distribution than anything in the holdout. The binary decision, block or
         allow, was correct on all five. The attribution layer did not add the resolution I built
@@ -1073,7 +1079,7 @@ export default function ControlIsAllYouNeed() {
               <>
                 28,651 labeled agent action decisions across 16 domains, each with a violation
                 category and severity. Train and validation splits published; holdout held back (
-                <SecRef to="dataset-release">§7.3</SecRef>).
+                <SecRef to="dataset-release">§5.3</SecRef>).
               </>
             ),
           },
