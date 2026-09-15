@@ -211,7 +211,7 @@ export default function ControlIsAllYouNeed() {
           apart from the ones that shouldn&apos;t?
         </P>
         <P>
-          To answer that, I built the benchmark before building anything else: pre-execution agent
+          To answer that, I first built the benchmark: pre-execution agent
           tool-call decisions across 16 domains, each labeled safe or unsafe with a violation
           category and severity. I scored five guard and moderation models and a non-learned
           baseline against it, each in its own documented input format, and classified each by
