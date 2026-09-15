@@ -5,7 +5,7 @@ import { POSTS_META } from "@/app/blog/posts";
 const KNOWN_SLUGS = new Set(POSTS_META.map((p) => p.slug));
 
 export async function POST(req: NextRequest) {
-  let body: { slug?: unknown };
+  let body: { slug?: unknown; unique?: unknown };
   try {
     body = await req.json();
   } catch {
@@ -17,6 +17,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unknown slug" }, { status: 400 });
   }
 
-  await incrementBlogView(slug);
+  await incrementBlogView(slug, body.unique === true);
   return NextResponse.json({ ok: true });
 }
