@@ -414,7 +414,14 @@ export default function ControlIsAllYouNeed() {
         of how any of them get enforced.
       </P>
       <P>
-        I formalized this decision contract as a standalone, versioned specification, the{" "}
+        I brought this separation to the agent execution boundary concretely first:{" "}
+        <a href="https://saroku.com" style={{ color: "var(--primary-l)" }}>
+          saroku
+        </a>{" "}
+        is the PEP, an open-source library that wraps an agent&apos;s tool calls and asks a
+        configured PDP for a verdict before letting each one through. To keep that PEP from being
+        locked to my code, or to one judge, I then formalized the decision contract as an open
+        specification, the{" "}
         <strong>
           <a
             href="https://saroku.com/blog/action-safety-protocol"
@@ -423,20 +430,15 @@ export default function ControlIsAllYouNeed() {
             Action Safety Protocol (ASP)
           </a>
         </strong>
-        , precisely so that a PDP built by anyone else could be evaluated against this benchmark,
-        and so any PEP could call any conformant PDP, without either side depending on my code (
+        : a PDP built by anyone else can be evaluated against this benchmark, and any PEP can call
+        any conformant PDP, without either side depending on my code (
         <SecRef to="asp">§4</SecRef> defines that contract exactly). Models get replaced. The
-        contract for what a safety decision even is should outlast them. I then built a reference
-        implementation of both halves:{" "}
-        <a href="https://saroku.com" style={{ color: "var(--primary-l)" }}>
-          saroku
-        </a>{" "}
-        is the PEP, an open-source library that wraps an agent&apos;s tool calls and asks a
-        configured PDP for a verdict before letting each one through;{" "}
+        contract for what a safety decision even is should outlast them. The reference PDP behind
+        saroku&apos;s default install is{" "}
         <a href="https://huggingface.co/karanxa/saroku-guard" style={{ color: "var(--primary-l)" }}>
           saroku-guard
-        </a>{" "}
-        is the PDP I ship as its default, fast enough to run on every call inline.{" "}
+        </a>
+        , fast enough to run on every call inline; neither is required by ASP itself.{" "}
         <SecRef to="saroku">§8</SecRef> and <SecRef to="saroku-guard">§9</SecRef> detail them. The
         remainder of this report is the case for why that specific PDP is the right default:
         benchmarked against the alternatives (<SecRef to="methodology">§6</SecRef>,{" "}
