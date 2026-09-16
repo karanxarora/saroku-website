@@ -260,10 +260,10 @@ export default function ControlIsAllYouNeed() {
         <SecRef to="asp-output">§4.2</SecRef>) before this incident, and it already covers it.
       </P>
       <P>
-        This is also, concretely, why trajectory review isn&apos;t enough. The incident ran for
-        weeks precisely because nothing was positioned to catch a single step of it in the moment:
-        everything watching it was reviewing a sequence after the fact, not judging one action
-        before it executed. My two closest confirmed benchmark peers, AgentDoG and ShieldAgent (
+        The incident also illustrates the gap this work targets: it ran for weeks, consistent with
+        nothing being positioned to catch a single step of it in the moment, since everything
+        watching it was reviewing a sequence after the fact, not judging one action before it
+        executed. My two closest confirmed benchmark peers, AgentDoG and ShieldAgent (
         <SecRef to="methodology-tiers">§6.1</SecRef>, <SecRef to="results-primary">§7.1</SecRef>),
         are trajectory-review models. That&apos;s the same gap.
       </P>
