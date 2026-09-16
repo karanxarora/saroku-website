@@ -22,8 +22,16 @@ export interface TocItem {
   sub?: boolean;
 }
 
+// The rail is position:fixed, so it has no knowledge of where the article
+// ends and the site footer begins — without this, it stays pinned in the
+// viewport and overlaps the footer once a reader scrolls that far. Hiding
+// it within this many px of the bottom of the document clears the footer
+// (which is a few hundred px tall) before the overlap would happen.
+const HIDE_NEAR_BOTTOM_PX = 420;
+
 export default function PostToc({ items }: { items: TocItem[] }) {
   const [active, setActive] = useState<string | null>(null);
+  const [nearBottom, setNearBottom] = useState(false);
 
   useEffect(() => {
     const nodes = items
@@ -38,11 +46,19 @@ export default function PostToc({ items }: { items: TocItem[] }) {
         else break;
       }
       setActive(current);
+
+      const distanceFromBottom =
+        document.documentElement.scrollHeight - window.scrollY - window.innerHeight;
+      setNearBottom(distanceFromBottom < HIDE_NEAR_BOTTOM_PX);
     };
 
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, [items]);
 
   const list = (
@@ -62,7 +78,11 @@ export default function PostToc({ items }: { items: TocItem[] }) {
 
   return (
     <>
-      <nav className="post-toc-rail" aria-label="Table of contents">
+      <nav
+        className="post-toc-rail"
+        aria-label="Table of contents"
+        style={nearBottom ? { opacity: 0, pointerEvents: "none" } : undefined}
+      >
         <p className="post-toc-title">Contents</p>
         {list}
       </nav>
