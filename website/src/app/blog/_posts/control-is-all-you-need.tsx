@@ -218,7 +218,16 @@ export default function ControlIsAllYouNeed() {
           </strong>
           , an open-source runtime enforcement layer that places the decision directly in the
           agent&apos;s execution path. I then formalized the interface between decision and
-          enforcement as the <strong>Action Safety Protocol (ASP)</strong>.
+          enforcement as the{" "}
+          <strong>
+            <a
+              href="https://saroku.com/blog/action-safety-protocol"
+              style={{ color: "var(--primary-l)" }}
+            >
+              Action Safety Protocol (ASP)
+            </a>
+          </strong>
+          .
         </P>
         <P>
           To evaluate the approach, I built <strong>ASP-Bench</strong>, a benchmark of
