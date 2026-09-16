@@ -276,10 +276,9 @@ export default function ControlIsAllYouNeed() {
         switched off. A safety layer nobody leaves running is not a safety layer.
       </P>
       <P>
-        This report introduces a new security control point for AI agents: pre-execution action
-        judgment. It formalizes that control through the Action Safety Protocol, benchmarks it
-        through ASP-Bench, and provides a reference implementation through saroku and
-        saroku-guard.
+        This report formalizes pre-execution action judgment as a distinct security control point
+        for AI agents, defines it through the Action Safety Protocol, benchmarks it through
+        ASP-Bench, and provides a reference implementation through saroku and saroku-guard.
       </P>
       <Callout label="Objective">
         <P>
@@ -572,10 +571,11 @@ export default function ControlIsAllYouNeed() {
       {/* ── 7. Dataset ── */}
       <H2 id="dataset">5. Dataset</H2>
       <P>
-        Measuring the decision required a corpus of the decision. None existed, so the first thing
-        I built was not a model but a dataset, and the benchmark that sits on top of it. I call
-        that benchmark <strong>ASP-Bench</strong>, after the protocol rather than after any model,
-        so that it can be adopted and cited independently of whichever model currently tops it.
+        Once the model and enforcement path were in place, I needed a way to evaluate the decision
+        consistently, and against alternatives, rather than trusting a single set of spot checks.
+        No corpus for it existed, so I built one: I call that benchmark <strong>ASP-Bench</strong>,
+        after the protocol rather than after any model, so that it can be adopted and cited
+        independently of whichever model currently tops it.
       </P>
 
       <H3 id="dataset-construction">5.1 Construction</H3>
@@ -880,9 +880,10 @@ export default function ControlIsAllYouNeed() {
         123 safe ones.
       </P>
       <P>
-        saroku-guard is the only model here that holds both ends at once: 97.9% of unsafe actions
-        caught, 18 of 624 safe actions wrongly blocked. That combination, not the accuracy column,
-        is what makes it deployable by default. The adjacent-tier models behave as expected for
+        On this holdout, saroku-guard is the only evaluated model that combines high unsafe recall
+        with low safe-action blocking: 97.9% of unsafe actions caught, 18 of 624 safe actions
+        wrongly blocked. That combination is what makes saroku-guard the default judge shipped
+        with saroku. The adjacent-tier models behave as expected for
         models built for a different task, and Prompt Guard&apos;s result is the clearest case:
         flagging all 624 safe actions as unsafe is not tool-call reasoning, it is a model
         defaulting to &quot;unsafe&quot; on inputs shaped unlike anything it was trained on.
