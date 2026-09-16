@@ -197,54 +197,45 @@ export default function ControlIsAllYouNeed() {
       <Callout label="Abstract">
         <P>
           A tool call an agent proposes and a tool call an agent should be allowed to execute are
-          not the same thing, and almost nothing deployed in front of agents today is designed to
-          distinguish between them at the one moment that matters most: immediately before
-          execution. That judgment is the <strong>Policy Decision Point (PDP)</strong> role from
-          access-control architecture <Cite n={9} />, long established in authorization systems
-          and, to my knowledge, never systematically evaluated as a distinct security problem for
-          agent actions specifically.
+          not necessarily the same thing. The security decision that sits between those two
+          moments, immediately before execution, has received far less attention than prompts,
+          outputs, or agent trajectories.
         </P>
         <P>
-          The premise here is simple: every action an agent takes should be checked before it
-          executes. Making that a real security control instead of a slogan requires answering one
-          question first: can existing safety models actually tell the actions that should run
-          apart from the ones that shouldn&apos;t?
-        </P>
-        <P>
-          To answer that, I first built the benchmark: pre-execution agent
-          tool-call decisions across 16 domains, each labeled safe or unsafe with a violation
-          category and severity. I scored five guard and moderation models and a non-learned
-          baseline against it, each in its own documented input format, and classified each by
-          whether it was actually built for this task, a related-but-different one, or neither.
-          The results expose a trade, not a bad score. The strongest confirmed peer, purpose-built
-          for multi-step agent trajectory safety, catches <strong>99.7%</strong> of unsafe actions
-          and blocks <strong>72.1%</strong> of legitimate ones to do it. A guard that misses unsafe
-          actions is
-          ineffective; a guard that blocks legitimate work is unusable. Until now there was no
-          standard benchmark that would have made that trade visible.
-        </P>
-        <P>
-          This is the gap saroku is built to close. I formalized the decision itself as a
-          standalone contract, the <strong>Action Safety Protocol (ASP)</strong>, so any
-          enforcement layer can call any conformant judge. Then I trained the judge:{" "}
+          This work explores pre-execution action judgment as a distinct security control for AI
+          agents: given a proposed action and its available context, should it execute? I first
+          built{" "}
           <strong>
             <a href="https://huggingface.co/karanxa/saroku-guard" style={{ color: "var(--primary-l)" }}>
               saroku-guard
             </a>
           </strong>
-          , a 184M-parameter classifier built for this task, catches <strong>97.9%</strong> of
-          unsafe actions while wrongly blocking <strong>2.9%</strong> of safe ones, at
-          single-digit-millisecond latency, and runs as the
-          default judge inside{" "}
-          <a href="https://saroku.com" style={{ color: "var(--primary-l)" }}>
-            saroku
-          </a>
-          , an open-source runtime safety library that puts this decision directly in the agent&apos;s
-          execution path. I also reconstruct the behavioral shape of a real agentic security
-          incident (<SecRef to="incident">§10</SecRef>) and run it against saroku-guard directly,
-          rather than resting on aggregate statistics alone. I release the labeled dataset with
-          this report; the evaluation holdout stays private (
-          <SecRef to="dataset-release">§5.3</SecRef>).
+          , a 184M-parameter DeBERTa-v3 classifier specifically for this decision, and{" "}
+          <strong>
+            <a href="https://saroku.com" style={{ color: "var(--primary-l)" }}>
+              saroku
+            </a>
+          </strong>
+          , an open-source runtime enforcement layer that places the decision directly in the
+          agent&apos;s execution path. I then formalized the interface between decision and
+          enforcement as the <strong>Action Safety Protocol (ASP)</strong>.
+        </P>
+        <P>
+          To evaluate the approach, I built <strong>ASP-Bench</strong>, a benchmark of
+          pre-execution agent actions spanning 16 primary domains, with safe/unsafe labels,
+          violation categories, and severity. I benchmarked saroku-guard alongside existing guard,
+          moderation, and agent-safety models on a frozen private holdout, using each model&apos;s
+          documented native input format. saroku-guard achieved <strong>97.9%</strong> unsafe
+          recall, <strong>2.9%</strong> safe-action blocking, and 6.5ms p50 latency. The strongest
+          peer on unsafe recall, AgentDoG, reached <strong>99.7%</strong> unsafe recall but blocked{" "}
+          <strong>72.1%</strong> of safe actions, exposing the central trade-off for inline agent
+          security: catching unsafe actions without blocking legitimate work.
+        </P>
+        <P>
+          The result is a three-part system: ASP as the decision contract, saroku-guard as the
+          PDP, and saroku as the PEP. The labeled training and validation data are released
+          publicly, while the evaluation holdout remains private (
+          <SecRef to="dataset-release">§5.3</SecRef>) to preserve benchmark integrity.
         </P>
       </Callout>
 
