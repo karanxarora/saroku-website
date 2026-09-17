@@ -176,23 +176,47 @@ export default function ControlIsAllYouNeed() {
       >
         Technical Paper
       </p>
-      <p
+      <div
         style={{
-          fontSize: "15px",
-          color: "var(--text-2)",
+          display: "flex",
+          flexWrap: "wrap",
+          alignItems: "center",
+          gap: "16px",
           margin: "0 0 32px",
         }}
       >
-        Author:{" "}
+        <p style={{ fontSize: "15px", color: "var(--text-2)", margin: 0 }}>
+          Author:{" "}
+          <a
+            href="https://x.com/aiwithkaran"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "inherit" }}
+          >
+            Karan Arora
+          </a>
+        </p>
         <a
-          href="https://x.com/aiwithkaran"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ color: "inherit" }}
+          href="/blog/control-is-all-you-need.pdf"
+          download
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+            fontFamily: "var(--font-jetbrains), monospace",
+            fontSize: "12.5px",
+            fontWeight: 600,
+            color: "var(--primary-l)",
+            background: "var(--primary-t)",
+            border: "1px solid var(--border)",
+            borderRadius: "6px",
+            padding: "6px 12px",
+            textDecoration: "none",
+          }}
         >
-          Karan Arora
+          ↓ Download PDF
         </a>
-      </p>
+      </div>
 
       <Callout label="Abstract">
         <P>
