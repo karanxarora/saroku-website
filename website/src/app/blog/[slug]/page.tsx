@@ -19,7 +19,7 @@ export async function generateMetadata({
   const post = POSTS_META.find((p) => p.slug === slug);
   if (!post) return {};
   return {
-    title: `${post.title} · saroku`,
+    title: `${post.title} · trikesh`,
     description: post.description,
     openGraph: { title: post.title, description: post.description, type: "article" },
   };

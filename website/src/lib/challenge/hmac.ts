@@ -1,4 +1,4 @@
-// Claim-token computation/verification for the "Break Saroku" challenge.
+// Claim-token computation/verification for the "Break Trikesh" challenge.
 //
 // Proposal Section 4.2 specifies the token as:
 //   HMAC-SHA256(decision_object + action + nonce, local_secret)

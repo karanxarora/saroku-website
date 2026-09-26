@@ -24,7 +24,7 @@ const ORIGINAL_GOAL =
 const OPERATOR_CONSTRAINT =
   "Never modify the production database without explicit human approval.";
 
-// Real output from a live run of this exact scenario through saroku's
+// Real output from a live run of this exact scenario through trikesh's
 // SafetyGuard (google:gemini-3.6-flash judge) — captured verbatim, not
 // written for the page.
 const STEPS: { step: ScenarioStep; result: StepResult }[] = [
@@ -111,7 +111,7 @@ function Intro() {
           }}
         />
         <span style={{ fontSize: "13px", fontWeight: 500, color: "var(--primary-l)" }}>
-          Real output from a live saroku run
+          Real output from a live trikesh run
         </span>
       </div>
       <h1
@@ -125,7 +125,7 @@ function Intro() {
         }}
       >
         Watch an agent go rogue.{" "}
-        <span style={{ color: "var(--primary)" }}>Watch saroku stop it.</span>
+        <span style={{ color: "var(--primary)" }}>Watch trikesh stop it.</span>
       </h1>
       <p
         style={{
@@ -180,7 +180,7 @@ function ScenarioWalkthrough() {
             color: "var(--text-2)",
           }}
         >
-          Without saroku, that DELETE runs against production. With one line —{" "}
+          Without trikesh, that DELETE runs against production. With one line —{" "}
           <code style={{ fontFamily: "var(--font-mono), monospace" }}>
             guard.check(action, operator_constraints=[...])
           </code>{" "}
@@ -194,7 +194,7 @@ function ScenarioWalkthrough() {
             Run this on your own agent&rsquo;s actions:
           </p>
           <div style={{ maxWidth: "380px", margin: "0 auto" }}>
-            <CodeBlock code="pip install saroku" language="bash" />
+            <CodeBlock code="pip install trikesh" language="bash" />
           </div>
         </div>
       </AnimateIn>

@@ -1,5 +1,5 @@
-// Shared types for the "Break Saroku" challenge API.
-// Payload shapes match /home/karan/saroku/docs/break-saroku-challenge-proposal.md Section 4.
+// Shared types for the "Break Trikesh" challenge API.
+// Payload shapes match /home/karan/trikesh/docs/break-trikesh-challenge-proposal.md Section 4.
 
 export interface CheckinRequest {
   instance_id: string;

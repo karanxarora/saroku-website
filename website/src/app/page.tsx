@@ -77,7 +77,7 @@ function HeroSection() {
         className="hero-install"
         style={{ display: "inline-block", maxWidth: "480px", width: "100%", marginBottom: "36px", textAlign: "left" }}
       >
-        <CodeBlock code="pip install saroku" language="bash" compact />
+        <CodeBlock code="pip install trikesh" language="bash" compact />
       </div>
 
       {/* Headline stat */}
@@ -300,7 +300,7 @@ function RuntimeSafetySection() {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px", alignItems: "start", minWidth: 0 }} className="guard-grid">
           <AnimateIn delay={100}>
             <CodeBlock
-              code={`from saroku import SafetyGuard
+              code={`from trikesh import SafetyGuard
 
 guard = SafetyGuard()
 
@@ -395,7 +395,7 @@ function ArchitectureSection() {
             Decision and enforcement, cleanly separated
           </h2>
           <p style={{ color: "var(--muted)", fontSize: "17px", maxWidth: "620px", margin: "0 auto", lineHeight: "1.6" }}>
-            saroku splits into a policy decision point (the judge) and a policy enforcement point
+            trikesh splits into a policy decision point (the judge) and a policy enforcement point
             (the interceptor), the same separation used by access-control systems like OPA, so the
             model making the call is never the same thing enforcing it.
           </p>
@@ -421,7 +421,7 @@ function ArchitectureSection() {
       <AnimateIn delay={260}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px", alignItems: "start", marginTop: "56px" }} className="guard-grid">
           <CodeBlock
-            code={`from saroku import SafetyGuard, wrap, protect, SafetyBlockedError
+            code={`from trikesh import SafetyGuard, wrap, protect, SafetyBlockedError
 
 guard = SafetyGuard(judge_model="gpt-4o-mini")
 
@@ -443,7 +443,7 @@ except SafetyBlockedError as e:
             {[
               { name: "Google ADK", desc: "Auto-detected, wraps every tool on the agent" },
               { name: "AutoGen", desc: "Auto-detected, wraps registered functions" },
-              { name: "LangChain", desc: "Auto-detected, SarokuToolWrapper around each tool" },
+              { name: "LangChain", desc: "Auto-detected, TrikeshToolWrapper around each tool" },
             ].map((f) => (
               <div key={f.name} style={{
                 display: "flex", alignItems: "center", gap: "12px",
@@ -539,7 +539,7 @@ function EnforcementDemoSection() {
               overflow: "hidden", height: "100%", display: "flex", flexDirection: "column",
             }}>
               <div style={{ padding: "14px 18px", borderBottom: "1px solid var(--border)", display: "flex", alignItems: "center", gap: "8px" }}>
-                <span style={{ fontSize: "13px", fontWeight: 700, color: "var(--success)" }}>Protected by saroku</span>
+                <span style={{ fontSize: "13px", fontWeight: 700, color: "var(--success)" }}>Protected by trikesh</span>
               </div>
               <div style={{ padding: "18px", flex: 1, display: "flex", flexDirection: "column", gap: "8px" }}>
                 <ChatBubbles messages={protectedMessages} />
@@ -551,7 +551,7 @@ function EnforcementDemoSection() {
                     [POLICY_VIOLATION] SafetyBlockedError
                   </div>
                   <div style={{ fontSize: "12px", color: "#C0CCDE", fontFamily: "var(--font-jetbrains), monospace", lineHeight: "1.6" }}>
-                    Action blocked by saroku: destructive action on production
+                    Action blocked by trikesh: destructive action on production
                     data without the required confirmation.
                   </div>
                 </div>

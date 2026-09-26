@@ -26,7 +26,7 @@ export default function Icon() {
             letterSpacing: "-1px",
           }}
         >
-          s
+          t
         </span>
       </div>
     ),

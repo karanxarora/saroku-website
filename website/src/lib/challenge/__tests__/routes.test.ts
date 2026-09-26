@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import { NextRequest } from "next/server";
 
 // Mock the Python-bridge replay call — these are route-logic tests, not an
-// integration test of the actual saroku SDK subprocess (that's exercised
+// integration test of the actual trikesh SDK subprocess (that's exercised
 // manually/separately since it needs a real Python venv + LLM API key).
 vi.mock("../replay", () => ({
   replayAction: vi.fn(),

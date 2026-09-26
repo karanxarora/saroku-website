@@ -6,7 +6,7 @@ import CodeBlock from "@/components/CodeBlock";
  * layout quality (generous reading width, serif display headings, section
  * rhythm) of a well-set technical report, but built entirely on the site's
  * own design tokens (var(--text), var(--primary), var(--border), ...) so a
- * post still looks like it belongs on saroku.com.
+ * post still looks like it belongs on trikesh.com.
  */
 
 export function H2({ children, id }: { children: ReactNode; id?: string }) {

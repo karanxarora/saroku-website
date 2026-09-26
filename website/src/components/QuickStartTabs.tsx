@@ -10,13 +10,13 @@ const tabs = [
     shortLabel: "Check",
     content: [
       {
-        description: "Install saroku (Python 3.10+). No API key needed for the default local guard:",
-        code: `pip install saroku`,
+        description: "Install trikesh (Python 3.10+). No API key needed for the default local guard:",
+        code: `pip install trikesh`,
         language: "bash",
       },
       {
         description: "Check one proposed action before it executes:",
-        code: `from saroku import SafetyGuard
+        code: `from trikesh import SafetyGuard
 
 guard = SafetyGuard()  # saroku-guard loads automatically, no setup
 
@@ -58,8 +58,8 @@ v.description       # what the violation is`,
     content: [
       {
         description: "Wrap a single tool, or protect every tool an agent has at once:",
-        code: `from saroku import SafetyGuard
-from saroku.integrations import wrap, protect
+        code: `from trikesh import SafetyGuard
+from trikesh.integrations import wrap, protect
 
 guard = SafetyGuard()
 
@@ -70,7 +70,7 @@ safe_search = wrap(agent.search_tool, guard=guard)
 safe_agent = await protect(agent, guard=guard)
 
 # Handle blocked actions
-from saroku import SafetyBlockedError
+from trikesh import SafetyBlockedError
 try:
     result = await safe_agent.run(task)
 except SafetyBlockedError as e:
@@ -114,7 +114,7 @@ guard = SafetyGuard(mode="thorough", judge_model="gpt-4o-mini")`,
     shortLabel: "ASP",
     content: [
       {
-        description: "saroku is the reference PEP for the Action Safety Protocol; saroku-guard is the reference PDP. Swap either side without changing the agent:",
+        description: "trikesh is the reference PEP for the Action Safety Protocol; saroku-guard is the reference PDP. Swap either side without changing the agent:",
         code: `# Use a different PDP, any classifier that speaks ASP
 guard = SafetyGuard(local_model_path="your-org/your-model")
 

@@ -23,13 +23,13 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <div style={{ fontSize: "20px", fontWeight: 700, color: "var(--primary)", marginBottom: "12px", letterSpacing: "-0.5px" }}>
-              saroku
+              trikesh
             </div>
             <p style={{ color: "var(--muted)", fontSize: "14px", lineHeight: "1.6", maxWidth: "240px" }}>
               Test what your model values, not just what it knows.
             </p>
             <div style={{ marginTop: "16px", display: "flex", gap: "12px" }}>
-              <FooterIcon href="https://pypi.org/project/saroku/" label="PyPI">
+              <FooterIcon href="https://pypi.org/project/trikesh/" label="PyPI">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 0L1.5 6v12L12 24l10.5-6V6L12 0zm0 2.18L20.3 7 12 11.82 3.7 7 12 2.18zM3 8.5l8.5 4.87v9.45L3 17.95V8.5zm9.5 14.32V13.37L21 8.5v9.45l-8.5 4.87z" />
                 </svg>
@@ -73,7 +73,7 @@ export default function Footer() {
           }}
         >
           <p style={{ color: "var(--subtle)", fontSize: "13px", margin: 0 }}>
-            © 2026 saroku contributors. Released under the MIT License.
+            © 2026 trikesh contributors. Released under the MIT License.
           </p>
           <p style={{ color: "var(--subtle)", fontSize: "13px", margin: 0 }}>
             Built for AI teams who ship responsibly.

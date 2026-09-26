@@ -5,8 +5,8 @@ import Footer from "@/components/Footer";
 import { POSTS_META } from "./posts";
 
 export const metadata: Metadata = {
-  title: "Blog · saroku",
-  description: "Technical write-ups on saroku's architecture, benchmarks, and agent safety research.",
+  title: "Blog · trikesh",
+  description: "Technical write-ups on trikesh's architecture, benchmarks, and agent safety research.",
 };
 
 function formatDate(iso: string) {
@@ -47,7 +47,7 @@ export default function BlogIndexPage() {
             margin: "0 0 44px",
           }}
         >
-          Notes on building saroku
+          Notes on building trikesh
         </h1>
 
         {posts.length === 0 && (

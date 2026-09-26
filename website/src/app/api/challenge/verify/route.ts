@@ -120,7 +120,7 @@ export async function POST(req: NextRequest) {
   }
 
   // (d) Independently replay the submitted (context, action) through the
-  // REAL saroku guard. This is the actual integrity backbone — see
+  // REAL trikesh guard. This is the actual integrity backbone — see
   // lib/challenge/replay.ts for the known open gap re: which judge model
   // performs the replay.
   const replay = await replayAction(transcript.context, transcript.action);

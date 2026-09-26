@@ -259,7 +259,7 @@ function IntroductionSection() {
             marginTop: 0,
           }}
         >
-          saroku
+          trikesh
         </h1>
 
         <p
@@ -275,7 +275,7 @@ function IntroductionSection() {
         </p>
 
         <P>
-          saroku is an enforcement layer that intercepts an agent&apos;s proposed
+          trikesh is an enforcement layer that intercepts an agent&apos;s proposed
           tool call immediately before execution and asks an independent judge
           whether it should run. It is the reference PEP (Policy Enforcement
           Point) for the Action Safety Protocol: it decides nothing itself,
@@ -287,7 +287,7 @@ function IntroductionSection() {
           agent-action safety: given the proposed action and its context, is
           this safe to execute? That is a different question from content
           moderation, prompt-injection detection, or post-hoc trajectory
-          review, and it is the one saroku checks on every call.
+          review, and it is the one trikesh checks on every call.
         </P>
 
         <Callout type="info">
@@ -303,9 +303,9 @@ function IntroductionSection() {
           for the full benchmark and how the numbers were measured.
         </Callout>
 
-        <SubHeading>What saroku is NOT</SubHeading>
+        <SubHeading>What trikesh is NOT</SubHeading>
         <P>
-          saroku is not a content filter and not a trajectory-review model.
+          trikesh is not a content filter and not a trajectory-review model.
           It does not judge whether a chat response is harmful, and it does
           not review a completed sequence of agent steps after the fact. It
           judges one proposed action, immediately before that action would
@@ -330,7 +330,7 @@ function IntroductionSection() {
             },
             {
               term: "PEP",
-              def: "Policy Enforcement Point. The component that intercepts the proposed action, asks the PDP for a verdict, and enforces it. saroku is the PEP.",
+              def: "Policy Enforcement Point. The component that intercepts the proposed action, asks the PDP for a verdict, and enforces it. trikesh is the PEP.",
             },
             {
               term: "ASP",
@@ -370,19 +370,19 @@ function InstallationSection() {
       </ul>
 
       <SubHeading>Install from PyPI</SubHeading>
-      <CodeBlock code="pip install saroku" language="bash" />
+      <CodeBlock code="pip install trikesh" language="bash" />
 
       <SubHeading>Install from source</SubHeading>
       <CodeBlock
-        code={`git clone https://github.com/saroku-ai/saroku.git
-cd saroku
+        code={`git clone https://github.com/trikesh-ai/trikesh.git
+cd trikesh
 pip install -e ".[dev]"`}
         language="bash"
       />
 
       <SubHeading>Setting up API keys</SubHeading>
       <P>
-        saroku talks to providers through its own native model adapters, used by
+        trikesh talks to providers through its own native model adapters, used by
         the LLM judge in balanced/thorough guard modes: OpenAI and Anthropic are first-class adapters; Google, Groq, Mistral,
         Together, Perplexity, and Ollama route through an OpenAI-compatible
         adapter. Set environment variables for the providers you want to use:
@@ -431,7 +431,7 @@ export AZURE_OPENAI_API_KEY=...
       </Callout>
 
       <SubHeading>Verify installation</SubHeading>
-      <CodeBlock code="saroku --version" language="bash" />
+      <CodeBlock code="trikesh --version" language="bash" />
     </div>
   );
 }
@@ -449,11 +449,11 @@ function QuickStartSection() {
       </P>
 
       <SubHeading>Step 1: Install</SubHeading>
-      <CodeBlock code="pip install saroku" language="bash" />
+      <CodeBlock code="pip install trikesh" language="bash" />
 
       <SubHeading>Step 2: Check an action</SubHeading>
       <CodeBlock
-        code={`from saroku import SafetyGuard
+        code={`from trikesh import SafetyGuard
 
 guard = SafetyGuard()  # saroku-guard loads automatically
 
@@ -477,8 +477,8 @@ if not result.is_safe:
 
       <SubHeading>Step 3: Protect an agent</SubHeading>
       <CodeBlock
-        code={`from saroku import SafetyGuard
-from saroku.integrations import protect
+        code={`from trikesh import SafetyGuard
+from trikesh.integrations import protect
 
 guard = SafetyGuard()
 safe_agent = await protect(agent, guard=guard)  # Google ADK, AutoGen, LangChain
@@ -518,7 +518,7 @@ function SafetyGuardSection() {
         policy-driven API is additive, not a breaking change.
       </Callout>
       <CodeBlock
-        code={`from saroku import SafetyGuard
+        code={`from trikesh import SafetyGuard
 
 guard = SafetyGuard()
 
@@ -558,18 +558,18 @@ v.source          # the classifier ID that raised it`}
       />
       <SubHeading>Pluggable classifiers</SubHeading>
       <P>
-        saroku ships built-in classifiers and supports custom ones, all composed through a
+        trikesh ships built-in classifiers and supports custom ones, all composed through a
         registry:
       </P>
       <CodeBlock
-        code={`from saroku.classifiers import ClassifierRegistry, HFModelClassifier
+        code={`from trikesh.classifiers import ClassifierRegistry, HFModelClassifier
 
 # Use a HuggingFace model
 hf_classifier = HFModelClassifier("Qwen/Qwen2.5-0.5B")
 ClassifierRegistry.register("hf:qwen-0.5b", hf_classifier)
 
 # Combine classifiers in an ensemble
-from saroku.classifiers import EnsembleClassifier
+from trikesh.classifiers import EnsembleClassifier
 ensemble = EnsembleClassifier(
     classifiers=[hf_classifier],
     strategy="majority",  # or "cascade"
@@ -583,7 +583,7 @@ ClassifierRegistry.register("ensemble:hybrid", ensemble)`}
         confidence thresholds and fallback chains:
       </P>
       <CodeBlock
-        code={`from saroku import SafetyGuard, Policy
+        code={`from trikesh import SafetyGuard, Policy
 
 # Load a pre-built policy
 policy = Policy.from_yaml("policies/default.yml")
@@ -648,11 +648,11 @@ function FrameworkIntegrationSection() {
     <div>
       <SectionHeading id="framework-integration">Framework Integration</SectionHeading>
       <P>
-        Wrap a single tool, or protect an entire agent&apos;s tools at once. saroku
+        Wrap a single tool, or protect an entire agent&apos;s tools at once. trikesh
         auto-detects the framework and intercepts tool calls before they execute.
       </P>
       <CodeBlock
-        code={`from saroku import wrap, protect, SafetyBlockedError
+        code={`from trikesh import wrap, protect, SafetyBlockedError
 
 # Protect a single tool
 safe_search = wrap(agent.search_tool, guard=guard)
@@ -671,7 +671,7 @@ except SafetyBlockedError as e:
       <ul style={{ paddingLeft: "20px", margin: "0 0 16px", display: "flex", flexDirection: "column", gap: "8px" }}>
         <li style={{ fontSize: "15px", color: "var(--text-2)" }}><strong>Google ADK</strong>, wraps every tool registered on the agent</li>
         <li style={{ fontSize: "15px", color: "var(--text-2)" }}><strong>AutoGen</strong>, wraps registered functions</li>
-        <li style={{ fontSize: "15px", color: "var(--text-2)" }}><strong>LangChain</strong>, wraps each tool via <InlineCode>SarokuToolWrapper</InlineCode></li>
+        <li style={{ fontSize: "15px", color: "var(--text-2)" }}><strong>LangChain</strong>, wraps each tool via <InlineCode>TrikeshToolWrapper</InlineCode></li>
       </ul>
       <Callout type="tip">
         No supported framework installed? <InlineCode>wrap()</InlineCode> works on any
@@ -741,8 +741,8 @@ guard = SafetyGuard(use_local_pdp=False, judge_model="gpt-4o-mini")`}
       </div>
       <SubHeading>Train your own</SubHeading>
       <CodeBlock
-        code={`pip install saroku[train]
-python -m saroku.training.trainer --output-dir ./my-model --epochs 3`}
+        code={`pip install trikesh[train]
+python -m trikesh.training.trainer --output-dir ./my-model --epochs 3`}
         language="bash"
       />
     </div>
@@ -757,7 +757,7 @@ function ArchitectureSection() {
       <SectionHeading id="architecture">Architecture</SectionHeading>
 
       <P>
-        saroku is a Python library with a modular pipeline. Each stage is
+        trikesh is a Python library with a modular pipeline. Each stage is
         independently testable and replaceable.
       </P>
 
@@ -766,27 +766,27 @@ function ArchitectureSection() {
       {[
         {
           stage: "PEP",
-          file: "saroku/integrations/_wrap.py",
+          file: "trikesh/integrations/_wrap.py",
           description: "Intercepts the agent's proposed tool call at the framework's real execution boundary, before the tool runs. Builds the Decision Request and calls the PDP.",
         },
         {
           stage: "ClassifierRegistry",
-          file: "saroku/classifiers/registry.py",
+          file: "trikesh/classifiers/registry.py",
           description: "Resolves which PDP handles the request: saroku-guard by default, or any registered rule-based, HuggingFace, LLM-judge, or ensemble classifier.",
         },
         {
           stage: "ExecutionEngine",
-          file: "saroku/execution/engine.py",
+          file: "trikesh/execution/engine.py",
           description: "Runs the configured classifier chain for the active guard mode: local, balanced (escalate on flag), or thorough (always escalate).",
         },
         {
           stage: "Policy DSL",
-          file: "saroku/policy/dsl.py",
+          file: "trikesh/policy/dsl.py",
           description: "Declarative YAML policies define which classifiers run at which layer, with confidence thresholds and fallback chains, no code changes to retune coverage.",
         },
         {
           stage: "Verdict",
-          file: "saroku/guard.py",
+          file: "trikesh/guard.py",
           description: "Returns the binary decision plus, when available, a violation category and severity. The PEP enforces it: allow, or raise SafetyBlockedError.",
         },
       ].map(({ stage, file, description }) => (
@@ -838,7 +838,7 @@ function ArchitectureSection() {
 
       <SubHeading>Package structure</SubHeading>
       <CodeBlock
-        code={`saroku/
+        code={`trikesh/
 ├── __init__.py                # Public API: SafetyGuard, wrap, protect, Policy, ...
 ├── guard.py                   # SafetyGuard, the PEP-facing entry point
 ├── classifiers/
@@ -867,7 +867,7 @@ function ArchitectureSection() {
 
       <SubHeading>Model adapters</SubHeading>
       <P>
-        saroku talks to providers through its own native adapters (no LiteLLM
+        trikesh talks to providers through its own native adapters (no LiteLLM
         dependency): first-class support for OpenAI, Anthropic, and Azure
         OpenAI, with Google, Groq, Mistral, Together, Perplexity, and Ollama
         routed through an OpenAI-compatible adapter. Pass a provider-prefixed
@@ -886,7 +886,7 @@ function RoadmapSection() {
       <SectionHeading id="roadmap">Roadmap</SectionHeading>
 
       <P>
-        saroku is under active development. Here&apos;s what has shipped and what&apos;s next.
+        trikesh is under active development. Here&apos;s what has shipped and what&apos;s next.
       </P>
 
       <SubHeading>Shipped: pluggable, policy-driven architecture</SubHeading>

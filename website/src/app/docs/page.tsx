@@ -5,9 +5,9 @@ import DocsSidebar from "@/components/docs/DocsSidebar";
 import DocsContent from "@/components/docs/DocsContent";
 
 export const metadata: Metadata = {
-  title: "Documentation · saroku",
+  title: "Documentation · trikesh",
   description:
-    "Complete documentation for saroku: behavioral regression testing for LLMs. CLI reference, probe schemas, CI/CD integration, and architecture.",
+    "Complete documentation for trikesh: behavioral regression testing for LLMs. CLI reference, probe schemas, CI/CD integration, and architecture.",
 };
 
 export default function DocsPage() {

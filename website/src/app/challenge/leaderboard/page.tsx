@@ -7,8 +7,8 @@ import { getChallengeData } from "../ChallengeData";
 import { PROPERTY_LABELS } from "@/lib/challenge/scenarioMeta";
 
 export const metadata: Metadata = {
-  title: "Break Saroku — Leaderboard",
-  description: "Verified breaks against saroku's SafetyGuard, by property and participant.",
+  title: "Break Trikesh — Leaderboard",
+  description: "Verified breaks against trikesh's SafetyGuard, by property and participant.",
 };
 
 export const dynamic = "force-dynamic";
@@ -23,7 +23,7 @@ export default async function LeaderboardPage() {
       <section style={{ maxWidth: "800px", margin: "0 auto", padding: "80px 24px 88px" }}>
         <AnimateIn direction="up">
           <p style={{ fontSize: "13px", fontWeight: 600, color: "var(--primary)", textTransform: "uppercase", letterSpacing: "0.08em", textAlign: "center", marginBottom: "14px" }}>
-            Break Saroku
+            Break Trikesh
           </p>
           <h1 style={{ fontSize: "clamp(26px, 4vw, 38px)", fontWeight: 700, color: "var(--text)", letterSpacing: "-0.75px", textAlign: "center", margin: "0 0 40px" }}>
             Leaderboard

@@ -10,7 +10,7 @@ interface ScenarioCard {
   description?: string;
 }
 
-// Paraphrased from a live run of this scenario through saroku's
+// Paraphrased from a live run of this scenario through trikesh's
 // SafetyGuard (google:gemini-3.6-flash judge) — shortened for the card,
 // not the exact prompt text. Full transcript at /demo.
 const CARDS: ScenarioCard[] = [
@@ -28,14 +28,14 @@ const CARDS: ScenarioCard[] = [
   },
 ];
 
-// Both cards reveal in lockstep — User → Agent → saroku fields light up
+// Both cards reveal in lockstep — User → Agent → trikesh fields light up
 // together, hold, then everything resets and loops, like a GIF of a live
 // exchange. Holds are long enough to actually read each line before the
 // next one appears.
 const TIMELINE = [
   { stage: 1, hold: 1700 }, // user prompt
   { stage: 2, hold: 1800 }, // agent action
-  { stage: 3, hold: 4200 }, // saroku verdict (the payoff)
+  { stage: 3, hold: 4200 }, // trikesh verdict (the payoff)
   { stage: 0, hold: 1400 }, // blank pause, then loop
 ];
 
@@ -79,7 +79,7 @@ export default function HomeDemoTeaser() {
       </div>
 
       <style>{`
-        .saroku-skeleton-bar {
+        .trikesh-skeleton-bar {
           display: inline-block;
           border-radius: 4px;
           background: linear-gradient(
@@ -89,12 +89,12 @@ export default function HomeDemoTeaser() {
             var(--surface-3) 75%
           );
           background-size: 200% 100%;
-          animation: sarokuSkeletonShimmer 1.4s ease-in-out infinite;
+          animation: trikeshSkeletonShimmer 1.4s ease-in-out infinite;
         }
         @media (prefers-reduced-motion: reduce) {
-          .saroku-skeleton-bar { animation: none; background: var(--surface-3); }
+          .trikesh-skeleton-bar { animation: none; background: var(--surface-3); }
         }
-        @keyframes sarokuSkeletonShimmer {
+        @keyframes trikeshSkeletonShimmer {
           0%   { background-position: 200% 0; }
           100% { background-position: -200% 0; }
         }
@@ -128,7 +128,7 @@ function ScenarioCardView({ card, stage }: { card: ScenarioCard; stage: number }
         </p>
       </Field>
 
-      <Field label="saroku" visible={stage >= 3} skeletonWidth="55%">
+      <Field label="trikesh" visible={stage >= 3} skeletonWidth="55%">
         {blocked ? (
           <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap" }}>
             <span style={{ fontSize: "12.5px", fontWeight: 700, color: "var(--danger)" }}>
@@ -206,7 +206,7 @@ function Field({
           }}
         >
           <span
-            className="saroku-skeleton-bar"
+            className="trikesh-skeleton-bar"
             style={{ width: skeletonWidth, height: "13px" }}
           />
         </div>

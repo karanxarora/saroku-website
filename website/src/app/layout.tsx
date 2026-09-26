@@ -15,10 +15,10 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://saroku.com"),
-  title: "saroku · Secure Before It Acts",
+  metadataBase: new URL("https://trikesh.com"),
+  title: "trikesh · Secure Before It Acts",
   description:
-    "saroku intercepts an agent's proposed tool call before it executes and asks saroku-guard, its default judge, whether it should run.",
+    "trikesh intercepts an agent's proposed tool call before it executes and asks saroku-guard, its default judge, whether it should run.",
   keywords: [
     "agent safety",
     "pre-execution action safety",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     "AI alignment",
   ],
   openGraph: {
-    title: "saroku · Secure Before It Acts",
+    title: "trikesh · Secure Before It Acts",
     description:
       "Every proposed tool call is judged before it runs, not after. Catch policy violations, scope violations, injection, goal drift, and corrigibility failures before they reach production.",
     type: "website",
@@ -50,7 +50,7 @@ export default function RootLayout({
             __html: `
               (function() {
                 try {
-                  var t = localStorage.getItem('saroku-theme');
+                  var t = localStorage.getItem('trikesh-theme');
                   if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                     document.documentElement.setAttribute('data-theme', 'dark');
                   }

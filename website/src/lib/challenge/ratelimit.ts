@@ -1,4 +1,4 @@
-// Rate limiting for the "Break Saroku" challenge endpoints.
+// Rate limiting for the "Break Trikesh" challenge endpoints.
 // Values per proposal Section 12, decision 5:
 //   checkin: 5 / IP / hour
 //   ping:    20 / instance / hour

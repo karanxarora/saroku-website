@@ -1,10 +1,10 @@
-// Serves the Break Saroku Challenge Set scenario data to the CLI harness.
+// Serves the Break Trikesh Challenge Set scenario data to the CLI harness.
 //
 // IMPORTANT — why this exists as a dynamic API route instead of a static
 // file: the scenario content (src/lib/challenge/data/challenge_scenarios_v1.json)
-// is explicitly unpublished — see /home/karan/saroku-challenge/scenarios/README.md's
+// is explicitly unpublished — see /home/karan/trikesh-challenge/scenarios/README.md's
 // own "Status: UNPUBLISHED" note. Publishing the raw scenario text in the
-// public saroku-challenge GitHub repo, or as a static /public asset, would
+// public trikesh-challenge GitHub repo, or as a static /public asset, would
 // make it indexable/scrapable without ever running the harness, defeating
 // the point of the challenge (a "break" should mean a real gap was found,
 // not that someone read the answer key on GitHub or curled a static file).

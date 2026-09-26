@@ -4,7 +4,7 @@ const BACKEND_URL = "http://127.0.0.1:8787/check";
 const FETCH_TIMEOUT_MS = 25000;
 
 // The page itself only offers visitors one free-form live check (enforced
-// client-side via localStorage, a UX nudge toward `pip install saroku`, not
+// client-side via localStorage, a UX nudge toward `pip install trikesh`, not
 // a security boundary). This server-side cap is the real abuse backstop —
 // sized to cover one scripted walkthrough replay (~4 calls) plus the one
 // free-form try, with a little headroom for page refreshes.

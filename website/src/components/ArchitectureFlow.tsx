@@ -1,6 +1,6 @@
 /**
- * The core saroku PEP/PDP pipeline diagram: Agent Tool Call -> saroku PEP ->
- * saroku PDP -> Decision -> Allowed / Blocked.
+ * The core trikesh PEP/PDP pipeline diagram: Agent Tool Call -> trikesh PEP ->
+ * trikesh PDP -> Decision -> Allowed / Blocked.
  *
  * Single source of truth for this diagram. Originally lived only inline in
  * the homepage's ArchitectureSection; extracted so the technical report
@@ -9,8 +9,8 @@
  */
 const STAGES = [
   { label: "Agent Tool Call", sub: "delete_record(\"user_001\")", tint: "var(--surface-3)", text: "var(--text-2)", border: "var(--border)" },
-  { label: "saroku PEP", sub: "wrap() / protect()", tint: "var(--primary-t)", text: "var(--primary)", border: "var(--primary-b)" },
-  { label: "saroku PDP", sub: "SafetyGuard", tint: "var(--primary-t)", text: "var(--primary)", border: "var(--primary-b)" },
+  { label: "trikesh PEP", sub: "wrap() / protect()", tint: "var(--primary-t)", text: "var(--primary)", border: "var(--primary-b)" },
+  { label: "trikesh PDP", sub: "SafetyGuard", tint: "var(--primary-t)", text: "var(--primary)", border: "var(--primary-b)" },
   { label: "Decision", sub: "policy + classifiers", tint: "var(--warning-t)", text: "var(--warning)", border: "var(--warning-b)" },
 ];
 
