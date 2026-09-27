@@ -1,12 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import PypiDownloadsBadge from "./PypiDownloadsBadge";
 
 interface CodeBlockProps {
   code: string;
   language?: string;
   showCopy?: boolean;
   compact?: boolean;
+  /** Show a small live "N downloads on PyPI" readout next to Copy. Only pass
+   * this on blocks that are actually a `pip install` command. */
+  showPypiDownloads?: boolean;
 }
 
 export default function CodeBlock({
@@ -14,6 +18,7 @@ export default function CodeBlock({
   language = "bash",
   showCopy = true,
   compact = false,
+  showPypiDownloads = false,
 }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
 
@@ -70,7 +75,9 @@ export default function CodeBlock({
         >
           {language}
         </span>
-        {showCopy && (
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          {showPypiDownloads && <PypiDownloadsBadge />}
+          {showCopy && (
           <button
             onClick={handleCopy}
             style={{
@@ -107,7 +114,8 @@ export default function CodeBlock({
               </>
             )}
           </button>
-        )}
+          )}
+        </div>
       </div>
 
       {/* Code content */}

@@ -370,7 +370,7 @@ function InstallationSection() {
       </ul>
 
       <SubHeading>Install from PyPI</SubHeading>
-      <CodeBlock code="pip install trikesh" language="bash" />
+      <CodeBlock code="pip install trikesh" language="bash" showPypiDownloads />
 
       <SubHeading>Install from source</SubHeading>
       <CodeBlock
@@ -449,7 +449,7 @@ function QuickStartSection() {
       </P>
 
       <SubHeading>Step 1: Install</SubHeading>
-      <CodeBlock code="pip install trikesh" language="bash" />
+      <CodeBlock code="pip install trikesh" language="bash" showPypiDownloads />
 
       <SubHeading>Step 2: Check an action</SubHeading>
       <CodeBlock
@@ -744,6 +744,7 @@ guard = SafetyGuard(use_local_pdp=False, judge_model="gpt-4o-mini")`}
         code={`pip install trikesh[train]
 python -m trikesh.training.trainer --output-dir ./my-model --epochs 3`}
         language="bash"
+        showPypiDownloads
       />
     </div>
   );

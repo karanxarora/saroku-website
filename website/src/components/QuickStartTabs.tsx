@@ -13,6 +13,7 @@ const tabs = [
         description: "Install trikesh (Python 3.10+). No API key needed for the default local guard:",
         code: `pip install trikesh`,
         language: "bash",
+        showPypiDownloads: true,
       },
       {
         description: "Check one proposed action before it executes:",
@@ -180,7 +181,7 @@ export default function QuickStartTabs() {
             <p style={{ fontSize: "14px", color: "var(--muted)", marginBottom: "10px", marginTop: 0 }}>
               {block.description}
             </p>
-            <CodeBlock code={block.code} language={block.language} />
+            <CodeBlock code={block.code} language={block.language} showPypiDownloads={block.showPypiDownloads} />
           </div>
         ))}
       </div>

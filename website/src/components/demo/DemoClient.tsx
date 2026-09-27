@@ -194,7 +194,7 @@ function ScenarioWalkthrough() {
             Run this on your own agent&rsquo;s actions:
           </p>
           <div style={{ maxWidth: "380px", margin: "0 auto" }}>
-            <CodeBlock code="pip install trikesh" language="bash" />
+            <CodeBlock code="pip install trikesh" language="bash" showPypiDownloads />
           </div>
         </div>
       </AnimateIn>

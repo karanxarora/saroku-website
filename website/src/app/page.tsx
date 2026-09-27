@@ -77,7 +77,7 @@ function HeroSection() {
         className="hero-install"
         style={{ display: "inline-block", maxWidth: "480px", width: "100%", marginBottom: "36px", textAlign: "left" }}
       >
-        <CodeBlock code="pip install trikesh" language="bash" compact />
+        <CodeBlock code="pip install trikesh" language="bash" compact showPypiDownloads />
       </div>
 
       {/* Headline stat */}
