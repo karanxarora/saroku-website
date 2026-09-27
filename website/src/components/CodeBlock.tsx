@@ -75,14 +75,35 @@ export default function CodeBlock({
         >
           {language}
         </span>
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          {showPypiDownloads && <PypiDownloadsBadge />}
-          {showCopy && (
+        {showPypiDownloads && <PypiDownloadsBadge />}
+      </div>
+
+      {/* Code content — copy button sits inline with the command itself,
+          top-right anchored so it also works for multi-line snippets. */}
+      <div style={{ position: "relative", overflowX: "auto" }}>
+        <pre
+          style={{
+            margin: 0,
+            padding: compact ? "14px 16px" : "20px 20px",
+            paddingRight: showCopy ? (compact ? "44px" : "52px") : undefined,
+            color: "#CDD6F4",
+            fontSize: compact ? "13px" : "13.5px",
+            lineHeight: "1.65",
+            fontFamily: "inherit",
+            whiteSpace: "pre",
+          }}
+        >
+          <code>{code.trim()}</code>
+        </pre>
+        {showCopy && (
           <button
             onClick={handleCopy}
             title={copied ? "Copied" : "Copy"}
             aria-label={copied ? "Copied" : "Copy to clipboard"}
             style={{
+              position: "absolute",
+              top: compact ? "10px" : "16px",
+              right: compact ? "10px" : "14px",
               background: "none",
               border: "1px solid rgba(255,255,255,0.15)",
               borderRadius: "4px",
@@ -103,25 +124,7 @@ export default function CodeBlock({
           >
             {copied ? <CheckIcon size={12} /> : <CopyIcon size={12} />}
           </button>
-          )}
-        </div>
-      </div>
-
-      {/* Code content */}
-      <div style={{ overflowX: "auto" }}>
-        <pre
-          style={{
-            margin: 0,
-            padding: compact ? "14px 16px" : "20px 20px",
-            color: "#CDD6F4",
-            fontSize: compact ? "13px" : "13.5px",
-            lineHeight: "1.65",
-            fontFamily: "inherit",
-            whiteSpace: "pre",
-          }}
-        >
-          <code>{code.trim()}</code>
-        </pre>
+        )}
       </div>
     </div>
   );
