@@ -80,20 +80,19 @@ export default function CodeBlock({
           {showCopy && (
           <button
             onClick={handleCopy}
+            title={copied ? "Copied" : "Copy"}
+            aria-label={copied ? "Copied" : "Copy to clipboard"}
             style={{
               background: "none",
               border: "1px solid rgba(255,255,255,0.15)",
               borderRadius: "4px",
               cursor: "pointer",
-              padding: "3px 10px",
+              padding: "5px",
               color: copied ? "#22C55E" : "#9CA3AF",
-              fontSize: "11px",
-              fontWeight: 500,
               transition: "all 0.15s",
               display: "flex",
               alignItems: "center",
-              gap: "5px",
-              fontFamily: "var(--font-work-sans), sans-serif",
+              justifyContent: "center",
             }}
             onMouseEnter={(e) => {
               if (!copied) e.currentTarget.style.color = "#E5E7EB";
@@ -102,17 +101,7 @@ export default function CodeBlock({
               if (!copied) e.currentTarget.style.color = "#9CA3AF";
             }}
           >
-            {copied ? (
-              <>
-                <CheckIcon size={11} />
-                Copied
-              </>
-            ) : (
-              <>
-                <CopyIcon size={11} />
-                Copy
-              </>
-            )}
+            {copied ? <CheckIcon size={12} /> : <CopyIcon size={12} />}
           </button>
           )}
         </div>
