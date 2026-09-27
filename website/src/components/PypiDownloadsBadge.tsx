@@ -65,7 +65,7 @@ export default function PypiDownloadsBadge() {
       }}
     >
       <DownloadIcon />
-      {compactFormatter.format(total)} downloads
+      {compactFormatter.format(total)}
     </span>
   );
 }
