@@ -59,8 +59,8 @@ export default function PypiDownloadsBadge() {
         alignItems: "center",
         gap: "4px",
         fontSize: "11px",
-        fontWeight: 500,
-        color: "#6B7280",
+        fontWeight: 600,
+        color: "#A5B4FC",
         fontFamily: "var(--font-work-sans), sans-serif",
       }}
     >
