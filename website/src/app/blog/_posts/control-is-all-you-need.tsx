@@ -216,6 +216,27 @@ export default function ControlIsAllYouNeed() {
         >
           ↓ Download PDF
         </a>
+        <a
+          href="https://doi.org/10.5281/zenodo.23023310"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+            fontFamily: "var(--font-jetbrains), monospace",
+            fontSize: "12.5px",
+            fontWeight: 600,
+            color: "var(--text-2)",
+            background: "var(--surface)",
+            border: "1px solid var(--border)",
+            borderRadius: "6px",
+            padding: "6px 12px",
+            textDecoration: "none",
+          }}
+        >
+          Cite this work · DOI: 10.5281/zenodo.23023310
+        </a>
       </div>
 
       <Callout label="Abstract">
