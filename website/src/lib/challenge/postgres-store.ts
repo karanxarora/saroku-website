@@ -1,4 +1,4 @@
-// Real, persistent implementation of ChallengeStore, backed by the "trikesh"
+// Real, persistent implementation of ChallengeStore, backed by the "saroku"
 // Supabase Postgres project (project ref grjhnzyjzarmcymijide, ap-northeast-2).
 //
 // Schema: challenge_checkins, challenge_pings, challenge_verifications,

@@ -17,8 +17,8 @@ import ArchitectureFlow from "@/components/ArchitectureFlow";
 
 /**
  * "Control Is All You Need: Secure Before It Acts" — the flagship technical
- * report for trikesh, published as a post so it has a stable public URL at
- * trikesh.com/blog/control-is-all-you-need.
+ * report for saroku, published as a post so it has a stable public URL at
+ * saroku.com/blog/control-is-all-you-need.
  *
  * Section numbering is load-bearing: the report cross-references its own
  * sections (§4.2, §6.1, §7.1, ...) throughout. Do not renumber sections when
@@ -43,7 +43,7 @@ const TOC: TocItem[] = [
   { id: "results", label: "7. Results" },
   { id: "results-primary", label: "7.1 Primary comparison", sub: true },
   { id: "results-attribution", label: "7.2 Violation-type attribution", sub: true },
-  { id: "trikesh", label: "8. trikesh" },
+  { id: "saroku", label: "8. saroku" },
   { id: "saroku-guard", label: "9. saroku-guard" },
   { id: "incident", label: "10. Reconstructing the Incident" },
   { id: "conclusion", label: "11. Conclusion" },
@@ -153,8 +153,8 @@ function Stack({ items }: { items: { name: ReactNode; desc: ReactNode }[] }) {
   );
 }
 
-const SAROKU_SNIPPET = `from trikesh import SafetyGuard
-from trikesh.integrations import protect
+const SAROKU_SNIPPET = `from saroku import SafetyGuard
+from saroku.integrations import protect
 
 guard = SafetyGuard()                      # saroku-guard loads by default
 agent = await protect(agent, guard=guard)  # every tool call now judged`;
@@ -236,8 +236,8 @@ export default function ControlIsAllYouNeed() {
           </strong>
           , a 184M-parameter DeBERTa-v3 classifier specifically for this decision, and{" "}
           <strong>
-            <a href="https://trikesh.com" style={{ color: "var(--primary-l)" }}>
-              trikesh
+            <a href="https://saroku.com" style={{ color: "var(--primary-l)" }}>
+              saroku
             </a>
           </strong>
           , an open-source runtime enforcement layer that places the decision directly in the
@@ -245,7 +245,7 @@ export default function ControlIsAllYouNeed() {
           enforcement as the{" "}
           <strong>
             <a
-              href="https://trikesh.com/blog/action-safety-protocol"
+              href="https://saroku.com/blog/action-safety-protocol"
               style={{ color: "var(--primary-l)" }}
             >
               Action Safety Protocol (ASP)
@@ -266,7 +266,7 @@ export default function ControlIsAllYouNeed() {
         </P>
         <P>
           The result is a three-part system: ASP as the decision contract, saroku-guard as the
-          PDP, and trikesh as the PEP. The labeled training and validation data are released
+          PDP, and saroku as the PEP. The labeled training and validation data are released
           publicly, while the evaluation holdout remains private (
           <SecRef to="dataset-release">§5.3</SecRef>) to preserve benchmark integrity.
         </P>
@@ -311,7 +311,7 @@ export default function ControlIsAllYouNeed() {
       <P>
         This report formalizes pre-execution action judgment as a distinct security control point
         for AI agents, defines it through the Action Safety Protocol, benchmarks it through
-        ASP-Bench, and provides a reference implementation through trikesh and saroku-guard.
+        ASP-Bench, and provides a reference implementation through saroku and saroku-guard.
       </P>
       <Callout label="Objective">
         <P>
@@ -439,8 +439,8 @@ export default function ControlIsAllYouNeed() {
       </P>
       <P>
         I brought this separation to the agent execution boundary concretely first:{" "}
-        <a href="https://trikesh.com" style={{ color: "var(--primary-l)" }}>
-          trikesh
+        <a href="https://saroku.com" style={{ color: "var(--primary-l)" }}>
+          saroku
         </a>{" "}
         is the PEP, an open-source library that wraps an agent&apos;s tool calls and asks a
         configured PDP for a verdict before letting each one through. To keep that PEP from being
@@ -448,7 +448,7 @@ export default function ControlIsAllYouNeed() {
         specification, the{" "}
         <strong>
           <a
-            href="https://trikesh.com/blog/action-safety-protocol"
+            href="https://saroku.com/blog/action-safety-protocol"
             style={{ color: "var(--primary-l)" }}
           >
             Action Safety Protocol (ASP)
@@ -458,12 +458,12 @@ export default function ControlIsAllYouNeed() {
         any conformant PDP, without either side depending on my code (
         <SecRef to="asp">§4</SecRef> defines that contract exactly). Models get replaced. The
         contract for what a safety decision even is should outlast them. The reference PDP behind
-        trikesh&apos;s default install is{" "}
+        saroku&apos;s default install is{" "}
         <a href="https://huggingface.co/karanxa/saroku-guard" style={{ color: "var(--primary-l)" }}>
           saroku-guard
         </a>
         , fast enough to run on every call inline; neither is required by ASP itself.{" "}
-        <SecRef to="trikesh">§8</SecRef> and <SecRef to="saroku-guard">§9</SecRef> detail them. The
+        <SecRef to="saroku">§8</SecRef> and <SecRef to="saroku-guard">§9</SecRef> detail them. The
         remainder of this report is the case for why that specific PDP is the right default:
         benchmarked against the alternatives (<SecRef to="methodology">§6</SecRef>,{" "}
         <SecRef to="results">§7</SecRef>), and checked directly against a real incident&apos;s
@@ -480,13 +480,13 @@ export default function ControlIsAllYouNeed() {
         }}
       >
         ASP is the specification. ASP-Bench is the measurement framework. saroku-guard is the
-        reference PDP. trikesh is the reference PEP.
+        reference PDP. saroku is the reference PEP.
       </p>
 
       {/* ── 5. Action Safety Protocol ── */}
       <H2 id="asp">4. Action Safety Protocol</H2>
       <P>
-        trikesh could have kept the shape of this decision as an internal detail. Fixing it as a
+        saroku could have kept the shape of this decision as an internal detail. Fixing it as a
         public contract instead is what lets a PDP built by anyone else be scored on the same
         benchmark, and any enforcement layer swap judges without rewriting itself. ASP defines one
         unit of work, the <em>ActionSafetyRecord</em>: a single pre-execution policy decision,
@@ -594,12 +594,12 @@ export default function ControlIsAllYouNeed() {
         swap judges without rewriting the enforcement path. The full request/response contract and
         the two conformance levels are in the{" "}
         <a
-          href="https://trikesh.com/blog/action-safety-protocol"
+          href="https://saroku.com/blog/action-safety-protocol"
           style={{ color: "var(--primary-l)" }}
         >
           Action Safety Protocol specification
         </a>
-        ; trikesh (<SecRef to="trikesh">§8</SecRef>) is its first implementation, and the
+        ; saroku (<SecRef to="saroku">§8</SecRef>) is its first implementation, and the
         specification is written so it does not have to be the only one.
       </P>
 
@@ -918,7 +918,7 @@ export default function ControlIsAllYouNeed() {
         On this holdout, saroku-guard is the only evaluated model that combines high unsafe recall
         with low safe-action blocking: 97.9% of unsafe actions caught, 18 of 624 safe actions
         wrongly blocked. That combination is what makes saroku-guard the default judge shipped
-        with trikesh. The adjacent-tier models behave as expected for
+        with saroku. The adjacent-tier models behave as expected for
         models built for a different task, and Prompt Guard&apos;s result is the clearest case:
         flagging all 624 safe actions as unsafe is not tool-call reasoning, it is a model
         defaulting to &quot;unsafe&quot; on inputs shaped unlike anything it was trained on.
@@ -934,11 +934,11 @@ export default function ControlIsAllYouNeed() {
         queue, not reliable enough on its own to drive automated policy branching.
       </P>
 
-      {/* ── 4. trikesh ── */}
-      <H2 id="trikesh">8. trikesh</H2>
+      {/* ── 4. saroku ── */}
+      <H2 id="saroku">8. saroku</H2>
       <P>
         <SecRef to="approach">§3</SecRef> argued the decision should be split into a PEP that
-        enforces and a PDP that decides. trikesh is that argument built: an open-source library
+        enforces and a PDP that decides. saroku is that argument built: an open-source library
         that implements the enforcement half, ships a judge for the deciding half (
         <SecRef to="saroku-guard">§9</SecRef>), and speaks a protocol that lets either side be
         swapped (<SecRef to="asp">§4</SecRef>).
@@ -947,7 +947,7 @@ export default function ControlIsAllYouNeed() {
         A model that holds both ends of the trade is necessary for a guard you can leave on. It is
         not sufficient. The rest of that claim is an integration problem: a check nobody can adopt
         without rewriting their agent, or that adds a hosted dependency to every tool call, gets
-        switched off for reasons that have nothing to do with its accuracy. trikesh is the
+        switched off for reasons that have nothing to do with its accuracy. saroku is the
         enforcement half, and it is built around removing those reasons.
       </P>
       <P>
@@ -984,21 +984,21 @@ export default function ControlIsAllYouNeed() {
       <figure style={{ margin: "28px 0" }}>
         <ArchitectureFlow />
         <figcaption style={{ marginTop: "16px", fontSize: "13px", color: "var(--subtle)", textAlign: "center" }}>
-          trikesh&apos;s default (balanced) execution path.
+          saroku&apos;s default (balanced) execution path.
         </figcaption>
       </figure>
       <P>
         None of this changes across modes except which PDP, or how many, get consulted.
         That&apos;s the point of keeping the PEP and PDP separate (<SecRef to="approach">§3</SecRef>
         ): the code sitting in the agent&apos;s tool-calling loop stays the same whether it&apos;s
-        backed by saroku-guard alone, saroku-guard plus an LLM judge, or, since trikesh speaks ASP,
+        backed by saroku-guard alone, saroku-guard plus an LLM judge, or, since saroku speaks ASP,
         a different conformant PDP entirely.
       </P>
 
       {/* ── 6. saroku-guard ── */}
       <H2 id="saroku-guard">9. saroku-guard</H2>
       <P>
-        saroku-guard is the PDP trikesh loads by default: a 184M-parameter classifier trained for
+        saroku-guard is the PDP saroku loads by default: a 184M-parameter classifier trained for
         this one decision, small enough to run inline on every call. It is scored against every
         alternative I could find in <SecRef to="results">§7</SecRef>. This is how it is built.
       </P>
@@ -1025,8 +1025,8 @@ export default function ControlIsAllYouNeed() {
         argument in <SecRef to="introduction">§1</SecRef> directly rather than by analogy, I built
         a runnable reconstruction of the incident&apos;s behavioral shape and ran it against a
         live <InlineCode>SafetyGuard()</InlineCode>. Not a tuned configuration, and not the model
-        in isolation: the default install described in <SecRef to="trikesh">§8</SecRef>, which is
-        what anyone gets from <InlineCode>pip install trikesh</InlineCode> with no API key and no
+        in isolation: the default install described in <SecRef to="saroku">§8</SecRef>, which is
+        what anyone gets from <InlineCode>pip install saroku</InlineCode> with no API key and no
         further setup. What follows is therefore a test of the whole stack, protocol, enforcement
         layer, and judge, rather than of a checkpoint.
       </P>
@@ -1081,7 +1081,7 @@ export default function ControlIsAllYouNeed() {
           {
             name: (
               <a
-                href="https://trikesh.com/blog/action-safety-protocol"
+                href="https://saroku.com/blog/action-safety-protocol"
                 style={{ color: "inherit" }}
               >
                 ASP
@@ -1120,8 +1120,8 @@ export default function ControlIsAllYouNeed() {
           },
           {
             name: (
-              <a href="https://trikesh.com" style={{ color: "inherit" }}>
-                trikesh
+              <a href="https://saroku.com" style={{ color: "inherit" }}>
+                saroku
               </a>
             ),
             desc: "The enforcement layer. Wraps an agent's tool calls, runs the judge on every one of them, and escalates only what gets flagged. Installable today, and the reference implementation of ASP.",

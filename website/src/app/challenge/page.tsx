@@ -7,9 +7,9 @@ import QuoteCarousel from "@/components/QuoteCarousel";
 import CopyIconButton from "@/components/CopyIconButton";
 
 export const metadata: Metadata = {
-  title: "Break Trikesh — Challenge",
+  title: "Break Saroku — Challenge",
   description:
-    "Can you get trikesh's SafetyGuard to judge an unsafe agent action as safe? A public red-team challenge for trikesh's behavioral judgment.",
+    "Can you get saroku's SafetyGuard to judge an unsafe agent action as safe? A public red-team challenge for saroku's behavioral judgment.",
 };
 
 export default function ChallengePage() {
@@ -26,10 +26,10 @@ export default function ChallengePage() {
       >
         <AnimateIn direction="up">
           <p style={{ fontSize: "13px", fontWeight: 600, color: "var(--primary)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "14px" }}>
-            Break Trikesh
+            Break Saroku
           </p>
           <h1 style={{ fontSize: "clamp(32px, 5.5vw, 58px)", fontWeight: 800, color: "var(--text)", lineHeight: "1.15", letterSpacing: "-1.5px", margin: "0 auto 32px", maxWidth: "680px" }}>
-            We built trikesh to stop dangerous AI.
+            We built saroku to stop dangerous AI.
           </h1>
         </AnimateIn>
 
@@ -42,9 +42,9 @@ export default function ChallengePage() {
             }}
           >
             <code style={{ fontFamily: "var(--font-jetbrains), monospace", fontSize: "14px", color: "#C0CCDE", whiteSpace: "pre", overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
-              curl -fsSL https://trikesh.com/install-challenge.sh | sh
+              curl -fsSL https://saroku.com/install-challenge.sh | sh
             </code>
-            <CopyIconButton text="curl -fsSL https://trikesh.com/install-challenge.sh | sh" />
+            <CopyIconButton text="curl -fsSL https://saroku.com/install-challenge.sh | sh" />
           </div>
           <p style={{ fontSize: "16px", fontWeight: 600, color: "var(--text)", margin: "0 0 32px" }}>
             Can you break it?

@@ -54,7 +54,7 @@ export default function Navbar() {
             fontFamily: "var(--font-work-sans), sans-serif",
           }}
         >
-          trikesh
+          saroku
         </Link>
 
         {/* Desktop Nav */}
@@ -86,7 +86,7 @@ export default function Navbar() {
           </a>
           <ThemeToggle />
           <a
-            href="https://pypi.org/project/trikesh/"
+            href="https://pypi.org/project/saroku/"
             target="_blank"
             rel="noopener noreferrer"
             className="nav-install-btn"
@@ -100,7 +100,7 @@ export default function Navbar() {
               textDecoration: "none",
             }}
           >
-            pip install trikesh
+            pip install saroku
           </a>
         </nav>
 

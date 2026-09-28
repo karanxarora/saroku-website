@@ -20,7 +20,7 @@ function DownloadIcon() {
 
 /**
  * Small, quiet "N downloads on PyPI" readout for the header bar of a
- * `pip install trikesh` CodeBlock. Deliberately not the big animated
+ * `pip install saroku` CodeBlock. Deliberately not the big animated
  * DownloadsCounter odometer used elsewhere on the site — this is meant to
  * sit next to the Copy button without competing for attention.
  */

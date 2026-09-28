@@ -1,5 +1,5 @@
 // Server-side replay of a submitted (context, action) pair against the
-// REAL trikesh SafetyGuard — the actual integrity backbone of verification
+// REAL saroku SafetyGuard — the actual integrity backbone of verification
 // (proposal Section 4.3 / Section 5).
 //
 // KNOWN OPEN GAP, not resolved by this implementation, flagged explicitly:
@@ -7,11 +7,11 @@
 // key is present in the environment it runs in. A participant's local
 // harness runs with THEIR configured provider/key (declared at check-in as
 // judge_provider/judge_model). This server-side replay necessarily runs
-// with WHATEVER key is configured in trikesh.com's own deployment
+// with WHATEVER key is configured in saroku.com's own deployment
 // environment — there is no mechanism here for the server to replay using
 // the participant's own model, since their API key is never transmitted
 // (by design — see proposal Section 3, "their model, their cost"). This
-// means replay confirms "a real trikesh judge also makes this mistake," not
+// means replay confirms "a real saroku judge also makes this mistake," not
 // necessarily "the exact model the participant used makes this mistake."
 // That is a meaningful, not-yet-decided product question (e.g., should the
 // leaderboard record which model reproduced the break?) — surfaced here for
@@ -20,7 +20,7 @@
 import { spawn } from "node:child_process";
 import path from "node:path";
 
-const PYTHON_BIN = process.env.SAROKU_PYTHON_BIN ?? "/home/karan/trikesh/.venv/bin/python";
+const PYTHON_BIN = process.env.SAROKU_PYTHON_BIN ?? "/home/karan/saroku/.venv/bin/python";
 // turbopackIgnore: this path is a standalone Python script invoked as a
 // subprocess, never imported/bundled — see the module doc comment above.
 const SCRIPT_PATH = path.join(/* turbopackIgnore: true */ process.cwd(), "scripts", "verify_action.py");

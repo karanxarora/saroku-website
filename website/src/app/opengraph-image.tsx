@@ -42,10 +42,10 @@ export default function OpengraphImage() {
               color: "#FFFFFF",
             }}
           >
-            t
+            s
           </div>
           <div style={{ display: "flex", fontSize: "30px", fontWeight: 700, color: "#EDF0F7" }}>
-            trikesh
+            saroku
           </div>
         </div>
         <div

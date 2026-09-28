@@ -14,7 +14,7 @@ import { useEffect } from "react";
 // pageviews for a first-party, cookie-free counter.
 export default function ViewPing({ slug }: { slug: string }) {
   useEffect(() => {
-    const seenKey = `trikesh:blog-view-seen:${slug}`;
+    const seenKey = `saroku:blog-view-seen:${slug}`;
     let isUnique = true;
     try {
       if (localStorage.getItem(seenKey)) {

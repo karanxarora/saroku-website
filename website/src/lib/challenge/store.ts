@@ -1,11 +1,11 @@
-// Data-access abstraction for the "Break Trikesh" challenge.
+// Data-access abstraction for the "Break Saroku" challenge.
 //
 // Two implementations:
 //   - MemoryChallengeStore   — in-process, non-persistent. Used automatically
 //     whenever SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY aren't set (e.g. in
 //     tests/CI), so the full test suite never depends on network access or
 //     real credentials.
-//   - PostgresChallengeStore — real persistence via the "trikesh" Supabase
+//   - PostgresChallengeStore — real persistence via the "saroku" Supabase
 //     project (see postgres-store.ts). Selected automatically whenever both
 //     env vars ARE set. This is what production actually uses.
 //

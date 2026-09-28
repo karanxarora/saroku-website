@@ -1,24 +1,24 @@
 #!/bin/sh
-# Break Trikesh — installer.
+# Break Saroku — installer.
 #
-#   curl -fsSL https://trikesh.com/install-challenge.sh | sh
+#   curl -fsSL https://saroku.com/install-challenge.sh | sh
 #
 # Fetches the challenge harness (agent simulation, CLI, lifecycle client)
 # from its public repo — this does NOT include the actual Challenge Set
-# scenario content, which the CLI fetches live from trikesh.com on each run
+# scenario content, which the CLI fetches live from saroku.com on each run
 # (requires a completed check-in first) rather than bundling it, so the
 # scenarios can't be read by browsing the repo.
 
 set -eu
 
-INSTALL_DIR="${SAROKU_CHALLENGE_DIR:-$HOME/.trikesh-challenge/app}"
-REPO_URL="${SAROKU_CHALLENGE_REPO_URL:-https://github.com/Karanxa/trikesh-challenge.git}"
+INSTALL_DIR="${SAROKU_CHALLENGE_DIR:-$HOME/.saroku-challenge/app}"
+REPO_URL="${SAROKU_CHALLENGE_REPO_URL:-https://github.com/Karanxa/saroku-challenge.git}"
 
-echo "Break Trikesh — installer"
+echo "Break Saroku — installer"
 echo "========================="
 
 # Best-effort funnel-visibility ping — never blocks the install if it fails.
-curl -fsSL -m 5 -X POST https://trikesh.com/api/challenge/install-ping >/dev/null 2>&1 || true
+curl -fsSL -m 5 -X POST https://saroku.com/api/challenge/install-ping >/dev/null 2>&1 || true
 
 # 1. Check Python 3.10+
 PYTHON_BIN=""
@@ -50,13 +50,13 @@ else
   git clone --depth 1 "$REPO_URL" "$INSTALL_DIR"
 fi
 
-# 3. Set up a virtualenv and install deps (requests + trikesh itself).
+# 3. Set up a virtualenv and install deps (requests + saroku itself).
 cd "$INSTALL_DIR"
 "$PYTHON_BIN" -m venv .venv
 . .venv/bin/activate
 pip install --upgrade pip >/dev/null
 pip install -r requirements.txt
-pip install trikesh
+pip install saroku
 
 echo ""
 echo "Installed. Configure an LLM provider API key (e.g. export OPENAI_API_KEY=...),"
@@ -64,5 +64,5 @@ echo "then run:"
 echo ""
 echo "  cd $INSTALL_DIR && . .venv/bin/activate && python -m challenge.cli"
 echo ""
-echo "First run checks in with trikesh.com automatically, then fetches the"
+echo "First run checks in with saroku.com automatically, then fetches the"
 echo "current Challenge Set."

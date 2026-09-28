@@ -16,7 +16,7 @@ import PostToc, { type TocItem } from "@/components/blog/PostToc";
 
 /**
  * Action Safety Protocol v0.1.0, the normative specification, published as a
- * post so it has a stable public URL at trikesh.com/blog/action-safety-protocol.
+ * post so it has a stable public URL at saroku.com/blog/action-safety-protocol.
  *
  * Section numbering is load-bearing: the document cross-references its own
  * sections (§5.2, §6, §9). Do not renumber sections when editing.
@@ -157,7 +157,7 @@ export default function ActionSafetyProtocol() {
           <Badge kind="neutral">Published</Badge>
         </span>
         <span>
-          <span style={{ color: "var(--text-2)" }}>Reference implementation</span> trikesh
+          <span style={{ color: "var(--text-2)" }}>Reference implementation</span> saroku
         </span>
         <span>
           <span style={{ color: "var(--text-2)" }}>Author:</span>{" "}
@@ -187,7 +187,7 @@ export default function ActionSafetyProtocol() {
         }}
       >
         ASP is the specification. ASP-Bench is the measurement framework. saroku-guard is the
-        reference PDP. trikesh is the reference PEP.
+        reference PDP. saroku is the reference PEP.
       </p>
       <P>
         PDP and PEP are established roles in access-control architecture, formalized in
@@ -197,8 +197,8 @@ export default function ActionSafetyProtocol() {
         intercepts the action and enforces that decision.
       </P>
       <P>
-        <a href="https://trikesh.com" style={{ color: "var(--primary-l)" }}>
-          trikesh
+        <a href="https://saroku.com" style={{ color: "var(--primary-l)" }}>
+          saroku
         </a>{" "}
         brings this separation to the agent execution boundary. Its SDK acts as the PEP,
         intercepting an agent&apos;s proposed tool call immediately before execution and obtaining
@@ -215,7 +215,7 @@ export default function ActionSafetyProtocol() {
       </P>
       <P>
         The reference implementation uses <strong>saroku-guard</strong> as the PDP and the{" "}
-        <strong>trikesh SDK</strong> as the PEP, but neither is required by the protocol. Any
+        <strong>saroku SDK</strong> as the PEP, but neither is required by the protocol. Any
         conformant safety judge can serve as a PDP, and any enforcement layer can implement the
         PEP role.
       </P>
@@ -335,7 +335,7 @@ export default function ActionSafetyProtocol() {
             <Td strong>Implementation</Td>
             <Td>
               Any software that produces or consumes conformant Decision Requests and Responses.
-              trikesh is one implementation, not a privileged one.
+              saroku is one implementation, not a privileged one.
             </Td>
           </tr>
         </tbody>
@@ -735,8 +735,8 @@ export default function ActionSafetyProtocol() {
       <P>
         ASP deliberately separates four interchangeable components: an agent, a PEP, a PDP, and
         the agent&apos;s tool environment.{" "}
-        <a href="https://trikesh.com" style={{ color: "var(--primary-l)" }}>
-          trikesh
+        <a href="https://saroku.com" style={{ color: "var(--primary-l)" }}>
+          saroku
         </a>{" "}
         provides a reference implementation of both the PDP and PEP roles: <InlineCode>SafetyGuard</InlineCode>{" "}
         as a PDP (via <InlineCode>saroku-guard</InlineCode>, Level 2 conformant, and an LLM-judge
@@ -744,7 +744,7 @@ export default function ActionSafetyProtocol() {
         Google ADK, AutoGen, and LangChain, while <strong>saroku-guard</strong> is the reference
         PDP specifically. It exists to prove the protocol is implementable end to end, and is
         deliberately not privileged by it: every requirement in this document is one a second
-        implementation can meet without reference to trikesh&apos;s source. Independent
+        implementation can meet without reference to saroku&apos;s source. Independent
         implementations can replace either side, PDP or PEP, without changing the protocol
         contract.
       </P>
@@ -788,15 +788,15 @@ export default function ActionSafetyProtocol() {
       <dl style={{ margin: 0, fontFamily: "var(--font-jetbrains), monospace", fontSize: "13.5px" }}>
         <dt style={{ color: "var(--primary-l)", fontWeight: 600 }}>0.1.0</dt>
         <dd style={{ color: "var(--text-2)", margin: "6px 0 0" }}>
-          Initial specification. Reference implementation: trikesh.
+          Initial specification. Reference implementation: saroku.
         </dd>
       </dl>
 
       <div style={{ borderTop: "1px solid var(--border)", marginTop: "56px", paddingTop: "24px" }}>
         <P>
           Feedback, implementation reports, and proposed extension vocabularies are welcome at{" "}
-          <a href="https://trikesh.com" style={{ color: "var(--primary-l)" }}>
-            trikesh.com
+          <a href="https://saroku.com" style={{ color: "var(--primary-l)" }}>
+            saroku.com
           </a>
           .
         </P>

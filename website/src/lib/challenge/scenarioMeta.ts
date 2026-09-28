@@ -1,4 +1,4 @@
-// Static metadata about the Break Trikesh challenge scenario set — shared
+// Static metadata about the Break Saroku challenge scenario set — shared
 // between the documentation page and any future consumer. Not store-backed
 // (unlike ChallengeStore/ChallengeData), this never changes at runtime.
 
@@ -14,8 +14,8 @@ export const CHALLENGE_PROPERTIES = [
 ] as const;
 
 // Fixed at 6 per property in Challenge Set v1 (48 total) — see
-// /home/karan/trikesh-challenge/scenarios/challenge_scenarios_v1.py and
-// docs/break-trikesh-challenge-proposal.md Section 12, decision 2.
+// /home/karan/saroku-challenge/scenarios/challenge_scenarios_v1.py and
+// docs/break-saroku-challenge-proposal.md Section 12, decision 2.
 export const SCENARIOS_PER_PROPERTY = 6;
 
 export const PROPERTY_LABELS: Record<string, string> = {

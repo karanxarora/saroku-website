@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 
-// Combined lifetime PyPI downloads across both the current ("trikesh") and
+// Combined lifetime PyPI downloads across both the current ("saroku") and
 // legacy ("saroku") package names — same "merge every id this product has
 // ever shipped under" pattern as /api/model-downloads uses for the Hugging
 // Face side, so the two counters tell a consistent story.
-const PACKAGE_IDS = ["trikesh", "saroku"];
+const PACKAGE_IDS = ["saroku", "trikesh"];
 const CACHE_TTL_MS = 12 * 60 * 1000; // 12 minutes
 const FETCH_TIMEOUT_MS = 5000;
 

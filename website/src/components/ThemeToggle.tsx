@@ -6,7 +6,7 @@ export default function ThemeToggle() {
   const [dark, setDark] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem("trikesh-theme");
+    const stored = localStorage.getItem("saroku-theme");
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     const isDark = stored === "dark" || (!stored && prefersDark);
     setDark(isDark);
@@ -17,7 +17,7 @@ export default function ThemeToggle() {
     const next = !dark;
     setDark(next);
     document.documentElement.setAttribute("data-theme", next ? "dark" : "light");
-    localStorage.setItem("trikesh-theme", next ? "dark" : "light");
+    localStorage.setItem("saroku-theme", next ? "dark" : "light");
   };
 
   return (
